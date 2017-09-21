@@ -1,0 +1,15 @@
+{
+  "name": "canvas_render",
+  "version": "1.0.2",
+  "description": "",
+  "main": "render.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^3.6.0",
+    "yargs": "^9.0.1"
+  }
+}
