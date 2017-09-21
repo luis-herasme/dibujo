@@ -59,11 +59,18 @@ function setScale (scale) {
   render.scale = scale
 }
 
+/**
+ * This function puts all the styles given in the context
+ * @param {object} style This object contains the styles
+ */
 function setStyle (style) {
   for (let i in style) render.context[i] = style[i]
 }
 
-// Sets the center of the screen in the given position by a 2D vector
+/**
+ * This function translates the context to the coordinates given
+ * @param {array} vec This is an array of coordinates
+ */
 function setCenter (vec = render.center) {
   render.context.translate(vec[0], vec[1])
 }
@@ -97,21 +104,34 @@ myMatrix
 .translate(-P.x, -P.y);
 */
 
+/**
+ * This object contains all that will be render
+ */
 function Stage () {
   this.childs = []
 
+  /**
+   * This function adds objects to the stage
+   */
   this.add = function () {
     Array.from(arguments).forEach((element) => {
       this.childs.push(element)
     })
   }.bind(this)
 
+  /**
+   * This function renders all the objects of the stage
+   */
   this.update = () => {
     this.childs.forEach((child) => {
       child.render()
     })
   }
 
+  /**
+   * This function destroy an object from the stage
+   * @param {string} name This is the name of the object
+   */
   this.destroy = function (name) {
     this.childs = this.childs.filter((child) => child.name !== name)
   }.bind(this)
@@ -119,6 +139,11 @@ function Stage () {
   return this
 }
 
+/**
+ * This class creates an object that draws in the screen
+ * @param {function} renderFunction This function draws in the screen
+ * @param {object} configuration This object contais information as the position of where things will be drawn the rotation etc..
+ */
 function Graphic (renderFunction, configuration) {
   if (configuration) {
     if (configuration.position) this.position = configuration.position

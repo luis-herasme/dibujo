@@ -35,6 +35,11 @@ function drawImage (name, position, anchor, rotation, scale) {
   render.render.context.restore()
 }
 
+/**
+ * This function renders an animation from an srpite sheet in the screen
+ * @param {string} name This will be the name of the animation
+ * @param {object} config This object contains the configuration of the animation
+ */
 function SpriteSheet (name, config) {
   loadImage(name, config.src)
   let frame = new render.Point(0, 0)

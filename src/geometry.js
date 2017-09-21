@@ -17,7 +17,12 @@ function line (start, end, style) {
   render.render.context.stroke()
 }
 
-// Draws a poligon in the screen
+/**
+ * This function draws a poligon in the screen
+ * @param {array} vecs This contains all the points of the figure
+ * @param {string} color This is the color of the poligon
+ * @param {boolean} stroke If this true the poligon will have borders
+ */
 function poligon (vecs, color, stroke) {
   render.render.context.beginPath()
   render.render.context.fillStyle = color
@@ -32,8 +37,7 @@ function poligon (vecs, color, stroke) {
 
 /**
  * This function draws a rect in the screen
- * @param {number} x This is the X coodinate of the rect
- * @param {number} y This is the Y coodinate of the rect
+ * @param {array} position This array contains the coordinates of the rect
  * @param {number} width This is the width of the rect
  * @param {number} height This is the height of the rect
  * @param {string} color This will be the color of the rect
@@ -44,18 +48,31 @@ function rect (position, width, height, color) {
   render.render.context.fillRect(position[0], position[1], width, height)
 }
 
-// Draws the borders of a rect in the screen
-function strokeRect (position, width, height, color) {
+/**
+ * This function draws the borders of a a rect in the screen
+ * @param {array} position This array contains the coordinates of the rect
+ * @param {number} width This is the width of the rect
+ * @param {number} height This is the height of the rect
+ * @param {string} color This will be the color of the rect
+ * @param {number} lineWidth This is the width of the line
+ */
+function strokeRect (position, width, height, color, lineWidth) {
   render.render.context.beginPath()
-  render.render.context.fillStyle = color
+  render.render.context.strokeStyle = color
   render.render.context.strokeRect(position[0], position[1], width, height)
 }
 
-// Puts text in the screen
-function text (texto, pos, style, stroke) {
+/**
+ * This function draws a text in the screen
+ * @param {string} texto This is the text that will be drawn
+ * @param {array} position This array contains the coordinates of the text
+ * @param {object} style This object contais the styles of the text
+ * @param {boolean} stroke If true the text will have borders
+ */
+function text (texto, position, style, stroke) {
   render.setStyle(style)
-  if (stroke) render.render.context.strokeText(texto, pos[0], pos[1])
-  render.render.context.fillText(texto, pos[0], pos[1])
+  if (stroke) render.render.context.strokeText(texto, position[0], position[1])
+  render.render.context.fillText(texto, position[0], position[1])
 }
 
 /**
@@ -86,12 +103,20 @@ function circle (position, radius, color) {
   render.render.context.fill()
 }
 
-// Draws the borders of an arc in the screen
-function strokeArc (position, size, width, eAngl, aAngl, color) {
+/**
+ * This function draws the borders of an arc in the screen
+ * @param {array} position This array contains the X and Y coordinates
+ * @param {number} radius This is the radius of the arc
+ * @param {number} lineWidth This is the width of the line
+ * @param {number} eAngl This is the end angle
+ * @param {number} aAngl This is the start angle
+ * @param {string} color This is the color of the arc
+ */
+function strokeArc (position, radius, lineWidth, eAngl, aAngl, color) {
   render.render.context.beginPath()
   render.render.context.strokeStyle = color
-  render.render.context.arc(position[0], position[1], size, eAngl, aAngl, true)
-  render.render.context.lineWidth = width
+  render.render.context.arc(position[0], position[1], radius, eAngl, aAngl, true)
+  render.render.context.lineWidth = lineWidth
   render.render.context.stroke()
 }
 
