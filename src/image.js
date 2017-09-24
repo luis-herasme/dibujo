@@ -26,9 +26,9 @@ function loadImage (name, src) {
  * @param {number} height This will be the height of the image
  */
 function drawImage (name, position, anchor, rotation, scale) {
-  render.render.context.save()
-  render.render.context.translate(position.x, position.y)
-  render.render.context.rotate(rotation)
+  render.render.context.save() // MAKE IT TO CHANGE THE CONTEXT JUST IF THERE'S ROTATION
+  render.render.context.translate(position.x, position.y) // MOVE TO DRAWIAMGE
+  render.render.context.rotate(rotation) // MAKE IT TO CHANGE THE CONTEXT JUST IF THERE'S ROTATION
   let realWidth = scale.x * imageCache[name].width
   let realHeight = scale.y * imageCache[name].height
   render.render.context.drawImage(imageCache[name], -(realWidth * anchor.x), -(realHeight * anchor.y), realWidth, realHeight)
@@ -80,11 +80,22 @@ function SpriteSheet (name, config) {
  * @param {string} src This will be the location where the image is saved
  */
 function Sprite (name, config) {
+  /*
+    FROM LIENZO ENGINE
+    if (data.name && data.src) {
+      IMAGE_CACHE[data.name] = new PIXI.Sprite(PIXI.Texture.fromImage(data.src))
+      this.sprite = IMAGE_CACHE[data.name]
+    } else if (data.name && !data.src) {
+      this.sprite = IMAGE_CACHE[data.name]
+    } else if (!data.name && data.src) {
+      this.sprite = new PIXI.Sprite(PIXI.Texture.fromImage(data.src))
+    }
+  */
   this.name = name
-  this.position = config.position
-  this.rotation = config.rotation
-  this.anchor = config.anchor
-  this.scale = config.scale
+  this.position = config.position ? config.position : new render.Point(0, 0)
+  this.rotation = config.rotation ? config.rotation : 0
+  this.anchor = config.anchor ? config.anchor : new render.Point(0.5, 0.5)
+  this.scale = config.scale ? config.scale : new render.Point(1, 1)
   if (config.src) loadImage(this.name, config.src)
   this.render = () => drawImage(this.name, this.position, this.anchor, this.rotation, this.scale)
   return this

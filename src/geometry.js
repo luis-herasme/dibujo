@@ -27,9 +27,7 @@ function poligon (vecs, color, stroke) {
   render.render.context.beginPath()
   render.render.context.fillStyle = color
   render.render.context.moveTo(vecs[0][0], vecs[0][1])
-  for (var i = 0; i < vecs.length; i++) {
-    render.render.context.lineTo(vecs[i][0], vecs[i][1])
-  }
+  for (var i = 0; i < vecs.length; i++) render.render.context.lineTo(vecs[i][0], vecs[i][1])
   render.render.context.closePath()
   render.render.context.fill()
   if (stroke) render.render.context.stroke()
