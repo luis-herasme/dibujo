@@ -1,184 +1,86 @@
 
-let canvas
-let render = {}
-
-/**
- * This function creates an Point object
- * @param {number} x The X coordinate
- * @param {number} y The Y coordinate
- */
-function Point (x, y) {
-  this.x = x
-  this.y = y
-  return this
-}
+import Vector from '../Vector'
 
 /**
  * This function initializes the canvas
  * @param {string} canvasName If this parameter is given the render will try to find a canvas with this ID to draw in
- * @param {number} width This will be the width of the canvas
- * @param {number} height This will be the height of the canvas
+ * @param {number} width
+ * @param {number} height
  */
-function init (canvasName, width, height) {
-  if (canvasName) {
-    canvas = document.getElementById(canvasName)
-    if (width && height) {
-      canvas.width = width
-      canvas.height = height
+class Render {
+  constructor (canvasName, width, height) {
+    if (canvasName) {
+      this.canvas = document.getElementById(canvasName)
     } else {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      this.canvas = document.createElement('canvas')
+      document.body.appendChild(this.canvas)
     }
-  } else {
-    canvas = document.createElement('canvas')
-    document.body.appendChild(canvas)
 
     if (width && height) {
-      canvas.width = width
-      canvas.height = height
+      this.canvas.width = width
+      this.canvas.height = height
     } else {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      this.canvas.width = window.innerWidth
+      this.canvas.height = window.innerHeight
     }
+
+    this.context = this.canvas.getContext('2d')
+    this.smoth(false)
   }
-  render.width = canvas.width
-  render.height = canvas.height
 
-  render.center = [render.width / 2, render.height / 2]
-  render.context = canvas.getContext('2d')
-}
+  get center () {
+    return new Vector(
+      this.canvas.width / 2,
+      this.canvas.height / 2)
+  }
 
-/**
- * This function sets the scale of the canvas to the parameter given
- * @param {number} scale This will be the scale of the canvas
- */
-function setScale (scale) {
-  render.width = render.width / scale
-  render.height = render.height / scale
-  render.center = [render.width / 2, render.height / 2]
-  render.scale = scale
-}
+  get width () {
+    return this.canvas.width
+  }
 
-/**
- * This function puts all the styles given in the context
- * @param {object} style This object contains the styles
- */
-function setStyle (style) {
-  for (let i in style) render.context[i] = style[i]
-}
-
-/**
- * This function translates the context to the coordinates given
- * @param {array} vec This is an array of coordinates
- */
-function setCenter (vec = render.center) {
-  render.context.translate(vec[0], vec[1])
-}
-
-/**
- * Clears the entire screen
- * @param {string} color With this color the canvas will be clear
- */
-function clear (color = '#000') {
-  render.context.fillStyle = color
-  render.context.save()
-  render.context.setTransform(1, 0, 0, 1, 0, 0)
-  render.context.fillRect(0, 0, canvas.width, canvas.height)
-  render.context.restore()
-}
-
-/**
- * Enables and disbales canvas smoth
- * @param {boolean} state If true enables canvas smoth and if false disbales canvas smoth
- */
-function smoth (state) {
-  render.context.webkitImageSmoothingEnabled = state
-  render.context.mozImageSmoothingEnabled = state
-  render.context.imageSmoothingEnabled = state
-}
-
-/*
-myMatrix
-.translate(P.x, P.y)
-.scale(xFactor, yFactor)
-.translate(-P.x, -P.y);
-*/
-
-/**
- * This object contains all that will be render
- */
-function Stage () {
-  this.childs = []
-
-  /**
-   * This function adds objects to the stage
-   */
-  this.add = function () {
-    Array.from(arguments).forEach((element) => {
-      this.childs.push(element)
-    })
-  }.bind(this)
-
-  /**
-   * This function renders all the objects of the stage
-   */
-  this.update = () => {
-    this.childs.forEach((child) => {
-      child.render()
-    })
+  get height () {
+    return this.canvas.height
   }
 
   /**
-   * This function destroy an object from the stage
-   * @param {string} name This is the name of the object
+   * This function translates the context to the coordinates given
+   * @param {number} x
+   * @param {number} y
    */
-  this.destroy = function (name) {
-    this.childs = this.childs.filter((child) => child.name !== name)
-  }.bind(this)
-
-  return this
-}
-
-/**
- * This class creates an object that draws in the screen
- * @param {function} renderFunction This function draws in the screen
- * @param {object} configuration This object contais information as the position of where things will be drawn the rotation etc..
- */
-function Graphic (renderFunction, configuration) {
-  if (configuration) {
-    if (configuration.position) this.position = configuration.position
-    else this.position = new Point(0, 0)
-    if (configuration.scale) this.scale = configuration.scale
-    else this.scale = new Point(1, 1)
-    if (configuration.rotation) this.rotation = configuration.rotation
-    else this.rotation = 0
-  } else {
-    this.position = new Point(0, 0)
-    this.scale = new Point(1, 1)
-    this.rotation = 0
+  setCenter (x, y) {
+    this.context.translate(x, y)
   }
-  this.render = () => {
-    render.context.save()
-    if (this.position) render.context.translate(this.position.x, this.position.y)
-    if (this.scale) render.context.scale(this.scale.x, this.scale.y)
-    if (this.rotation) render.context.rotate(this.rotation)
-    renderFunction()
-    render.context.restore()
+
+  /**
+   * Clears the entire screen
+   * @param {string} color With this color the canvas will be clear
+   */
+  clear (color = '#000') {
+    this.context.fillStyle = color
+    this.context.fillRect(0, 0, this.width, this.height)
   }
-  return this
+
+  /**
+   * Enables and disbales canvas smoth
+   * @param {boolean} state
+   */
+  smoth (state) {
+    this.context.webkitImageSmoothingEnabled = state
+    this.context.mozImageSmoothingEnabled = state
+    this.context.imageSmoothingEnabled = state
+  }
+
+  setStage (stage) {
+    this.stage = stage
+    this.stage.render = this
+  }
+
+  /*
+  myMatrix
+  .translate(P.x, P.y)
+  .scale(xFactor, yFactor)
+  .translate(-P.x, -P.y);
+  */
 }
 
-module.exports = {
-  init,
-  setCenter,
-  clear,
-  width: 0,
-  height: 0,
-  setScale,
-  setStyle,
-  Point,
-  Stage,
-  smoth,
-  Graphic,
-  render
-}
+export default Render
