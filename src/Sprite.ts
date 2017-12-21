@@ -12,9 +12,14 @@ class Sprite {
   public rotation: number
   public image
 
-  constructor (src: string, position, scale, rotation, anchor) {
-    this.load(src)
+  constructor (
+    src: string,
+    position: Vector2D = new Vector2D(1, 1),
+    scale: Vector2D = new Vector2D(1, 1),
+    rotation: number = 0,
+    anchor: Vector2D = new Vector2D(0.5, 0.5)) {
 
+    this.load(src)
     this.position = position
     this.scale = scale
     this.anchor = anchor

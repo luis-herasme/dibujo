@@ -23,7 +23,8 @@ class Render {
       this.canvas.height = window.innerHeight
     }
 
-    this.context = this.canvas.getContext('2d')
+    this.context = this.canvas.getContext('2d') 
+    this.setScene(new Scene())
   }
 
   getWidth (): number {
@@ -51,9 +52,17 @@ class Render {
     this.context.imageSmoothingEnabled = state
   }
 
-  setStage (scene): void {
+  setScene (scene): void {
     this.scene = scene
     this.scene.renderer = this
+  }
+
+  add (element): void {
+    this.scene.add(element)
+  }
+
+  render (): void {
+    this.scene.render()
   }
 
   zoom (where: Vector2D, howMuch: Vector2D): void {
