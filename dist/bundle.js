@@ -70,29 +70,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Scene_1 = __webpack_require__(1);
-exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(2);
-exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(4);
-exports.Sprite = Sprite_1["default"];
-var Graphic_1 = __webpack_require__(5);
-exports.Graphic = Graphic_1["default"];
-var Color_1 = __webpack_require__(6);
-exports.Color = Color_1["default"];
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118,67 +100,7 @@ exports["default"] = Scene;
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var vector_class_1 = __webpack_require__(3);
-var Render = (function () {
-    function Render(canvasName, width, height) {
-        if (canvasName) {
-            this.canvas = document.getElementById(canvasName);
-        }
-        else {
-            this.canvas = document.createElement('canvas');
-            document.body.appendChild(this.canvas);
-        }
-        if (width && height) {
-            this.canvas.width = width;
-            this.canvas.height = height;
-        }
-        else {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        }
-        this.context = this.canvas.getContext('2d');
-    }
-    Render.prototype.getWidth = function () {
-        return this.canvas.width;
-    };
-    Render.prototype.getHeight = function () {
-        return this.canvas.height;
-    };
-    Render.prototype.getCenter = function () {
-        return new vector_class_1.Vector2D(this.canvas.width / 2, this.canvas.height / 2);
-    };
-    Render.prototype.clear = function (color) {
-        if (color === void 0) { color = '#000'; }
-        this.context.fillStyle = color;
-        this.context.fillRect(0, 0, this.getWidth(), this.getHeight());
-    };
-    Render.prototype.smoth = function (state) {
-        this.context.webkitImageSmoothingEnabled = state;
-        this.context.mozImageSmoothingEnabled = state;
-        this.context.imageSmoothingEnabled = state;
-    };
-    Render.prototype.setStage = function (scene) {
-        this.scene = scene;
-        this.scene.renderer = this;
-    };
-    Render.prototype.zoom = function (where, howMuch) {
-        this.context.translate(where.x, where.y);
-        this.context.scale(howMuch.x, howMuch.y);
-        this.context.translate(-where.x, -where.y);
-    };
-    return Render;
-}());
-exports.__esModule = true;
-exports["default"] = Render;
-
-
-/***/ }),
-/* 3 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -510,14 +432,105 @@ exports["default"] = Vector3D;
 });
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Scene_1 = __webpack_require__(0);
+exports.Scene = Scene_1["default"];
+var Render_1 = __webpack_require__(3);
+exports.Render = Render_1["default"];
+var Sprite_1 = __webpack_require__(4);
+exports.Sprite = Sprite_1["default"];
+var Graphic_1 = __webpack_require__(5);
+exports.Graphic = Graphic_1["default"];
+var Color_1 = __webpack_require__(6);
+exports.Color = Color_1["default"];
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var vector_class_1 = __webpack_require__(1);
+var Scene_1 = __webpack_require__(0);
+var Render = (function () {
+    function Render(canvasName, width, height) {
+        if (canvasName) {
+            this.canvas = document.getElementById(canvasName);
+        }
+        else {
+            this.canvas = document.createElement('canvas');
+            document.body.appendChild(this.canvas);
+        }
+        if (width && height) {
+            this.canvas.width = width;
+            this.canvas.height = height;
+        }
+        else {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+        this.context = this.canvas.getContext('2d');
+        this.setScene(new Scene_1["default"]());
+    }
+    Render.prototype.getWidth = function () {
+        return this.canvas.width;
+    };
+    Render.prototype.getHeight = function () {
+        return this.canvas.height;
+    };
+    Render.prototype.getCenter = function () {
+        return new vector_class_1.Vector2D(this.canvas.width / 2, this.canvas.height / 2);
+    };
+    Render.prototype.clear = function (color) {
+        if (color === void 0) { color = '#000'; }
+        this.context.fillStyle = color;
+        this.context.fillRect(0, 0, this.getWidth(), this.getHeight());
+    };
+    Render.prototype.smoth = function (state) {
+        this.context.webkitImageSmoothingEnabled = state;
+        this.context.mozImageSmoothingEnabled = state;
+        this.context.imageSmoothingEnabled = state;
+    };
+    Render.prototype.setScene = function (scene) {
+        this.scene = scene;
+        this.scene.renderer = this;
+    };
+    Render.prototype.add = function (element) {
+        this.scene.add(element);
+    };
+    Render.prototype.render = function () {
+        this.scene.render();
+    };
+    Render.prototype.zoom = function (where, howMuch) {
+        this.context.translate(where.x, where.y);
+        this.context.scale(howMuch.x, howMuch.y);
+        this.context.translate(-where.x, -where.y);
+    };
+    return Render;
+}());
+exports.__esModule = true;
+exports["default"] = Render;
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* global Image */
 
+var vector_class_1 = __webpack_require__(1);
 var Sprite = (function () {
     function Sprite(src, position, scale, rotation, anchor) {
+        if (position === void 0) { position = new vector_class_1.Vector2D(1, 1); }
+        if (scale === void 0) { scale = new vector_class_1.Vector2D(1, 1); }
+        if (rotation === void 0) { rotation = 0; }
+        if (anchor === void 0) { anchor = new vector_class_1.Vector2D(0.5, 0.5); }
         this.load(src);
         this.position = position;
         this.scale = scale;
