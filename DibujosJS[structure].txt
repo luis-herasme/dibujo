@@ -1,0 +1,44 @@
+- Sprite:
+	- Position
+	- Scale
+	- Rotation
+	- Anchor
+	- image
+	+ load
+	+ render
+
+- Scene:
+	- renderer
+	- childs
+	+ add
+	+ remove
+	+ render
+
+- Render:
+	- scene
+	- canvas
+	- context
+	+ getWidth
+	+ getHeigth
+	+ getCenter
+	+ add
+	+ render 
+	+ zoom
+
+- Graphic:
+	- Position
+	- Scale
+	- Rotation
+	- renderFunction
+	- context
+	+ line
+	+ poligon
+	+ strokePoligon
+	+ rect
+	+ strokeRect
+	+ setStyle
+	+ text
+	+ strokeCircle
+	+ Circle
+	+ strokeArc
+	+ render

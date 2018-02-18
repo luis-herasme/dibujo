@@ -79,125 +79,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 
-var Scene = (function () {
-    function Scene() {
-        this.childs = [];
-    }
-    Scene.prototype.add = function (element) {
-        element.context = this.renderer.context;
-        this.childs.push(element);
-    };
-    Scene.prototype.remove = function (g) {
-        this.childs.splice(this.childs.indexOf(g), 1);
-    };
-    Scene.prototype.render = function () {
-        this.childs.forEach(function (child) { return child.render(); });
-    };
-    return Scene;
-}());
-exports.__esModule = true;
-exports["default"] = Scene;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["Vector"] = factory();
-	else
-		root["Vector"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Vector2D_1 = __webpack_require__(1);
-exports.Vector2D = Vector2D_1["default"];
-var Vector3D_1 = __webpack_require__(2);
-exports.Vector3D = Vector3D_1["default"];
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var Vector2D = (function () {
     function Vector2D(x, y) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
         this.x = x;
         this.y = y;
     }
@@ -273,6 +158,11 @@ var Vector2D = (function () {
     Vector2D.sub = function (vector1, vector2) {
         return new Vector2D(vector1.x - vector2.x, vector1.y - vector2.y);
     };
+    Vector2D.angleMagnitude = function (rotation, magnitude) {
+        var x = Math.cos(rotation) * magnitude;
+        var y = Math.sin(rotation) * magnitude;
+        return new Vector2D(x, y);
+    };
     Vector2D.mult = function (vector, scalar) {
         return new Vector2D(vector.x * scalar, vector.y * scalar);
     };
@@ -306,130 +196,70 @@ exports["default"] = Vector2D;
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector3D = (function () {
-    function Vector3D(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+var Vector_1 = __webpack_require__(0);
+var Scene = (function () {
+    function Scene() {
+        this.childs = [];
+        this.following = false;
+        this.translation = new Vector_1["default"](0, 0);
     }
-    Vector3D.prototype.add = function (vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
+    Scene.prototype.add = function (element) {
+        element.context = this.context;
+        this.childs.push(element);
     };
-    Vector3D.prototype.sub = function (vector) {
-        this.x -= vector.x;
-        this.y -= vector.y;
-        this.z -= vector.z;
+    Scene.prototype.remove = function (element) {
+        this.childs.splice(this.childs.indexOf(element), 1);
     };
-    Vector3D.prototype.mult = function (scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        this.z *= scalar;
+    Scene.prototype.clear = function (color) {
+        if (color === void 0) { color = '#000'; }
+        this.context.fillStyle = color;
+        this.context.fillRect(-this.translation.x, 0, window.innerWidth, window.innerHeight);
     };
-    Vector3D.prototype.div = function (scalar) {
-        this.x /= scalar;
-        this.y /= scalar;
-        this.z /= scalar;
+    Scene.prototype.follow = function (gameObject) {
+        this.followed = gameObject.transform.position;
+        this.temp = this.followed.copy();
+        this.following = true;
     };
-    Vector3D.prototype.inverse = function () {
-        this.x *= -1;
-        this.y *= -1;
-        this.z *= -1;
-    };
-    Vector3D.prototype.mag = function () {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-    };
-    Vector3D.prototype.dot = function (vector) {
-        return this.x * vector.x + this.y * vector.y + this.z * vector.z;
-    };
-    Vector3D.prototype.distance = function (vector) {
-        return Vector3D.sub(this, vector).mag();
-    };
-    Vector3D.prototype.angle = function () {
-        return Math.atan2(this.y, this.x);
-    };
-    Vector3D.prototype.copy = function () {
-        return new Vector3D(this.x, this.y, this.z);
-    };
-    Vector3D.prototype.normalize = function () {
-        this.div(this.mag());
-    };
-    Vector3D.prototype.setMag = function (mag) {
-        this.normalize();
-        this.mult(mag);
-    };
-    Vector3D.prototype.setAngle = function (angle) {
-        var magnitude = this.mag();
-        this.x = magnitude * Math.cos(angle);
-        this.y = magnitude * Math.sin(angle);
-    };
-    Vector3D.prototype.addAngle = function (angle) {
-        this.setAngle(this.angle() + angle);
-    };
-    Vector3D.prototype.limit = function (scalar) {
-        if (this.mag() > scalar) {
-            this.setMag(scalar);
+    Scene.prototype.smoth = function (state) {
+        if (this.context.imageSmoothingEnabled) {
+            this.context.imageSmoothingEnabled = state;
+        }
+        else if (this.context.mozImageSmoothingEnabled) {
+            this.context.mozImageSmoothingEnabled = state;
+        }
+        else if (this.context.webkitImageSmoothingEnabled) {
+            this.context.webkitImageSmoothingEnabled = state;
         }
     };
-    Vector3D.prototype.moveTowards = function (vector, speed, stop) {
-        if (this.distance(vector) > stop) {
-            var unit = Vector3D.normalize(vector);
-            unit.mult(speed);
-            this.add(unit);
+    Scene.prototype.zoom = function (where, howMuch) {
+        this.context.translate(where.x, where.y);
+        this.context.scale(howMuch.x, howMuch.y);
+        this.context.translate(-where.x, -where.y);
+    };
+    Scene.prototype.translate = function (x, y) {
+        this.translation.x -= x;
+        this.translation.y -= y;
+        this.context.translate(-x, -y);
+    };
+    Scene.prototype.update = function () {
+        this.clear(this.backgroundColor);
+        if (this.following) {
+            var change = Vector_1["default"].sub(this.temp, this.followed);
+            this.temp = this.followed.copy();
+            this.translate(-change.x, 0); /* -change.y To enable y following */
         }
+        this.childs.forEach(function (child) { return child.render(); });
     };
-    Vector3D.prototype.zero = function () {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-    };
-    Vector3D.add = function (vector1, vector2) {
-        return new Vector3D(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z);
-    };
-    Vector3D.sub = function (vector1, vector2) {
-        return new Vector3D(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
-    };
-    Vector3D.mult = function (vector, scalar) {
-        return new Vector3D(vector.x * scalar, vector.y * scalar, vector.z * scalar);
-    };
-    Vector3D.div = function (vector, scalar) {
-        return new Vector3D(vector.x / scalar, vector.y / scalar, vector.z / scalar);
-    };
-    Vector3D.inverse = function (vector) {
-        return new Vector3D(vector.x * -1, vector.y * -1, vector.z * -1);
-    };
-    Vector3D.distance = function (vector1, vector2) {
-        return this.sub(vector1, vector2).mag();
-    };
-    Vector3D.normalize = function (vector) {
-        return this.div(vector, vector.mag());
-    };
-    Vector3D.cross = function (vector1, vector2) {
-        return vector1.x * vector2.y - vector2.x * vector1.y;
-    };
-    Vector3D.random = function (x, y, z) {
-        if (Math.random() > 0.5) {
-            return new Vector3D(x * Math.random(), y * Math.random(), z * Math.random());
-        }
-        else {
-            return new Vector3D(-x * Math.random(), -y * Math.random(), -z * Math.random());
-        }
-    };
-    return Vector3D;
+    return Scene;
 }());
 exports.__esModule = true;
-exports["default"] = Vector3D;
+exports["default"] = Scene;
 
-
-/***/ })
-/******/ ]);
-});
 
 /***/ }),
 /* 2 */
@@ -437,16 +267,37 @@ exports["default"] = Vector3D;
 
 "use strict";
 
-var Scene_1 = __webpack_require__(0);
-exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(3);
-exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(4);
-exports.Sprite = Sprite_1["default"];
-var Graphic_1 = __webpack_require__(5);
-exports.Graphic = Graphic_1["default"];
-var Color_1 = __webpack_require__(6);
-exports.Color = Color_1["default"];
+var Dibujo_1 = __webpack_require__(3);
+var RENDER = new Dibujo_1.Render();
+var rect = new Dibujo_1.Graphic.Rect({
+    x: 100,
+    y: 100,
+    width: 100,
+    height: 100,
+    color: '#FFF'
+});
+var text = new Dibujo_1.Graphic.Text({
+    content: 'Juan',
+    x: 200,
+    y: 200,
+    style: {
+        font: 'bold 32px Arial',
+        fillStyle: '#F00'
+    }
+});
+var circle = new Dibujo_1.Graphic.Circle({
+    radius: 50,
+    color: '#F00',
+    stroke: true,
+    strokeWidth: 3,
+    strokeColor: '#0F0',
+    x: 50,
+    y: 50
+});
+RENDER.add(circle);
+RENDER.add(text);
+RENDER.add(rect);
+RENDER.update();
 
 
 /***/ }),
@@ -455,12 +306,33 @@ exports.Color = Color_1["default"];
 
 "use strict";
 
-var vector_class_1 = __webpack_require__(1);
-var Scene_1 = __webpack_require__(0);
+var Scene_1 = __webpack_require__(1);
+exports.Scene = Scene_1["default"];
+var Render_1 = __webpack_require__(4);
+exports.Render = Render_1["default"];
+var Sprite_1 = __webpack_require__(5);
+exports.Sprite = Sprite_1["default"];
+var Graphic = __webpack_require__(6);
+exports.Graphic = Graphic;
+var Animation_1 = __webpack_require__(7);
+exports.Animation = Animation_1["default"];
+var Color_1 = __webpack_require__(8);
+exports.Color = Color_1["default"];
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector_1 = __webpack_require__(0);
+var Scene_1 = __webpack_require__(1);
 var Render = (function () {
-    function Render(canvasName, width, height) {
-        if (canvasName) {
-            this.canvas = document.getElementById(canvasName);
+    function Render(canvas, width, height) {
+        var _this = this;
+        if (canvas) {
+            this.canvas = canvas;
         }
         else {
             this.canvas = document.createElement('canvas');
@@ -474,9 +346,17 @@ var Render = (function () {
             this.canvas.width = window.innerWidth;
             this.canvas.height = window.innerHeight;
         }
+        window.addEventListener('resize', function () {
+            _this.canvas.width = window.innerWidth;
+            _this.canvas.height = window.innerHeight;
+        });
         this.context = this.canvas.getContext('2d');
-        this.setScene(new Scene_1["default"]());
+        var scene = new Scene_1["default"]();
+        this.setScene(scene);
     }
+    Render.prototype.add = function (element) {
+        this.scene.add(element);
+    };
     Render.prototype.getWidth = function () {
         return this.canvas.width;
     };
@@ -484,32 +364,16 @@ var Render = (function () {
         return this.canvas.height;
     };
     Render.prototype.getCenter = function () {
-        return new vector_class_1.Vector2D(this.canvas.width / 2, this.canvas.height / 2);
+        return new Vector_1["default"](this.canvas.width / 2, this.canvas.height / 2);
     };
-    Render.prototype.clear = function (color) {
-        if (color === void 0) { color = '#000'; }
-        this.context.fillStyle = color;
-        this.context.fillRect(0, 0, this.getWidth(), this.getHeight());
-    };
-    Render.prototype.smoth = function (state) {
-        this.context.webkitImageSmoothingEnabled = state;
-        this.context.mozImageSmoothingEnabled = state;
-        this.context.imageSmoothingEnabled = state;
+    Render.prototype.update = function () {
+        this.scene.update();
     };
     Render.prototype.setScene = function (scene) {
         this.scene = scene;
         this.scene.renderer = this;
-    };
-    Render.prototype.add = function (element) {
-        this.scene.add(element);
-    };
-    Render.prototype.render = function () {
-        this.scene.render();
-    };
-    Render.prototype.zoom = function (where, howMuch) {
-        this.context.translate(where.x, where.y);
-        this.context.scale(howMuch.x, howMuch.y);
-        this.context.translate(-where.x, -where.y);
+        this.scene.context = this.context;
+        this.scene.smoth(false);
     };
     return Render;
 }());
@@ -518,19 +382,19 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* global Image */
 
-var vector_class_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Sprite = (function () {
     function Sprite(src, position, scale, rotation, anchor) {
-        if (position === void 0) { position = new vector_class_1.Vector2D(1, 1); }
-        if (scale === void 0) { scale = new vector_class_1.Vector2D(1, 1); }
+        if (position === void 0) { position = new Vector_1["default"](); }
+        if (scale === void 0) { scale = new Vector_1["default"](1, 1); }
         if (rotation === void 0) { rotation = 0; }
-        if (anchor === void 0) { anchor = new vector_class_1.Vector2D(0.5, 0.5); }
+        if (anchor === void 0) { anchor = new Vector_1["default"](0.5, 0.5); }
         this.load(src);
         this.position = position;
         this.scale = scale;
@@ -541,8 +405,13 @@ var Sprite = (function () {
         this.image = new Image();
         this.image.src = src;
     };
+    Sprite.prototype.getSize = function () {
+        var realSize = new Vector_1["default"](this.scale.x * this.image.width, this.scale.y * this.image.height);
+        return realSize;
+    };
     Sprite.prototype.render = function () {
         this.context.save();
+        this.context.translate(this.position.x, this.position.y);
         this.context.rotate(this.rotation);
         var realWidth = this.scale.x * this.image.width;
         var realHeight = this.scale.y * this.image.height;
@@ -556,107 +425,307 @@ exports["default"] = Sprite;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var Graphic = (function () {
-    function Graphic(renderFunction, position, scale, rotation) {
-        this.renderFunction = renderFunction.bind(this);
-        this.position = position;
-        this.scale = scale;
-        this.rotation = rotation;
+    function Graphic() {
     }
-    Graphic.prototype.line = function (start, end, style) {
-        this.context.beginPath();
-        this.setStyle(style);
-        this.context.moveTo(start[0], start[1]);
-        this.context.lineTo(end[0], end[1]);
-        this.context.stroke();
-    };
-    Graphic.prototype.poligon = function (vecs, color) {
-        this.context.beginPath();
-        this.context.fillStyle = color;
-        this.context.moveTo(vecs[0][0], vecs[0][1]);
-        for (var i = 0; i < vecs.length; i++) {
-            this.context.lineTo(vecs[i][0], vecs[i][1]);
-        }
-        this.context.closePath();
-        this.context.fill();
-    };
-    Graphic.prototype.strokePoligon = function (vecs, color) {
-        this.context.beginPath();
-        this.context.fillStyle = color;
-        this.context.moveTo(vecs[0][0], vecs[0][1]);
-        for (var i = 0; i < vecs.length; i++) {
-            this.context.lineTo(vecs[i][0], vecs[i][1]);
-        }
-        this.context.closePath();
-        this.context.stroke();
-    };
-    Graphic.prototype.rect = function (x, y, width, height, color) {
-        if (color === void 0) { color = '#fff'; }
-        this.context.beginPath();
-        this.context.fillStyle = color;
-        this.context.fillRect(x, y, width, height);
-    };
-    Graphic.prototype.strokeRect = function (x, y, width, height, color, lineWidth) {
-        if (color === void 0) { color = '#fff'; }
-        this.context.beginPath();
-        this.context.strokeStyle = color;
-        this.context.strokeRect(x, y, width, height);
-    };
     Graphic.prototype.setStyle = function (styles) {
         for (var style in styles) {
             this.context[style] = styles[style];
         }
     };
-    Graphic.prototype.text = function (texto, x, y, style, stroke) {
-        this.setStyle(style);
-        if (stroke) {
-            this.context.strokeText(texto, x, y);
+    Graphic.prototype.render = function () { };
+    return Graphic;
+}());
+exports.Graphic = Graphic;
+var Rect = (function (_super) {
+    __extends(Rect, _super);
+    function Rect(data) {
+        var _this = _super.call(this) || this;
+        _this.color = '#FFFFFF';
+        _this.x = 0;
+        _this.y = 0;
+        _this.width = 1;
+        _this.height = 1;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.strokeColor = '#000000';
+        if (data.color)
+            _this.color = data.color;
+        if (data.x)
+            _this.x = data.x;
+        if (data.y)
+            _this.y = data.y;
+        if (data.width)
+            _this.width = data.width;
+        if (data.height)
+            _this.height = data.height;
+        if (data.fill)
+            _this.fill = data.fill;
+        if (data.stroke)
+            _this.stroke = data.stroke;
+        if (data.strokeColor)
+            _this.strokeColor = data.strokeColor;
+        return _this;
+    }
+    Rect.prototype.render = function () {
+        this.context.fillStyle = this.color;
+        this.context.beginPath();
+        if (this.fill) {
+            this.context.fillRect(this.x, this.y, this.width, this.height);
         }
-        this.context.fillText(texto, x, y);
+        if (this.stroke) {
+            this.context.strokeRect(this.x, this.y, this.width, this.height);
+        }
     };
-    Graphic.prototype.strokeCircle = function (x, y, radius, color, width) {
-        if (color === void 0) { color = '#fff'; }
-        if (width === void 0) { width = 1; }
+    return Rect;
+}(Graphic));
+exports.Rect = Rect;
+var Line = (function (_super) {
+    __extends(Line, _super);
+    function Line(start, end, color) {
+        var _this = _super.call(this) || this;
+        _this.start = { x: 0, y: 0 };
+        _this.end = { x: 1, y: 1 };
+        if (start)
+            _this.start = start;
+        if (end)
+            _this.end = end;
+        if (color)
+            _this.color = color;
+        return _this;
+    }
+    Line.prototype.render = function () {
         this.context.beginPath();
-        this.context.strokeStyle = color;
-        this.context.arc(x, y, radius, 0, 2 * Math.PI);
-        this.context.lineWidth = width;
+        this.context.moveTo(this.start.x, this.start.y);
+        this.context.lineTo(this.end.x, this.end.y);
         this.context.stroke();
     };
-    Graphic.prototype.circle = function (x, y, radius, color) {
-        if (color === void 0) { color = '#fff'; }
+    return Line;
+}(Graphic));
+exports.Line = Line;
+var Poligon = (function (_super) {
+    __extends(Poligon, _super);
+    function Poligon(configuration) {
+        var _this = _super.call(this) || this;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.color = '#FFF';
+        _this.strokeColor = '#000';
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.cords)
+            _this.cords = configuration.cords;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        if (configuration.strokeColor)
+            _this.strokeColor = configuration.strokeColor;
+        return _this;
+    }
+    Poligon.prototype.render = function () {
         this.context.beginPath();
-        this.context.fillStyle = color;
-        this.context.arc(x, y, radius, 0, 2 * Math.PI);
+        this.context.fillStyle = this.color;
+        this.context.moveTo(this.cords[0].x, this.cords[0].y);
+        for (var i = 0; i < this.cords.length; i++) {
+            this.context.lineTo(this.cords[i].x, this.cords[i].y);
+        }
+        this.context.closePath();
         this.context.fill();
+        if (this.stroke)
+            this.context.stroke;
     };
-    Graphic.prototype.strokeArc = function (x, y, radius, lineWidth, eAngl, aAngl, color) {
+    return Poligon;
+}(Graphic));
+exports.Poligon = Poligon;
+var Text = (function (_super) {
+    __extends(Text, _super);
+    function Text(configuration) {
+        var _this = _super.call(this) || this;
+        if (configuration.style)
+            _this.style = configuration.style;
+        if (configuration.content)
+            _this.content = configuration.content;
+        if (configuration.x)
+            _this.x = configuration.x;
+        if (configuration.y)
+            _this.y = configuration.y;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        return _this;
+    }
+    Text.prototype.render = function () {
+        this.setStyle(this.style);
+        if (this.stroke) {
+            this.context.strokeText(this.content, this.x, this.y);
+        }
+        this.context.fillText(this.content, this.x, this.y);
+    };
+    return Text;
+}(Graphic));
+exports.Text = Text;
+var Circle = (function (_super) {
+    __extends(Circle, _super);
+    function Circle(configuration) {
+        var _this = _super.call(this) || this;
+        _this.strokeWidth = 1;
+        if (configuration.x)
+            _this.x = configuration.x;
+        if (configuration.y)
+            _this.y = configuration.y;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.strokeWidth)
+            _this.strokeWidth = configuration.strokeWidth;
+        if (configuration.strokeColor)
+            _this.strokeColor = configuration.strokeColor;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        return _this;
+    }
+    Circle.prototype.render = function () {
         this.context.beginPath();
-        this.context.strokeStyle = color;
-        this.context.arc(x, y, radius, eAngl, aAngl, true);
-        this.context.lineWidth = lineWidth;
+        this.context.fillStyle = this.color;
+        this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        this.context.fill();
+        if (this.stroke) {
+            this.context.lineWidth = this.strokeWidth;
+            this.context.strokeStyle = this.strokeColor;
+            this.context.stroke();
+        }
+    };
+    return Circle;
+}(Graphic));
+exports.Circle = Circle;
+var Arc = (function (_super) {
+    __extends(Arc, _super);
+    function Arc(configuration) {
+        var _this = _super.call(this) || this;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.x)
+            _this.x = configuration.x;
+        if (configuration.y)
+            _this.y = configuration.y;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.eAngl)
+            _this.eAngl = configuration.eAngl;
+        if (configuration.aAngl)
+            _this.aAngl = configuration.aAngl;
+        return _this;
+    }
+    Arc.prototype.render = function () {
+        this.context.beginPath();
+        this.context.strokeStyle = this.color;
+        this.context.arc(this.x, this.y, this.radius, this.eAngl, this.aAngl, true);
+        this.context.lineWidth = this.lineWidth;
         this.context.stroke();
     };
-    Graphic.prototype.render = function () {
+    return Arc;
+}(Graphic));
+exports.Arc = Arc;
+var Group = (function () {
+    function Group() {
+        this.childs = [];
+    }
+    Group.prototype.add = function (child) {
+        this.childs.push(child);
+    };
+    Group.prototype.render = function () {
         this.context.save();
         this.context.scale(this.scale.x, this.scale.y);
         this.context.rotate(this.rotation);
-        this.renderFunction();
+        this.context.translate(this.position.x, this.position.y);
+        this.childs.forEach(function (child) {
+            child.render();
+        });
         this.context.restore();
     };
-    return Graphic;
+    return Group;
 }());
-exports.__esModule = true;
-exports["default"] = Graphic;
+exports.Group = Group;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector_1 = __webpack_require__(0);
+var Animation = (function () {
+    function Animation(src, scale, position, frameRate, size, loop) {
+        if (scale === void 0) { scale = new Vector_1["default"](1, 1); }
+        if (position === void 0) { position = new Vector_1["default"](1, 1); }
+        if (frameRate === void 0) { frameRate = 100; }
+        if (size === void 0) { size = new Vector_1["default"](32, 32); }
+        if (loop === void 0) { loop = true; }
+        var _this = this;
+        this.loop = true;
+        this.loop = loop;
+        this.load(src);
+        this.size = size;
+        this.position = position;
+        this.scale = scale;
+        this.frameRate = frameRate;
+        var frame = new Vector_1["default"](0, 0);
+        this.x = 0;
+        this.y = 0;
+        this.interval = setInterval(function () {
+            frame.x += 1;
+            _this.x = _this.size.x * frame.x;
+            _this.y = _this.size.y * frame.y;
+            if (_this.x >= _this.image.width) {
+                frame.x = 0;
+            }
+            if (_this.y >= _this.image.height) {
+                frame.y = 0;
+                if (!_this.loop) {
+                    _this.destroy();
+                }
+            }
+            _this.x = _this.size.x * frame.x;
+            _this.y = _this.size.y * frame.y;
+        }, this.frameRate);
+    }
+    Animation.prototype.load = function (src) {
+        this.image = new Image();
+        this.image.src = src;
+    };
+    Animation.prototype.getSize = function () {
+        return new Vector_1["default"](this.size.x * this.scale.x, this.size.y * this.scale.y);
+    };
+    Animation.prototype.render = function () {
+        this.context.drawImage(this.image, this.x, this.y, this.size.x, this.size.y, this.position.x, this.position.y, this.size.x * this.scale.x, this.size.y * this.scale.y);
+    };
+    Animation.prototype.destroy = function () {
+        clearInterval(this.interval);
+    };
+    return Animation;
+}());
+exports.__esModule = true;
+exports["default"] = Animation;
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

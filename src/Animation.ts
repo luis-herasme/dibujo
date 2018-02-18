@@ -1,13 +1,12 @@
 
-import { Vector2D } from 'vector_class'
+import Vector2D from './Vector'
 
 class Animation {
   public position: Vector2D
   public scale: Vector2D
   public frameRate: number
-  public width: number
-  public height: number
-  public loop: boolean
+  public size: Vector2D
+  public loop: boolean = true
 
   public x // Current frame
   public y // Current frame
@@ -16,34 +15,54 @@ class Animation {
   public image
   public interval
 
-  constructor (src: string, scale, name, position, frameRate, render, image, width, height) {
-    this.width = width
-    this.height = height
-    this.image = image
+  constructor (
+    src: string,
+    scale: Vector2D = new Vector2D(1, 1),
+    position: Vector2D = new Vector2D(1, 1),
+    frameRate: number = 100,
+    size: Vector2D = new Vector2D(32, 32),
+    loop = true
+  ) {
+    this.loop = loop
+    this.load(src)
+    this.size = size
     this.position = position
     this.scale = scale
-    this.render = render
     this.frameRate = frameRate
-
     let frame = new Vector2D(0, 0)
-
     this.x = 0
     this.y = 0
 
     this.interval = setInterval(() => {
       frame.x += 1
-      if (this.x >= this.image.width - this.width) {
+
+      this.x = this.size.x * frame.x
+      this.y = this.size.y * frame.y
+
+      if (this.x >= this.image.width) {
         frame.x = 0
-        frame.y += 1
       }
+
       if (this.y >= this.image.height) {
         frame.y = 0
-        if (this.loop) frame.y = 0
-        else this.destroy()
+
+        if (!this.loop) {
+          this.destroy()
+        }
       }
-      this.x = this.width * frame.x
-      this.y = this.height * frame.y
+      this.x = this.size.x * frame.x
+      this.y = this.size.y * frame.y
+      
     }, this.frameRate)
+  }
+
+  load (src: string): void {
+    this.image = new Image()
+    this.image.src = src
+  }
+
+  getSize () {
+    return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y)
   }
 
   render () {
@@ -51,11 +70,11 @@ class Animation {
       this.image,
       this.x,
       this.y,
-      this.width, this.height,
+      this.size.x, this.size.y,
       this.position.x,
       this.position.y,
-      this.width * this.scale.x,
-      this.height * this.scale.y
+      this.size.x * this.scale.x,
+      this.size.y * this.scale.y
     )
   }
 

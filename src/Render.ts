@@ -1,15 +1,16 @@
 
-import { Vector2D } from 'vector_class'
-import Scene from './Scene'
+import Vector2D from './Vector'
+import Scene    from './Scene'
+import * as Graphic  from './Graphic'
 
-class Render {
-  private scene: Scene
-  private canvas
-  public context
+export default class Render {
+  private scene   : Scene
+  private canvas  : HTMLCanvasElement
+  private context : CanvasRenderingContext2D
 
-  constructor (canvasName: string, width: number, height: number) {
-    if (canvasName) {
-      this.canvas = document.getElementById(canvasName)
+  constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
+    if (canvas) {
+      this.canvas = canvas
     } else {
       this.canvas = document.createElement('canvas')
       document.body.appendChild(this.canvas)
@@ -23,8 +24,18 @@ class Render {
       this.canvas.height = window.innerHeight
     }
 
-    this.context = this.canvas.getContext('2d') 
-    this.setScene(new Scene())
+    window.addEventListener('resize', () => {
+      this.canvas.width = window.innerWidth
+      this.canvas.height = window.innerHeight
+    })
+
+    this.context = this.canvas.getContext('2d')
+    const scene = new Scene()
+    this.setScene(scene)
+  }
+
+  add (element: Graphic.Graphic): void {
+    this.scene.add(element)
   }
 
   getWidth (): number {
@@ -41,35 +52,14 @@ class Render {
       this.canvas.height / 2)
   }
 
-  clear (color: string = '#000'): void {
-    this.context.fillStyle = color
-    this.context.fillRect(0, 0, this.getWidth(), this.getHeight())
-  }
-
-  smoth (state: boolean): void {
-    this.context.webkitImageSmoothingEnabled = state
-    this.context.mozImageSmoothingEnabled = state
-    this.context.imageSmoothingEnabled = state
+  update () {
+    this.scene.update()
   }
 
   setScene (scene): void {
     this.scene = scene
     this.scene.renderer = this
-  }
-
-  add (element): void {
-    this.scene.add(element)
-  }
-
-  render (): void {
-    this.scene.render()
-  }
-
-  zoom (where: Vector2D, howMuch: Vector2D): void {
-    this.context.translate(where.x, where.y)
-    this.context.scale(howMuch.x, howMuch.y)
-    this.context.translate(-where.x, -where.y)
+    this.scene.context = this.context
+    this.scene.smoth(false)
   }
 }
-
-export default Render

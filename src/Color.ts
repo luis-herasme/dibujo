@@ -1,14 +1,14 @@
 
-class Color {
-  public red: number
+export default class Color {
+  public red  : number
   public green: number
-  public blue: number
-  private alpha: number
+  public blue : number
+  public alpha: number
 
   constructor (red = 0, green = 0, blue = 0, alpha = 1) {
-    this.red = Math.round(red * 255)
+    this.red   = Math.round(red * 255)
     this.green = Math.round(green * 255)
-    this.blue = Math.round(blue * 255)
+    this.blue  = Math.round(blue * 255)
     this.alpha = alpha
   
     if (this.red > 255) this.red = 255
@@ -44,7 +44,6 @@ class Color {
     }
   }
 
-
   setBlue (color) {
     if (color > 255) {
       this.blue = 255
@@ -67,5 +66,3 @@ class Color {
     return new Color(Math.random(), Math.random(), Math.random())
   }
 }
-
-export default Color
