@@ -1,5 +1,6 @@
-## Members
 
+![alt text](https://raw.githubusercontent.com/LuisHerasme/DibujoJs/master/logo/dibujoJs.png)
+## Members
 <dl>
 <dt><a href="#add">add</a></dt>
 <dd><p>This function adds objects to the stage</p>
