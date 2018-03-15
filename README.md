@@ -1,6 +1,13 @@
 
 ![alt text](https://raw.githubusercontent.com/LuisHerasme/DibujoJs/master/logo/dibujoJs.png)
-## Members
+
+## Instalation
+
+<code>
+npm install dibujo
+</code>
+
+## How to use it
 <dl>
 <dt><a href="#add">add</a></dt>
 <dd><p>This function adds objects to the stage</p>
@@ -10,7 +17,7 @@
 </dd>
 </dl>
 
-## Functions
+## Graphics
 
 <dl>
 <dt><a href="#line">line(start, end, style, stroke)</a></dt>
