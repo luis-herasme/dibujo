@@ -32,11 +32,14 @@ let circle = new Graphic.Circle({
 })
 
 let img = new Graphic.Picture({
-  src: './apple.png'
+  src: './apple.png',
 })
 
-let a = [circle, text, rect, img]
-a.forEach((e) => RENDER.add(e))
+RENDER.addMultiple([circle, text, rect, img])
+
 setInterval(() => {
-  RENDER.update()
+  RENDER.render()
+  circle.x += 1
+  text.x += 0.5
+  rect.x += 0.25
 })

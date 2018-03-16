@@ -175,10 +175,12 @@ var circle = new Dibujo_1.Graphic.Circle({
 var img = new Dibujo_1.Graphic.Picture({
     src: './apple.png'
 });
-var a = [circle, text, rect, img];
-a.forEach(function (e) { return RENDER.add(e); });
+RENDER.addMultiple([circle, text, rect, img]);
 setInterval(function () {
-    RENDER.update();
+    RENDER.render();
+    circle.x += 1;
+    text.x += 0.5;
+    rect.x += 0.25;
 });
 
 
@@ -213,6 +215,7 @@ var Scene_1 = __webpack_require__(0);
 var Render = (function () {
     function Render(canvas, width, height) {
         var _this = this;
+        this.timeFrame = 0;
         if (canvas) {
             this.canvas = canvas;
         }
@@ -239,6 +242,12 @@ var Render = (function () {
     Render.prototype.add = function (element) {
         this.scene.add(element);
     };
+    Render.prototype.addMultiple = function (e) {
+        var _this = this;
+        e.forEach(function (m) {
+            _this.add(m);
+        });
+    };
     Render.prototype.getWidth = function () {
         return this.canvas.width;
     };
@@ -248,8 +257,14 @@ var Render = (function () {
     Render.prototype.getCenter = function () {
         return new Vector2D_1["default"](this.canvas.width / 2, this.canvas.height / 2);
     };
-    Render.prototype.update = function () {
+    Render.prototype.render = function () {
         this.scene.update();
+    };
+    Render.prototype.update = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.render();
+        }, this.timeFrame);
     };
     Render.prototype.setScene = function (scene) {
         this.scene = scene;
@@ -342,6 +357,10 @@ var Picture = (function (_super) {
     __extends(Picture, _super);
     function Picture(data) {
         var _this = _super.call(this) || this;
+        _this.x = 0;
+        _this.y = 0;
+        _this.width = 1;
+        _this.height = 1;
         _this.image = new Image();
         _this.image.src = data.src;
         return _this;

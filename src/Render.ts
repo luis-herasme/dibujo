@@ -7,7 +7,7 @@ export default class Render {
   private scene   : Scene
   private canvas  : HTMLCanvasElement
   private context : CanvasRenderingContext2D
-
+  public timeFrame : number = 0
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
     if (canvas) {
       this.canvas = canvas
@@ -38,6 +38,12 @@ export default class Render {
     this.scene.add(element)
   }
 
+  addMultiple (e) {
+    e.forEach((m) => {
+      this.add(m)
+    })
+  }
+
   getWidth (): number {
     return this.canvas.width
   }
@@ -52,8 +58,14 @@ export default class Render {
       this.canvas.height / 2)
   }
 
-  update () {
+  render () {
     this.scene.update()
+  }
+
+  update () {
+    setInterval(() => {
+      this.render()
+    }, this.timeFrame)
   }
 
   setScene (scene): void {

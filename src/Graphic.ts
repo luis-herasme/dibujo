@@ -18,6 +18,10 @@ export class Graphic {
 }
 
 export class Picture extends Graphic {
+  public x      : number  = 0
+  public y      : number  = 0
+  public width  : number  = 1
+  public height : number  = 1
   public image :Image
   constructor (data) {
     super()
