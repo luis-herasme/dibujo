@@ -26,12 +26,16 @@ export class Picture extends Graphic {
   constructor (data) {
     super()
     this.image = new Image()
+    this.x = data.x
+    this.y = data.y
+    this.width = data.width
+    this.height = data.height
     this.image.src = data.src
   }
 
   render (): void {
     this.context.beginPath()
-    this.context.drawImage(this.image,10,10)
+    this.context.drawImage(this.image, this.x, this.y, this.width, this.height)
   }
 }
 
@@ -163,8 +167,8 @@ export class Circle extends Graphic {
   public radius : number
   public color  : string
   public stroke : boolean
-  public strokeColor : string
-  public strokeWidth : number = 1
+  public lineColor : string
+  public lineWidth : number = 1
   public fill   : boolean
 
   constructor (configuration) {
@@ -174,8 +178,8 @@ export class Circle extends Graphic {
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke
-    if (configuration.strokeWidth) this.strokeWidth = configuration.strokeWidth
-    if (configuration.strokeColor) this.strokeColor = configuration.strokeColor
+    if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
+    if (configuration.lineColor) this.lineColor = configuration.lineColor
     if (configuration.fill) this.fill = configuration.fill
   }
   render (): void {
@@ -184,8 +188,8 @@ export class Circle extends Graphic {
     this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
     this.context.fill()
     if (this.stroke) {
-      this.context.lineWidth = this.strokeWidth
-      this.context.strokeStyle = this.strokeColor
+      this.context.lineWidth = this.lineWidth
+      this.context.strokeStyle = this.lineColor
       this.context.stroke()
     }
   }

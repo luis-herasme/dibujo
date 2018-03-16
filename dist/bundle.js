@@ -167,18 +167,23 @@ var circle = new Dibujo_1.Graphic.Circle({
     radius: 50,
     color: '#F00',
     stroke: true,
-    strokeWidth: 3,
-    strokeColor: '#0F0',
+    lineWidth: 3,
+    lineColor: '#0F0',
     x: 50,
     y: 50
 });
 var img = new Dibujo_1.Graphic.Picture({
+    x: 10,
+    y: 10,
+    width: 100,
+    height: 100,
     src: './apple.png'
 });
 RENDER.addMultiple([circle, text, rect, img]);
 setInterval(function () {
     RENDER.render();
     circle.x += 1;
+    img.y += 1.4;
     text.x += 0.5;
     rect.x += 0.25;
 });
@@ -362,12 +367,16 @@ var Picture = (function (_super) {
         _this.width = 1;
         _this.height = 1;
         _this.image = new Image();
+        _this.x = data.x;
+        _this.y = data.y;
+        _this.width = data.width;
+        _this.height = data.height;
         _this.image.src = data.src;
         return _this;
     }
     Picture.prototype.render = function () {
         this.context.beginPath();
-        this.context.drawImage(this.image, 10, 10);
+        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
     };
     return Picture;
 }(Graphic));
@@ -503,7 +512,7 @@ var Circle = (function (_super) {
     __extends(Circle, _super);
     function Circle(configuration) {
         var _this = _super.call(this) || this;
-        _this.strokeWidth = 1;
+        _this.lineWidth = 1;
         if (configuration.x)
             _this.x = configuration.x;
         if (configuration.y)
@@ -514,10 +523,10 @@ var Circle = (function (_super) {
             _this.color = configuration.color;
         if (configuration.stroke)
             _this.stroke = configuration.stroke;
-        if (configuration.strokeWidth)
-            _this.strokeWidth = configuration.strokeWidth;
-        if (configuration.strokeColor)
-            _this.strokeColor = configuration.strokeColor;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.lineColor)
+            _this.lineColor = configuration.lineColor;
         if (configuration.fill)
             _this.fill = configuration.fill;
         return _this;
@@ -528,8 +537,8 @@ var Circle = (function (_super) {
         this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         this.context.fill();
         if (this.stroke) {
-            this.context.lineWidth = this.strokeWidth;
-            this.context.strokeStyle = this.strokeColor;
+            this.context.lineWidth = this.lineWidth;
+            this.context.strokeStyle = this.lineColor;
             this.context.stroke();
         }
     };
