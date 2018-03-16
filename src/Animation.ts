@@ -1,5 +1,11 @@
-
-import Vector2D from './Vector'
+class Vector2D {
+  public x
+  public y
+  constructor (x = 0,y = 0) {
+    this.x = x
+    this.y = y
+  }
+}
 
 class Animation {
   public position: Vector2D

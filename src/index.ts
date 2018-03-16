@@ -1,5 +1,6 @@
 
 import {Render, Graphic} from './Dibujo'
+
 let RENDER = new Render()
 
 let rect = new Graphic.Rect({
@@ -29,7 +30,13 @@ let circle = new Graphic.Circle({
   x: 50,
   y: 50
 })
-RENDER.add(circle)
-RENDER.add(text)
-RENDER.add(rect)
-RENDER.update()
+
+let img = new Graphic.Picture({
+  src: './apple.png'
+})
+
+let a = [circle, text, rect, img]
+a.forEach((e) => RENDER.add(e))
+setInterval(() => {
+  RENDER.update()
+})

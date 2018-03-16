@@ -1,3 +1,4 @@
+/* globla Image */
 
 interface Point {
   x: number;
@@ -7,13 +8,27 @@ interface Point {
 export class Graphic {
   public context
 
-  setStyle (styles: object): void {
+  setStyle (styles): void {
     for (let style in styles) {
       this.context[style] = styles[style]
     }
   }
 
   render (): void {}
+}
+
+export class Picture extends Graphic {
+  public image :Image
+  constructor (data) {
+    super()
+    this.image = new Image()
+    this.image.src = data.src
+  }
+
+  render (): void {
+    this.context.beginPath()
+    this.context.drawImage(this.image,10,10)
+  }
 }
 
 export class Rect extends Graphic {

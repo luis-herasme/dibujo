@@ -1,5 +1,5 @@
 
-import Vector2D from './Vector'
+import Vector2D from './Vector2D'
 import Scene    from './Scene'
 import * as Graphic  from './Graphic'
 

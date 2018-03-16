@@ -1,6 +1,6 @@
 
 import Render   from './Render'
-import Vector2D from './Vector'
+import Vector2D from './Vector2D'
 import * as Graphic  from './Graphic'
 
 export default class Scene {
