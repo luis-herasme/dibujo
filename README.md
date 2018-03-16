@@ -9,11 +9,8 @@ npm install dibujo
 
 ## How to use it
 <dl>
-<dt><a href="#add">add</a></dt>
-<dd><p>This function adds objects to the stage</p>
-</dd>
-<dt><a href="#destroy">destroy</a></dt>
-<dd><p>This function destroy an object from the stage</p>
+<dd><p>To start using dibujo you have to first create a dibujo entity</p>
+  <code>const dibujo = new dibujo()</code>
 </dd>
 </dl>
 
