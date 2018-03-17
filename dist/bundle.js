@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(8);
+var Vector2D_1 = __webpack_require__(1);
 var Scene = (function () {
     function Scene() {
         this.childs = [];
@@ -141,614 +141,6 @@ exports["default"] = Scene;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Dibujo_1 = __webpack_require__(2);
-var RENDER = new Dibujo_1.Render();
-var rect = new Dibujo_1.Graphic.Rect({
-    x: 100,
-    y: 100,
-    width: 100,
-    height: 100,
-    color: '#FFF'
-});
-var text = new Dibujo_1.Graphic.Text({
-    content: 'Juan',
-    x: 200,
-    y: 200,
-    style: {
-        font: 'bold 32px Arial',
-        fillStyle: '#F00'
-    }
-});
-var circle = new Dibujo_1.Graphic.Circle({
-    radius: 50,
-    color: '#F00',
-    stroke: true,
-    lineWidth: 3,
-    lineColor: '#0F0',
-    x: 50,
-    y: 50
-});
-var img = new Dibujo_1.Graphic.Picture({
-    x: 10,
-    y: 10,
-    width: 100,
-    height: 100,
-    src: './apple.png'
-});
-RENDER.addMultiple([circle, text, rect, img]);
-setInterval(function () {
-    RENDER.render();
-    circle.x += 1;
-    img.y += 1.4;
-    text.x += 0.5;
-    rect.x += 0.25;
-});
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Scene_1 = __webpack_require__(0);
-exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(3);
-exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(4);
-exports.Sprite = Sprite_1["default"];
-var Graphic = __webpack_require__(5);
-exports.Graphic = Graphic;
-var Animation_1 = __webpack_require__(6);
-exports.Animation = Animation_1["default"];
-var Color_1 = __webpack_require__(7);
-exports.Color = Color_1["default"];
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Vector2D_1 = __webpack_require__(8);
-var Scene_1 = __webpack_require__(0);
-var Render = (function () {
-    function Render(canvas, width, height) {
-        var _this = this;
-        this.timeFrame = 0;
-        if (canvas) {
-            this.canvas = canvas;
-        }
-        else {
-            this.canvas = document.createElement('canvas');
-            document.body.appendChild(this.canvas);
-        }
-        if (width && height) {
-            this.canvas.width = width;
-            this.canvas.height = height;
-        }
-        else {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', function () {
-            _this.canvas.width = window.innerWidth;
-            _this.canvas.height = window.innerHeight;
-        });
-        this.context = this.canvas.getContext('2d');
-        var scene = new Scene_1["default"]();
-        this.setScene(scene);
-    }
-    Render.prototype.add = function (element) {
-        this.scene.add(element);
-    };
-    Render.prototype.addMultiple = function (e) {
-        var _this = this;
-        e.forEach(function (m) {
-            _this.add(m);
-        });
-    };
-    Render.prototype.getWidth = function () {
-        return this.canvas.width;
-    };
-    Render.prototype.getHeight = function () {
-        return this.canvas.height;
-    };
-    Render.prototype.getCenter = function () {
-        return new Vector2D_1["default"](this.canvas.width / 2, this.canvas.height / 2);
-    };
-    Render.prototype.render = function () {
-        this.scene.update();
-    };
-    Render.prototype.update = function () {
-        var _this = this;
-        setInterval(function () {
-            _this.render();
-        }, this.timeFrame);
-    };
-    Render.prototype.setScene = function (scene) {
-        this.scene = scene;
-        this.scene.renderer = this;
-        this.scene.context = this.context;
-        this.scene.smoth(false);
-    };
-    return Render;
-}());
-exports.__esModule = true;
-exports["default"] = Render;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* global Image */
-
-var Vector2D = (function () {
-    function Vector2D(x, y) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        this.x = x;
-        this.y = y;
-    }
-    return Vector2D;
-}());
-var Sprite = (function () {
-    function Sprite(src, position, scale, rotation, anchor) {
-        if (position === void 0) { position = new Vector2D(); }
-        if (scale === void 0) { scale = new Vector2D(1, 1); }
-        if (rotation === void 0) { rotation = 0; }
-        if (anchor === void 0) { anchor = new Vector2D(0.5, 0.5); }
-        this.load(src);
-        this.position = position;
-        this.scale = scale;
-        this.anchor = anchor;
-        this.rotation = rotation;
-    }
-    Sprite.prototype.load = function (src) {
-        this.image = new Image();
-        this.image.src = src;
-    };
-    Sprite.prototype.getSize = function () {
-        var realSize = new Vector2D(this.scale.x * this.image.width, this.scale.y * this.image.height);
-        return realSize;
-    };
-    Sprite.prototype.render = function () {
-        this.context.save();
-        this.context.translate(this.position.x, this.position.y);
-        this.context.rotate(this.rotation);
-        var realWidth = this.scale.x * this.image.width;
-        var realHeight = this.scale.y * this.image.height;
-        this.context.drawImage(this.image, -(realWidth * this.anchor.x), -(realHeight * this.anchor.y), realWidth, realHeight);
-        this.context.restore();
-    };
-    return Sprite;
-}());
-exports.__esModule = true;
-exports["default"] = Sprite;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* globla Image */
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Graphic = (function () {
-    function Graphic() {
-    }
-    Graphic.prototype.setStyle = function (styles) {
-        for (var style in styles) {
-            this.context[style] = styles[style];
-        }
-    };
-    Graphic.prototype.render = function () { };
-    return Graphic;
-}());
-exports.Graphic = Graphic;
-var Picture = (function (_super) {
-    __extends(Picture, _super);
-    function Picture(data) {
-        var _this = _super.call(this) || this;
-        _this.x = 0;
-        _this.y = 0;
-        _this.width = 1;
-        _this.height = 1;
-        _this.image = new Image();
-        _this.x = data.x;
-        _this.y = data.y;
-        _this.width = data.width;
-        _this.height = data.height;
-        _this.image.src = data.src;
-        return _this;
-    }
-    Picture.prototype.render = function () {
-        this.context.beginPath();
-        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-    };
-    return Picture;
-}(Graphic));
-exports.Picture = Picture;
-var Rect = (function (_super) {
-    __extends(Rect, _super);
-    function Rect(data) {
-        var _this = _super.call(this) || this;
-        _this.color = '#FFFFFF';
-        _this.x = 0;
-        _this.y = 0;
-        _this.width = 1;
-        _this.height = 1;
-        _this.fill = true;
-        _this.stroke = false;
-        _this.strokeColor = '#000000';
-        if (data.color)
-            _this.color = data.color;
-        if (data.x)
-            _this.x = data.x;
-        if (data.y)
-            _this.y = data.y;
-        if (data.width)
-            _this.width = data.width;
-        if (data.height)
-            _this.height = data.height;
-        if (data.fill)
-            _this.fill = data.fill;
-        if (data.stroke)
-            _this.stroke = data.stroke;
-        if (data.strokeColor)
-            _this.strokeColor = data.strokeColor;
-        return _this;
-    }
-    Rect.prototype.render = function () {
-        this.context.fillStyle = this.color;
-        this.context.beginPath();
-        if (this.fill) {
-            this.context.fillRect(this.x, this.y, this.width, this.height);
-        }
-        if (this.stroke) {
-            this.context.strokeRect(this.x, this.y, this.width, this.height);
-        }
-    };
-    return Rect;
-}(Graphic));
-exports.Rect = Rect;
-var Line = (function (_super) {
-    __extends(Line, _super);
-    function Line(start, end, color) {
-        var _this = _super.call(this) || this;
-        _this.start = { x: 0, y: 0 };
-        _this.end = { x: 1, y: 1 };
-        if (start)
-            _this.start = start;
-        if (end)
-            _this.end = end;
-        if (color)
-            _this.color = color;
-        return _this;
-    }
-    Line.prototype.render = function () {
-        this.context.beginPath();
-        this.context.moveTo(this.start.x, this.start.y);
-        this.context.lineTo(this.end.x, this.end.y);
-        this.context.stroke();
-    };
-    return Line;
-}(Graphic));
-exports.Line = Line;
-var Poligon = (function (_super) {
-    __extends(Poligon, _super);
-    function Poligon(configuration) {
-        var _this = _super.call(this) || this;
-        _this.fill = true;
-        _this.stroke = false;
-        _this.color = '#FFF';
-        _this.strokeColor = '#000';
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        if (configuration.cords)
-            _this.cords = configuration.cords;
-        if (configuration.fill)
-            _this.fill = configuration.fill;
-        if (configuration.strokeColor)
-            _this.strokeColor = configuration.strokeColor;
-        return _this;
-    }
-    Poligon.prototype.render = function () {
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.moveTo(this.cords[0].x, this.cords[0].y);
-        for (var i = 0; i < this.cords.length; i++) {
-            this.context.lineTo(this.cords[i].x, this.cords[i].y);
-        }
-        this.context.closePath();
-        this.context.fill();
-        if (this.stroke)
-            this.context.stroke;
-    };
-    return Poligon;
-}(Graphic));
-exports.Poligon = Poligon;
-var Text = (function (_super) {
-    __extends(Text, _super);
-    function Text(configuration) {
-        var _this = _super.call(this) || this;
-        if (configuration.style)
-            _this.style = configuration.style;
-        if (configuration.content)
-            _this.content = configuration.content;
-        if (configuration.x)
-            _this.x = configuration.x;
-        if (configuration.y)
-            _this.y = configuration.y;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        return _this;
-    }
-    Text.prototype.render = function () {
-        this.setStyle(this.style);
-        if (this.stroke) {
-            this.context.strokeText(this.content, this.x, this.y);
-        }
-        this.context.fillText(this.content, this.x, this.y);
-    };
-    return Text;
-}(Graphic));
-exports.Text = Text;
-var Circle = (function (_super) {
-    __extends(Circle, _super);
-    function Circle(configuration) {
-        var _this = _super.call(this) || this;
-        _this.lineWidth = 1;
-        if (configuration.x)
-            _this.x = configuration.x;
-        if (configuration.y)
-            _this.y = configuration.y;
-        if (configuration.radius)
-            _this.radius = configuration.radius;
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        if (configuration.lineWidth)
-            _this.lineWidth = configuration.lineWidth;
-        if (configuration.lineColor)
-            _this.lineColor = configuration.lineColor;
-        if (configuration.fill)
-            _this.fill = configuration.fill;
-        return _this;
-    }
-    Circle.prototype.render = function () {
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        this.context.fill();
-        if (this.stroke) {
-            this.context.lineWidth = this.lineWidth;
-            this.context.strokeStyle = this.lineColor;
-            this.context.stroke();
-        }
-    };
-    return Circle;
-}(Graphic));
-exports.Circle = Circle;
-var Arc = (function (_super) {
-    __extends(Arc, _super);
-    function Arc(configuration) {
-        var _this = _super.call(this) || this;
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.x)
-            _this.x = configuration.x;
-        if (configuration.y)
-            _this.y = configuration.y;
-        if (configuration.radius)
-            _this.radius = configuration.radius;
-        if (configuration.lineWidth)
-            _this.lineWidth = configuration.lineWidth;
-        if (configuration.eAngl)
-            _this.eAngl = configuration.eAngl;
-        if (configuration.aAngl)
-            _this.aAngl = configuration.aAngl;
-        return _this;
-    }
-    Arc.prototype.render = function () {
-        this.context.beginPath();
-        this.context.strokeStyle = this.color;
-        this.context.arc(this.x, this.y, this.radius, this.eAngl, this.aAngl, true);
-        this.context.lineWidth = this.lineWidth;
-        this.context.stroke();
-    };
-    return Arc;
-}(Graphic));
-exports.Arc = Arc;
-var Group = (function () {
-    function Group() {
-        this.childs = [];
-    }
-    Group.prototype.add = function (child) {
-        this.childs.push(child);
-    };
-    Group.prototype.render = function () {
-        this.context.save();
-        this.context.scale(this.scale.x, this.scale.y);
-        this.context.rotate(this.rotation);
-        this.context.translate(this.position.x, this.position.y);
-        this.childs.forEach(function (child) {
-            child.render();
-        });
-        this.context.restore();
-    };
-    return Group;
-}());
-exports.Group = Group;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Vector2D = (function () {
-    function Vector2D(x, y) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        this.x = x;
-        this.y = y;
-    }
-    return Vector2D;
-}());
-var Animation = (function () {
-    function Animation(src, scale, position, frameRate, size, loop) {
-        if (scale === void 0) { scale = new Vector2D(1, 1); }
-        if (position === void 0) { position = new Vector2D(1, 1); }
-        if (frameRate === void 0) { frameRate = 100; }
-        if (size === void 0) { size = new Vector2D(32, 32); }
-        if (loop === void 0) { loop = true; }
-        var _this = this;
-        this.loop = true;
-        this.loop = loop;
-        this.load(src);
-        this.size = size;
-        this.position = position;
-        this.scale = scale;
-        this.frameRate = frameRate;
-        var frame = new Vector2D(0, 0);
-        this.x = 0;
-        this.y = 0;
-        this.interval = setInterval(function () {
-            frame.x += 1;
-            _this.x = _this.size.x * frame.x;
-            _this.y = _this.size.y * frame.y;
-            if (_this.x >= _this.image.width) {
-                frame.x = 0;
-            }
-            if (_this.y >= _this.image.height) {
-                frame.y = 0;
-                if (!_this.loop) {
-                    _this.destroy();
-                }
-            }
-            _this.x = _this.size.x * frame.x;
-            _this.y = _this.size.y * frame.y;
-        }, this.frameRate);
-    }
-    Animation.prototype.load = function (src) {
-        this.image = new Image();
-        this.image.src = src;
-    };
-    Animation.prototype.getSize = function () {
-        return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y);
-    };
-    Animation.prototype.render = function () {
-        this.context.drawImage(this.image, this.x, this.y, this.size.x, this.size.y, this.position.x, this.position.y, this.size.x * this.scale.x, this.size.y * this.scale.y);
-    };
-    Animation.prototype.destroy = function () {
-        clearInterval(this.interval);
-    };
-    return Animation;
-}());
-exports.__esModule = true;
-exports["default"] = Animation;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Color = (function () {
-    function Color(red, green, blue, alpha) {
-        if (red === void 0) { red = 0; }
-        if (green === void 0) { green = 0; }
-        if (blue === void 0) { blue = 0; }
-        if (alpha === void 0) { alpha = 1; }
-        this.red = Math.round(red * 255);
-        this.green = Math.round(green * 255);
-        this.blue = Math.round(blue * 255);
-        this.alpha = alpha;
-        if (this.red > 255)
-            this.red = 255;
-        else if (this.red < 0)
-            this.red = 0;
-        if (this.green > 255)
-            this.green = 255;
-        else if (this.green < 0)
-            this.green = 0;
-        if (this.blue > 255)
-            this.blue = 255;
-        else if (this.blue < 0)
-            this.blue = 0;
-        if (this.alpha > 1)
-            this.alpha = 1;
-        else if (this.alpha < 0)
-            this.alpha = 0;
-    }
-    Color.prototype.setRed = function (color) {
-        if (color > 255) {
-            this.red = 255;
-        }
-        else if (color < 0) {
-            this.red = 0;
-        }
-        else {
-            this.red = color;
-        }
-    };
-    Color.prototype.setGree = function (color) {
-        if (color > 255) {
-            this.green = 255;
-        }
-        else if (color < 0) {
-            this.green = 0;
-        }
-        else {
-            this.green = color;
-        }
-    };
-    Color.prototype.setBlue = function (color) {
-        if (color > 255) {
-            this.blue = 255;
-        }
-        else if (color < 0) {
-            this.blue = 0;
-        }
-        else {
-            this.blue = color;
-        }
-    };
-    Color.prototype.rgba = function () {
-        return "rgba(" + this.red + ", " + this.green + ", " + this.blue + ", " + this.alpha + ")";
-    };
-    Color.prototype.rgb = function () {
-        return "rgb(" + this.red + ", " + this.green + ", " + this.blue + ")";
-    };
-    Color.random = function () {
-        return new Color(Math.random(), Math.random(), Math.random());
-    };
-    return Color;
-}());
-exports.__esModule = true;
-exports["default"] = Color;
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -860,6 +252,615 @@ var Vector2D = (function () {
 }());
 exports.__esModule = true;
 exports["default"] = Vector2D;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Dibujo_1 = __webpack_require__(3);
+var RENDER = new Dibujo_1.Render();
+var rect = new Dibujo_1.Graphic.Rect({
+    position: { x: 100, y: 100 },
+    width: 100,
+    height: 100,
+    color: '#FFF'
+});
+var text = new Dibujo_1.Graphic.Text({
+    content: 'LUIS',
+    position: { x: 200, y: 200 },
+    style: {
+        font: 'bold 32px Arial',
+        fillStyle: '#336'
+    }
+});
+var circle = new Dibujo_1.Graphic.Circle({
+    radius: 50,
+    color: '#F00',
+    stroke: true,
+    lineWidth: 3,
+    lineColor: '#0F0',
+    position: { x: 50, y: 50 }
+});
+var img = new Dibujo_1.Graphic.Picture({
+    position: { x: 10, y: 10 },
+    width: 100,
+    height: 100,
+    src: './apple.png'
+});
+circle.onClick(function () {
+    console.log('Click');
+    if (circle.color === '#F00')
+        circle.color = '#00F';
+    else
+        circle.color = '#F00';
+});
+RENDER.addMultiple([circle, text, rect, img]);
+setInterval(function () {
+    RENDER.render();
+    circle.position.x += 0.1;
+    img.position.y += 1.4;
+    text.position.x += 0.5;
+    rect.position.x += 0.25;
+});
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Scene_1 = __webpack_require__(0);
+exports.Scene = Scene_1["default"];
+var Render_1 = __webpack_require__(4);
+exports.Render = Render_1["default"];
+var Sprite_1 = __webpack_require__(5);
+exports.Sprite = Sprite_1["default"];
+var Graphic = __webpack_require__(6);
+exports.Graphic = Graphic;
+var Animation_1 = __webpack_require__(7);
+exports.Animation = Animation_1["default"];
+var Color_1 = __webpack_require__(8);
+exports.Color = Color_1["default"];
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(1);
+var Scene_1 = __webpack_require__(0);
+var Render = (function () {
+    function Render(canvas, width, height) {
+        var _this = this;
+        this.timeFrame = 0;
+        if (canvas) {
+            this.canvas = canvas;
+        }
+        else {
+            this.canvas = document.createElement('canvas');
+            document.body.appendChild(this.canvas);
+        }
+        if (width && height) {
+            this.canvas.width = width;
+            this.canvas.height = height;
+        }
+        else {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', function () {
+            _this.canvas.width = window.innerWidth;
+            _this.canvas.height = window.innerHeight;
+        });
+        this.context = this.canvas.getContext('2d');
+        var scene = new Scene_1["default"]();
+        this.setScene(scene);
+    }
+    Render.prototype.add = function (element) {
+        this.scene.add(element);
+    };
+    Render.prototype.addMultiple = function (e) {
+        var _this = this;
+        e.forEach(function (m) {
+            _this.add(m);
+        });
+    };
+    Render.prototype.getWidth = function () {
+        return this.canvas.width;
+    };
+    Render.prototype.getHeight = function () {
+        return this.canvas.height;
+    };
+    Render.prototype.getCenter = function () {
+        return new Vector2D_1["default"](this.canvas.width / 2, this.canvas.height / 2);
+    };
+    Render.prototype.render = function () {
+        this.scene.update();
+    };
+    Render.prototype.update = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.render();
+        }, this.timeFrame);
+    };
+    Render.prototype.setScene = function (scene) {
+        this.scene = scene;
+        this.scene.renderer = this;
+        this.scene.context = this.context;
+        this.scene.smoth(false);
+    };
+    return Render;
+}());
+exports.__esModule = true;
+exports["default"] = Render;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* global Image */
+
+var Vector2D = (function () {
+    function Vector2D(x, y) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        this.x = x;
+        this.y = y;
+    }
+    return Vector2D;
+}());
+var Sprite = (function () {
+    function Sprite(src, position, scale, rotation, anchor) {
+        if (position === void 0) { position = new Vector2D(); }
+        if (scale === void 0) { scale = new Vector2D(1, 1); }
+        if (rotation === void 0) { rotation = 0; }
+        if (anchor === void 0) { anchor = new Vector2D(0.5, 0.5); }
+        this.load(src);
+        this.position = position;
+        this.scale = scale;
+        this.anchor = anchor;
+        this.rotation = rotation;
+    }
+    Sprite.prototype.load = function (src) {
+        this.image = new Image();
+        this.image.src = src;
+    };
+    Sprite.prototype.getSize = function () {
+        var realSize = new Vector2D(this.scale.x * this.image.width, this.scale.y * this.image.height);
+        return realSize;
+    };
+    Sprite.prototype.render = function () {
+        this.context.save();
+        this.context.translate(this.position.x, this.position.y);
+        this.context.rotate(this.rotation);
+        var realWidth = this.scale.x * this.image.width;
+        var realHeight = this.scale.y * this.image.height;
+        this.context.drawImage(this.image, -(realWidth * this.anchor.x), -(realHeight * this.anchor.y), realWidth, realHeight);
+        this.context.restore();
+    };
+    return Sprite;
+}());
+exports.__esModule = true;
+exports["default"] = Sprite;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* globla Image */
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Vector2D_1 = __webpack_require__(1);
+var Graphic = (function () {
+    function Graphic() {
+    }
+    Graphic.prototype.setStyle = function (styles) {
+        for (var style in styles) {
+            this.context[style] = styles[style];
+        }
+    };
+    Graphic.prototype.render = function () { };
+    return Graphic;
+}());
+exports.Graphic = Graphic;
+var Picture = (function (_super) {
+    __extends(Picture, _super);
+    function Picture(data) {
+        var _this = _super.call(this) || this;
+        _this.width = 1;
+        _this.height = 1;
+        _this.image = new Image();
+        _this.position = data.position;
+        _this.width = data.width;
+        _this.height = data.height;
+        _this.image.src = data.src;
+        return _this;
+    }
+    Picture.prototype.render = function () {
+        this.context.beginPath();
+        this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    };
+    return Picture;
+}(Graphic));
+exports.Picture = Picture;
+var Rect = (function (_super) {
+    __extends(Rect, _super);
+    function Rect(data) {
+        var _this = _super.call(this) || this;
+        _this.color = '#FFFFFF';
+        _this.width = 1;
+        _this.height = 1;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.strokeColor = '#000000';
+        if (data.color)
+            _this.color = data.color;
+        if (data.position)
+            _this.position = data.position;
+        if (data.width)
+            _this.width = data.width;
+        if (data.height)
+            _this.height = data.height;
+        if (data.fill)
+            _this.fill = data.fill;
+        if (data.stroke)
+            _this.stroke = data.stroke;
+        if (data.strokeColor)
+            _this.strokeColor = data.strokeColor;
+        return _this;
+    }
+    Rect.prototype.render = function () {
+        this.context.fillStyle = this.color;
+        this.context.beginPath();
+        if (this.fill) {
+            this.context.fillRect(this.position.x, this.position.y, this.width, this.height);
+        }
+        if (this.stroke) {
+            this.context.strokeRect(this.position.x, this.position.y, this.width, this.height);
+        }
+    };
+    return Rect;
+}(Graphic));
+exports.Rect = Rect;
+var Line = (function (_super) {
+    __extends(Line, _super);
+    function Line(start, end, color) {
+        var _this = _super.call(this) || this;
+        _this.start = { x: 0, y: 0 };
+        _this.end = { x: 1, y: 1 };
+        if (start)
+            _this.start = start;
+        if (end)
+            _this.end = end;
+        if (color)
+            _this.color = color;
+        return _this;
+    }
+    Line.prototype.render = function () {
+        this.context.beginPath();
+        this.context.moveTo(this.start.x, this.start.y);
+        this.context.lineTo(this.end.x, this.end.y);
+        this.context.stroke();
+    };
+    return Line;
+}(Graphic));
+exports.Line = Line;
+var Poligon = (function (_super) {
+    __extends(Poligon, _super);
+    function Poligon(configuration) {
+        var _this = _super.call(this) || this;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.color = '#FFF';
+        _this.strokeColor = '#000';
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.cords)
+            _this.cords = configuration.cords;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        if (configuration.strokeColor)
+            _this.strokeColor = configuration.strokeColor;
+        return _this;
+    }
+    Poligon.prototype.render = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.moveTo(this.cords[0].x, this.cords[0].y);
+        for (var i = 0; i < this.cords.length; i++) {
+            this.context.lineTo(this.cords[i].x, this.cords[i].y);
+        }
+        this.context.closePath();
+        this.context.fill();
+        if (this.stroke)
+            this.context.stroke;
+    };
+    return Poligon;
+}(Graphic));
+exports.Poligon = Poligon;
+var Text = (function (_super) {
+    __extends(Text, _super);
+    function Text(configuration) {
+        var _this = _super.call(this) || this;
+        if (configuration.style)
+            _this.style = configuration.style;
+        if (configuration.content)
+            _this.content = configuration.content;
+        if (configuration.position)
+            _this.position = configuration.position;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        return _this;
+    }
+    Text.prototype.render = function () {
+        this.setStyle(this.style);
+        if (this.stroke) {
+            this.context.strokeText(this.content, this.position.x, this.position.y);
+        }
+        this.context.fillText(this.content, this.position.x, this.position.y);
+    };
+    return Text;
+}(Graphic));
+exports.Text = Text;
+var Circle = (function (_super) {
+    __extends(Circle, _super);
+    function Circle(configuration) {
+        var _this = _super.call(this) || this;
+        _this.lineWidth = 1;
+        if (configuration.position)
+            _this.position = configuration.position;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.lineColor)
+            _this.lineColor = configuration.lineColor;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        return _this;
+    }
+    Circle.prototype.onClick = function (func) {
+        var _this = this;
+        var f = func.bind(this);
+        document.addEventListener('click', function (event) {
+            var mouse = new Vector2D_1["default"](event.clientX, event.clientY);
+            var position = new Vector2D_1["default"](_this.position.x, _this.position.y);
+            mouse.sub(position);
+            if (mouse.mag() < _this.radius) {
+                f();
+            }
+        });
+    };
+    Circle.prototype.render = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+        this.context.fill();
+        if (this.stroke) {
+            this.context.lineWidth = this.lineWidth;
+            this.context.strokeStyle = this.lineColor;
+            this.context.stroke();
+        }
+    };
+    return Circle;
+}(Graphic));
+exports.Circle = Circle;
+var Arc = (function (_super) {
+    __extends(Arc, _super);
+    function Arc(configuration) {
+        var _this = _super.call(this) || this;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.position)
+            _this.position = configuration.position;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.eAngl)
+            _this.eAngl = configuration.eAngl;
+        if (configuration.aAngl)
+            _this.aAngl = configuration.aAngl;
+        return _this;
+    }
+    Arc.prototype.render = function () {
+        this.context.beginPath();
+        this.context.strokeStyle = this.color;
+        this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true);
+        this.context.lineWidth = this.lineWidth;
+        this.context.stroke();
+    };
+    return Arc;
+}(Graphic));
+exports.Arc = Arc;
+var Group = (function () {
+    function Group() {
+        this.childs = [];
+    }
+    Group.prototype.add = function (child) {
+        this.childs.push(child);
+    };
+    Group.prototype.render = function () {
+        this.context.save();
+        this.context.scale(this.scale.x, this.scale.y);
+        this.context.rotate(this.rotation);
+        this.context.translate(this.position.x, this.position.y);
+        this.childs.forEach(function (child) { return child.render(); });
+        this.context.restore();
+    };
+    return Group;
+}());
+exports.Group = Group;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D = (function () {
+    function Vector2D(x, y) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        this.x = x;
+        this.y = y;
+    }
+    return Vector2D;
+}());
+var Animation = (function () {
+    function Animation(src, scale, position, frameRate, size, loop) {
+        if (scale === void 0) { scale = new Vector2D(1, 1); }
+        if (position === void 0) { position = new Vector2D(1, 1); }
+        if (frameRate === void 0) { frameRate = 100; }
+        if (size === void 0) { size = new Vector2D(32, 32); }
+        if (loop === void 0) { loop = true; }
+        var _this = this;
+        this.loop = true;
+        this.loop = loop;
+        this.load(src);
+        this.size = size;
+        this.position = position;
+        this.scale = scale;
+        this.frameRate = frameRate;
+        var frame = new Vector2D(0, 0);
+        this.x = 0;
+        this.y = 0;
+        this.interval = setInterval(function () {
+            frame.x += 1;
+            _this.x = _this.size.x * frame.x;
+            _this.y = _this.size.y * frame.y;
+            if (_this.x >= _this.image.width) {
+                frame.x = 0;
+            }
+            if (_this.y >= _this.image.height) {
+                frame.y = 0;
+                if (!_this.loop) {
+                    _this.destroy();
+                }
+            }
+            _this.x = _this.size.x * frame.x;
+            _this.y = _this.size.y * frame.y;
+        }, this.frameRate);
+    }
+    Animation.prototype.load = function (src) {
+        this.image = new Image();
+        this.image.src = src;
+    };
+    Animation.prototype.getSize = function () {
+        return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y);
+    };
+    Animation.prototype.render = function () {
+        this.context.drawImage(this.image, this.x, this.y, this.size.x, this.size.y, this.position.x, this.position.y, this.size.x * this.scale.x, this.size.y * this.scale.y);
+    };
+    Animation.prototype.destroy = function () {
+        clearInterval(this.interval);
+    };
+    return Animation;
+}());
+exports.__esModule = true;
+exports["default"] = Animation;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Color = (function () {
+    function Color(red, green, blue, alpha) {
+        if (red === void 0) { red = 0; }
+        if (green === void 0) { green = 0; }
+        if (blue === void 0) { blue = 0; }
+        if (alpha === void 0) { alpha = 1; }
+        this.red = Math.round(red * 255);
+        this.green = Math.round(green * 255);
+        this.blue = Math.round(blue * 255);
+        this.alpha = alpha;
+        if (this.red > 255)
+            this.red = 255;
+        else if (this.red < 0)
+            this.red = 0;
+        if (this.green > 255)
+            this.green = 255;
+        else if (this.green < 0)
+            this.green = 0;
+        if (this.blue > 255)
+            this.blue = 255;
+        else if (this.blue < 0)
+            this.blue = 0;
+        if (this.alpha > 1)
+            this.alpha = 1;
+        else if (this.alpha < 0)
+            this.alpha = 0;
+    }
+    Color.prototype.setRed = function (color) {
+        if (color > 255) {
+            this.red = 255;
+        }
+        else if (color < 0) {
+            this.red = 0;
+        }
+        else {
+            this.red = color;
+        }
+    };
+    Color.prototype.setGree = function (color) {
+        if (color > 255) {
+            this.green = 255;
+        }
+        else if (color < 0) {
+            this.green = 0;
+        }
+        else {
+            this.green = color;
+        }
+    };
+    Color.prototype.setBlue = function (color) {
+        if (color > 255) {
+            this.blue = 255;
+        }
+        else if (color < 0) {
+            this.blue = 0;
+        }
+        else {
+            this.blue = color;
+        }
+    };
+    Color.prototype.rgba = function () {
+        return "rgba(" + this.red + ", " + this.green + ", " + this.blue + ", " + this.alpha + ")";
+    };
+    Color.prototype.rgb = function () {
+        return "rgb(" + this.red + ", " + this.green + ", " + this.blue + ")";
+    };
+    Color.random = function () {
+        return new Color(Math.random(), Math.random(), Math.random());
+    };
+    return Color;
+}());
+exports.__esModule = true;
+exports["default"] = Color;
 
 
 /***/ })

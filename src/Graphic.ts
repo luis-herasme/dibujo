@@ -1,5 +1,7 @@
 /* globla Image */
 
+import Vector2D from './Vector2D'
+
 interface Point {
   x: number;
   y: number;
@@ -7,6 +9,7 @@ interface Point {
 
 export class Graphic {
   public context
+  public position: Point
 
   setStyle (styles): void {
     for (let style in styles) {
@@ -18,31 +21,27 @@ export class Graphic {
 }
 
 export class Picture extends Graphic {
-  public x      : number  = 0
-  public y      : number  = 0
   public width  : number  = 1
   public height : number  = 1
   public image :Image
+
   constructor (data) {
     super()
     this.image = new Image()
-    this.x = data.x
-    this.y = data.y
+    this.position = data.position
     this.width = data.width
-    this.height = data.height
+    this.height = data.height 
     this.image.src = data.src
   }
 
   render (): void {
     this.context.beginPath()
-    this.context.drawImage(this.image, this.x, this.y, this.width, this.height)
+    this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
 }
 
 export class Rect extends Graphic {
   public color  : string  = '#FFFFFF'
-  public x      : number  = 0
-  public y      : number  = 0
   public width  : number  = 1
   public height : number  = 1
   public fill   : boolean = true
@@ -52,8 +51,7 @@ export class Rect extends Graphic {
   constructor (data) {
     super()
     if (data.color)  this.color = data.color
-    if (data.x)      this.x = data.x
-    if (data.y)      this.y = data.y
+    if (data.position) this.position = data.position
     if (data.width)  this.width = data.width
     if (data.height) this.height = data.height
     if (data.fill)   this.fill = data.fill
@@ -67,8 +65,8 @@ export class Rect extends Graphic {
 
     if (this.fill) {
       this.context.fillRect(
-        this.x,
-        this.y,
+        this.position.x,
+        this.position.y,
         this.width,
         this.height
       )
@@ -76,8 +74,8 @@ export class Rect extends Graphic {
 
     if (this.stroke) {
       this.context.strokeRect(
-        this.x,
-        this.y,
+        this.position.x,
+        this.position.y,
         this.width,
         this.height
       )
@@ -138,8 +136,6 @@ export class Poligon extends Graphic {
 
 export class Text extends Graphic {
   public content : string
-  public x       : number
-  public y       : number
   public stroke  : boolean
   public style
 
@@ -147,23 +143,20 @@ export class Text extends Graphic {
     super()
     if (configuration.style) this.style = configuration.style
     if (configuration.content) this.content = configuration.content
-    if (configuration.x) this.x = configuration.x
-    if (configuration.y) this.y = configuration.y
+    if (configuration.position) this.position = configuration.position
     if (configuration.stroke) this.stroke = configuration.stroke
   }
 
   render () :void{
     this.setStyle(this.style)
     if (this.stroke) {
-      this.context.strokeText(this.content, this.x, this.y)
+      this.context.strokeText(this.content, this.position.x, this.position.y)
     }
-    this.context.fillText(this.content, this.x, this.y)
+    this.context.fillText(this.content, this.position.x, this.position.y)
   }
 }
 
 export class Circle extends Graphic {
-  public x      : number
-  public y      : number
   public radius : number
   public color  : string
   public stroke : boolean
@@ -173,8 +166,7 @@ export class Circle extends Graphic {
 
   constructor (configuration) {
     super()
-    if (configuration.x) this.x = configuration.x
-    if (configuration.y) this.y = configuration.y
+    if (configuration.position) this.position = configuration.position
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke
@@ -182,10 +174,23 @@ export class Circle extends Graphic {
     if (configuration.lineColor) this.lineColor = configuration.lineColor
     if (configuration.fill) this.fill = configuration.fill
   }
+
+  onClick (func: Function): void {
+    const f = func.bind(this)
+    document.addEventListener('click', (event) => {
+      const mouse = new Vector2D(event.clientX, event.clientY)
+      const position = new Vector2D(this.position.x, this.position.y)
+      mouse.sub(position)
+      if (mouse.mag() < this.radius) {
+        f()
+      }
+    })
+  }
+
   render (): void {
     this.context.beginPath()
     this.context.fillStyle = this.color
-    this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
+    this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
     this.context.fill()
     if (this.stroke) {
       this.context.lineWidth = this.lineWidth
@@ -197,8 +202,6 @@ export class Circle extends Graphic {
 
 export class Arc extends Graphic {
   public color: string
-  public x: number
-  public y: number
   public radius: number
   public lineWidth: number
   public eAngl: number
@@ -207,8 +210,7 @@ export class Arc extends Graphic {
   constructor  (configuration){
     super()
     if (configuration.color) this.color = configuration.color
-    if (configuration.x) this.x = configuration.x
-    if (configuration.y) this.y = configuration.y
+    if (configuration.position) this.position = configuration.position
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
     if (configuration.eAngl) this.eAngl = configuration.eAngl
@@ -219,7 +221,7 @@ export class Arc extends Graphic {
   render (): void {
     this.context.beginPath()
     this.context.strokeStyle = this.color
-    this.context.arc(this.x, this.y, this.radius, this.eAngl, this.aAngl, true)
+    this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true)
     this.context.lineWidth = this.lineWidth
     this.context.stroke()
   }
@@ -242,9 +244,7 @@ export class Group {
     this.context.rotate(this.rotation)
     this.context.translate(this.position.x, this.position.y)
 
-    this.childs.forEach((child) => {
-      child.render()
-    })
+    this.childs.forEach((child) => child.render())
 
     this.context.restore()
   }
