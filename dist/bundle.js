@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["DibujoJs"] = factory();
+		exports["Dibujo"] = factory();
 	else
-		root["DibujoJs"] = factory();
+		root["Dibujo"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -75,72 +75,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Vector2D_1 = __webpack_require__(1);
-var Scene = (function () {
-    function Scene() {
-        this.childs = [];
-        this.following = false;
-        this.translation = new Vector2D_1["default"](0, 0);
-    }
-    Scene.prototype.add = function (element) {
-        element.context = this.context;
-        this.childs.push(element);
-    };
-    Scene.prototype.remove = function (element) {
-        this.childs.splice(this.childs.indexOf(element), 1);
-    };
-    Scene.prototype.clear = function (color) {
-        if (color === void 0) { color = '#000'; }
-        this.context.fillStyle = color;
-        this.context.fillRect(-this.translation.x, 0, window.innerWidth, window.innerHeight);
-    };
-    Scene.prototype.follow = function (gameObject) {
-        this.followed = gameObject.transform.position;
-        this.temp = this.followed.copy();
-        this.following = true;
-    };
-    Scene.prototype.smoth = function (state) {
-        if (this.context.imageSmoothingEnabled) {
-            this.context.imageSmoothingEnabled = state;
-        }
-        else if (this.context.mozImageSmoothingEnabled) {
-            this.context.mozImageSmoothingEnabled = state;
-        }
-        else if (this.context.webkitImageSmoothingEnabled) {
-            this.context.webkitImageSmoothingEnabled = state;
-        }
-    };
-    Scene.prototype.zoom = function (where, howMuch) {
-        this.context.translate(where.x, where.y);
-        this.context.scale(howMuch.x, howMuch.y);
-        this.context.translate(-where.x, -where.y);
-    };
-    Scene.prototype.translate = function (x, y) {
-        this.translation.x -= x;
-        this.translation.y -= y;
-        this.context.translate(-x, -y);
-    };
-    Scene.prototype.update = function () {
-        this.clear(this.backgroundColor);
-        if (this.following) {
-            var change = Vector2D_1["default"].sub(this.temp, this.followed);
-            this.temp = this.followed.copy();
-            this.translate(-change.x, 0); /* -change.y To enable y following */
-        }
-        this.childs.forEach(function (child) { return child.render(); });
-    };
-    return Scene;
-}());
-exports.__esModule = true;
-exports["default"] = Scene;
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -255,56 +189,89 @@ exports["default"] = Vector2D;
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
+var Scene = (function () {
+    function Scene() {
+        this.childs = [];
+        this.following = false;
+        this.translation = new Vector2D_1["default"](0, 0);
+    }
+    Scene.prototype.add = function (element) {
+        element.context = this.context;
+        this.childs.push(element);
+    };
+    Scene.prototype.remove = function (element) {
+        this.childs.splice(this.childs.indexOf(element), 1);
+    };
+    Scene.prototype.clear = function (color) {
+        if (color === void 0) { color = '#000'; }
+        this.context.fillStyle = color;
+        this.context.fillRect(-this.translation.x, 0, window.innerWidth, window.innerHeight);
+    };
+    Scene.prototype.follow = function (gameObject) {
+        this.followed = gameObject.transform.position;
+        this.temp = this.followed.copy();
+        this.following = true;
+    };
+    Scene.prototype.smoth = function (state) {
+        if (this.context.imageSmoothingEnabled) {
+            this.context.imageSmoothingEnabled = state;
+        }
+        else if (this.context.mozImageSmoothingEnabled) {
+            this.context.mozImageSmoothingEnabled = state;
+        }
+        else if (this.context.webkitImageSmoothingEnabled) {
+            this.context.webkitImageSmoothingEnabled = state;
+        }
+    };
+    Scene.prototype.zoom = function (where, howMuch) {
+        this.context.translate(where.x, where.y);
+        this.context.scale(howMuch.x, howMuch.y);
+        this.context.translate(-where.x, -where.y);
+    };
+    Scene.prototype.translate = function (x, y) {
+        this.translation.x -= x;
+        this.translation.y -= y;
+        this.context.translate(-x, -y);
+    };
+    Scene.prototype.update = function () {
+        this.clear(this.backgroundColor);
+        if (this.following) {
+            var change = Vector2D_1["default"].sub(this.temp, this.followed);
+            this.temp = this.followed.copy();
+            this.translate(-change.x, 0); /* -change.y To enable y following */
+        }
+        this.childs.forEach(function (child) { return child.render(); });
+    };
+    return Scene;
+}());
+exports.__esModule = true;
+exports["default"] = Scene;
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Dibujo_1 = __webpack_require__(3);
-var RENDER = new Dibujo_1.Render();
-var rect = new Dibujo_1.Graphic.Rect({
-    width: 100,
-    height: 100,
-    color: '#FFF',
-    position: { x: 100, y: 100 }
-});
-var text = new Dibujo_1.Graphic.Text({
-    content: 'LUIS',
-    position: { x: 200, y: 200 },
-    style: {
-        font: 'bold 32px Arial',
-        fillStyle: '#336'
-    }
-});
-var circle = new Dibujo_1.Graphic.Circle({
-    radius: 50,
-    lineWidth: 3,
-    stroke: true,
-    color: '#F00',
-    lineColor: '#0F0',
-    position: { x: 50, y: 50 }
-});
-var img = new Dibujo_1.Graphic.Picture({
-    width: 100,
-    height: 100,
-    src: './apple.png',
-    position: { x: 10, y: 10 }
-});
-circle.onClick(function () {
-    console.log('Click');
-    if (circle.color === '#F00')
-        circle.color = '#00F';
-    else
-        circle.color = '#F00';
-});
-RENDER.addMultiple([circle, text, rect, img]);
-setInterval(function () {
-    RENDER.render();
-    circle.position.x += 0.1;
-    img.position.y += 1.4;
-    text.position.x += 0.5;
-    rect.position.x += 0.25;
-});
+var Scene_1 = __webpack_require__(1);
+exports.Scene = Scene_1["default"];
+var Render_1 = __webpack_require__(3);
+exports.Render = Render_1["default"];
+var Sprite_1 = __webpack_require__(4);
+exports.Sprite = Sprite_1["default"];
+var Graphic = __webpack_require__(5);
+exports.Graphic = Graphic;
+var Animation_1 = __webpack_require__(6);
+exports.Animation = Animation_1["default"];
+var Color_1 = __webpack_require__(7);
+exports.Color = Color_1["default"];
 
 
 /***/ }),
@@ -313,28 +280,8 @@ setInterval(function () {
 
 "use strict";
 
-var Scene_1 = __webpack_require__(0);
-exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(4);
-exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(5);
-exports.Sprite = Sprite_1["default"];
-var Graphic = __webpack_require__(6);
-exports.Graphic = Graphic;
-var Animation_1 = __webpack_require__(7);
-exports.Animation = Animation_1["default"];
-var Color_1 = __webpack_require__(8);
-exports.Color = Color_1["default"];
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Vector2D_1 = __webpack_require__(1);
-var Scene_1 = __webpack_require__(0);
+var Vector2D_1 = __webpack_require__(0);
+var Scene_1 = __webpack_require__(1);
 var Render = (function () {
     function Render(canvas, width, height) {
         var _this = this;
@@ -402,7 +349,7 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -453,7 +400,7 @@ exports["default"] = Sprite;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -464,9 +411,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var Point = (function () {
-    function Point() {
+    function Point(x, y) {
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
+        this.x = x;
+        this.y = y;
     }
     return Point;
 }());
@@ -719,7 +670,7 @@ exports.Group = Group;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -788,7 +739,7 @@ exports["default"] = Animation;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
