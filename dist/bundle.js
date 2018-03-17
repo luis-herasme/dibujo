@@ -260,6 +260,10 @@ exports["default"] = Scene;
 
 "use strict";
 
+var defaultCss = document.createElement('style');
+defaultCss.type = 'text/css';
+defaultCss.innerHTML = "\n* {\n  margin:0%;\n  padding: 0%;\n}\ncanvas {\n  display: block;\n}\n";
+document.body.appendChild(defaultCss);
 var Scene_1 = __webpack_require__(1);
 exports.Scene = Scene_1["default"];
 var Render_1 = __webpack_require__(3);
