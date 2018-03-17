@@ -1,53 +1,16 @@
 
-import {Render, Graphic} from './Dibujo'
+import Scene from './Scene'
+import Render from './Render'
+import Sprite from './Sprite'
+import * as Graphic from './Graphic'
+import Animation from './Animation'
+import Color from './Color'
 
-let RENDER = new Render()
-
-let rect = new Graphic.Rect({
-  width: 100,
-  height: 100,
-  color: '#FFF',
-  position: {x: 100, y: 100}
-})
-
-let text = new Graphic.Text({
-  content: 'LUIS',
-  position: {x: 200, y: 200},
-  style: {
-    font: 'bold 32px Arial',
-    fillStyle: '#336'
-  }
-})
-
-let circle = new Graphic.Circle({
-  radius: 50,
-  lineWidth: 3,
-  stroke: true,
-  color: '#F00',
-  lineColor: '#0F0',
-  position: {x: 50, y: 50}
-})
-
-let img = new Graphic.Picture({
-  width: 100,
-  height: 100,
-  src: './apple.png',
-  position: {x: 10, y: 10},
-})
-
-circle.onClick(() => {
-  console.log('Click')
-  if (circle.color === '#F00') circle.color = '#00F'
-  else circle.color = '#F00'
-})
-
-RENDER.addMultiple([circle, text, rect, img])
-
-setInterval(() => {
-  RENDER.render()
-
-  circle.position.x += 0.1
-  img.position.y += 1.4
-  text.position.x += 0.5
-  rect.position.x += 0.25
-})
+export {
+  Color,
+  Animation,
+  Graphic,
+  Sprite,
+  Scene,
+  Render
+}

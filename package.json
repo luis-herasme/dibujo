@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vector_class": "^3.0.0",
     "webpack": "^3.6.0",
     "yargs": "^9.0.1"
   }
