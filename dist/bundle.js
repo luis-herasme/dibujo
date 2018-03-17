@@ -263,10 +263,10 @@ exports["default"] = Vector2D;
 var Dibujo_1 = __webpack_require__(3);
 var RENDER = new Dibujo_1.Render();
 var rect = new Dibujo_1.Graphic.Rect({
-    position: { x: 100, y: 100 },
     width: 100,
     height: 100,
-    color: '#FFF'
+    color: '#FFF',
+    position: { x: 100, y: 100 }
 });
 var text = new Dibujo_1.Graphic.Text({
     content: 'LUIS',
@@ -278,17 +278,17 @@ var text = new Dibujo_1.Graphic.Text({
 });
 var circle = new Dibujo_1.Graphic.Circle({
     radius: 50,
-    color: '#F00',
-    stroke: true,
     lineWidth: 3,
+    stroke: true,
+    color: '#F00',
     lineColor: '#0F0',
     position: { x: 50, y: 50 }
 });
 var img = new Dibujo_1.Graphic.Picture({
-    position: { x: 10, y: 10 },
     width: 100,
     height: 100,
-    src: './apple.png'
+    src: './apple.png',
+    position: { x: 10, y: 10 }
 });
 circle.onClick(function () {
     console.log('Click');
@@ -465,6 +465,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Vector2D_1 = __webpack_require__(1);
+var Point = (function () {
+    function Point() {
+    }
+    return Point;
+}());
 var Graphic = (function () {
     function Graphic() {
     }

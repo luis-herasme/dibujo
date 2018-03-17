@@ -2,9 +2,13 @@
 
 import Vector2D from './Vector2D'
 
-interface Point {
-  x: number;
-  y: number;
+class Point {
+  public x: number
+  public y: number
+  constructor (x = 0, y = 0) {
+    this.x = x
+    this.y = y
+  }
 }
 
 export class Graphic {
@@ -23,7 +27,7 @@ export class Graphic {
 export class Picture extends Graphic {
   public width  : number  = 1
   public height : number  = 1
-  public image :Image
+  public image : Image
 
   constructor (data) {
     super()
