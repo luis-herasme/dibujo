@@ -18,9 +18,7 @@ export default class Group {
     this.context.scale(this.scale.x, this.scale.y)
     this.context.rotate(this.rotation)
     this.context.translate(this.position.x, this.position.y)
-
     this.childs.forEach((child) => child.render())
-
     this.context.restore()
   }
 }

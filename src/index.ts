@@ -29,7 +29,7 @@ import Group from './Group'
 import Color from './Color'
 
 export {
-  Group,
+ // Group,
   Color,
   Animation,
   Rect,

@@ -5,14 +5,14 @@ import Graphic from './graphics/Graphic'
 
 export default class Scene {
   public context
-  public renderer    : Render
-  public followed    : Vector2D
-  public temp        : Vector2D
-  public childs      : Array<Graphic> = []
-  public following   : boolean  = false
-  public translation : Vector2D = new Vector2D(0, 0)
-  public backgroundColor : string = '#000'
-  public organized   : Boolean = true
+  public renderer         : Render
+  public followed         : Vector2D
+  public temp             : Vector2D
+  public childs           : Array<Graphic> = []
+  public organized        : boolean        = true
+  public following        : boolean        = false
+  public backgroundColor  : string         = '#000000'
+  public translation      : Vector2D       = new Vector2D(0, 0)
 
   constructor (background?: string) {
     this.backgroundColor = background
@@ -67,18 +67,18 @@ export default class Scene {
   }
 
   organize_children (): void {
-    this.childs.sort(function(a,b) :number{
-      return a.z_index - b.z_index
-    })
+    this.childs.sort((a,b) => a.z_index - b.z_index)
   }
 
   update (): void {
     this.clear(this.backgroundColor)
+
     if (this.following) {
       const change = Vector2D.sub(this.temp, this.followed)
       this.temp = this.followed.copy()
       this.translate(-change.x, 0) /* -change.y To enable y following */
     }
+
     if(!this.organized) this.organize_children()
     this.organized = true
     this.childs.forEach(child => child.render())
