@@ -16,11 +16,27 @@ import Scene from './Scene'
 import Render from './Render'
 import Graphic from './graphics/Graphic'
 import Animation from './graphics/Animation'
+
+import Rect from './graphics/Rect'
+import Circle from './graphics/Circle'
+import Line from './graphics/Line'
+import Poligon from './graphics/Poligon'
+import Picture from './graphics/Picture'
+import Text from './graphics/Text'
+import Arc from './graphics/Arc'
+
 import Color from './Color'
 
 export {
   Color,
   Animation,
+  Rect,
+  Circle,
+  Line,
+  Poligon,
+  Picture,
+  Text,
+  Arc,
   Graphic,
   Scene,
   Render

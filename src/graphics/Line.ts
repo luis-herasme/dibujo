@@ -2,7 +2,7 @@
 import Graphic from './Graphic'
 import Point from '../Point'
 
-export class Line extends Graphic{
+export default class Line extends Graphic{
   public color: string
   public start: Point = {x: 0, y: 0}
   public end  : Point = {x: 1, y: 1}

@@ -1,7 +1,7 @@
 
 import Graphic from './Graphic'
 
-export class Rect extends Graphic {
+export default class Rect extends Graphic {
   public color  : string  = '#FFFFFF'
   public width  : number  = 1
   public height : number  = 1
