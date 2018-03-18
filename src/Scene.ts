@@ -12,9 +12,11 @@ export default class Scene {
   public following   : boolean  = false
   public translation : Vector2D = new Vector2D(0, 0)
   public backgroundColor : string
+  public organized   : Boolean = true;
 
   add (element: Graphic): void {
     element.context = this.context
+    this.organized = false;
     this.childs.push(element)
   }
 
@@ -60,6 +62,12 @@ export default class Scene {
     this.context.translate(-x, -y)
   }
 
+  organize_children (): void {
+    this.childs.sort(function(a,b) :number{
+      return a.z_index - b.z_index;
+    })
+  }
+
   update (): void {
     this.clear(this.backgroundColor)
     if (this.following) {
@@ -67,6 +75,8 @@ export default class Scene {
       this.temp = this.followed.copy()
       this.translate(-change.x, 0) /* -change.y To enable y following */
     }
+    if(!this.organized) this.organize_children()
+    this.organized = true;
     this.childs.forEach(child => child.render())
   }
 }
