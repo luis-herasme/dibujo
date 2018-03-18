@@ -48,9 +48,10 @@ export class Rect extends Graphic {
   public color  : string  = '#FFFFFF'
   public width  : number  = 1
   public height : number  = 1
+  public lineWidth : number  = 1
   public fill   : boolean = true
   public stroke : boolean = false
-  public strokeColor: string = '#000000'
+  public lineColor: string = '#000000'
 
   constructor (data) {
     super()
@@ -60,7 +61,8 @@ export class Rect extends Graphic {
     if (data.height) this.height = data.height
     if (data.fill)   this.fill = data.fill
     if (data.stroke) this.stroke = data.stroke
-    if (data.strokeColor) this.strokeColor = data.strokeColor
+    if (data.lineWidth) this.lineWidth = data.lineWidth
+    if (data.lineColor) this.lineColor = data.lineColor
   }
 
   render(): void {
@@ -77,6 +79,8 @@ export class Rect extends Graphic {
     }
 
     if (this.stroke) {
+      this.context.strokeStyle = this.lineColor
+      this.context.lineWidth = this.lineWidth
       this.context.strokeRect(
         this.position.x,
         this.position.y,
@@ -208,26 +212,33 @@ export class Arc extends Graphic {
   public color: string
   public radius: number
   public lineWidth: number
+  public stroke : boolean
   public eAngl: number
   public aAngl: number
-  
+  public lineColor: string  = '#000'
+
   constructor  (configuration){
     super()
+    if (configuration.stroke) this.stroke = configuration.stroke
     if (configuration.color) this.color = configuration.color
     if (configuration.position) this.position = configuration.position
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
     if (configuration.eAngl) this.eAngl = configuration.eAngl
     if (configuration.aAngl) this.aAngl = configuration.aAngl
+    if (configuration.lineColor) this.lineColor = configuration.lineColor
 
   }
 
   render (): void {
     this.context.beginPath()
-    this.context.strokeStyle = this.color
+    this.context.fillStyle = this.color
     this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true)
-    this.context.lineWidth = this.lineWidth
-    this.context.stroke()
+    if (this.stroke) {
+      this.context.strokeStyle = this.lineColor
+      this.context.lineWidth = this.lineWidth
+      this.context.stroke()
+    }
   }
 }
 
