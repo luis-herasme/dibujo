@@ -1,7 +1,7 @@
 
 import Vector2D from './Vector2D'
 import Scene    from './Scene'
-import * as Graphic  from './graphics/Graphic'
+import Graphic  from './graphics/Graphic'
 
 export default class Render {
   private scene   : Scene
@@ -34,7 +34,7 @@ export default class Render {
     this.setScene(scene)
   }
 
-  add (element: Graphic.Graphic): void {
+  add (element: Graphic): void {
     this.scene.add(element)
   }
 

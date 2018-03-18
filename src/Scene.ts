@@ -1,24 +1,24 @@
 
 import Render   from './Render'
 import Vector2D from './Vector2D'
-import Graphic  from './graphics/Graphic'
+import Graphic from './graphics/Graphic'
 
 export default class Scene {
   public context
   public renderer    : Render
   public followed    : Vector2D
   public temp        : Vector2D
-  public childs      : Array<Graphic.Graphic> = []
+  public childs      : Array<Graphic> = []
   public following   : boolean  = false
   public translation : Vector2D = new Vector2D(0, 0)
   public backgroundColor : string
 
-  add (element: Graphic.Graphic): void {
+  add (element: Graphic): void {
     element.context = this.context
     this.childs.push(element)
   }
 
-  remove (element: Graphic.Graphic): void {
+  remove (element: Graphic): void {
     this.childs.splice(this.childs.indexOf(element), 1)
   }
 

@@ -1,5 +1,6 @@
 
 import Graphic from './Graphic'
+import Point from '../Point'
 
 export class Line extends Graphic{
   public color: string

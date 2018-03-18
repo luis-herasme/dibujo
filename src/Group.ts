@@ -1,4 +1,7 @@
 
+import Graphic from './graphics/Graphic'
+import Point from './Point'
+
 export class Group {
   private childs : Array<Graphic> = []
   private context
