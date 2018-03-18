@@ -6,7 +6,7 @@ import Graphic  from './graphics/Graphic'
 export default class Render {
   private scene   : Scene
   private canvas  : HTMLCanvasElement
-  private context : CanvasRenderingContext2D
+  public context : CanvasRenderingContext2D
   public timeFrame : number = 0
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
     if (canvas) {
@@ -30,7 +30,7 @@ export default class Render {
     })
 
     this.context = this.canvas.getContext('2d')
-    const scene = new Scene()
+    const scene = new Scene(this)
     this.setScene(scene)
   }
 

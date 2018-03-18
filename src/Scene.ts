@@ -13,12 +13,15 @@ export default class Scene {
   public translation : Vector2D = new Vector2D(0, 0)
   public backgroundColor : string = '#000'
   public organized   : Boolean = true
+  private Renderer   : Render
 
-  constructor (background?: string) {
+  constructor (renderer: Render, background?: string) {
+    this.Renderer = renderer;
     this.backgroundColor = background
   }
 
   add (element: Graphic): void {
+    if(!this.context) this.context = this.Renderer.context
     element.context = this.context
     this.organized = false
     this.childs.push(element)
