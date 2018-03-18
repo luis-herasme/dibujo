@@ -38,6 +38,10 @@ export default class Render {
     this.scene.add(element)
   }
 
+  remove (element: Graphic): void {
+    this.scene.remove(element)
+  }
+
   addMultiple (e) {
     e.forEach((m) => {
       this.add(m)
