@@ -5,6 +5,8 @@ export default class Graphic {
   public context
   public position: Point
 
+  public z_index: number
+
   constructor (data) {
     if (data.position) this.position = data.position    
   }
