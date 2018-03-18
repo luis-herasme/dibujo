@@ -1,4 +1,8 @@
 
+/* global Image */
+
+import Graphic from './Graphic'
+
 export class Picture extends Graphic {
   public width  : number  = 1
   public height : number  = 1

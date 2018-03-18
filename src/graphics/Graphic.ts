@@ -1,4 +1,6 @@
 
+import Point from '../Point'
+
 export default class Graphic {
   public context
   public position: Point

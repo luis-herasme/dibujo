@@ -1,3 +1,6 @@
+
+import Graphic from './Graphic'
+
 export class Line extends Graphic{
   public color: string
   public start: Point = {x: 0, y: 0}

@@ -1,7 +1,7 @@
 
 import Vector2D from './Vector2D'
 import Scene    from './Scene'
-import * as Graphic  from './Graphic'
+import * as Graphic  from './graphics/Graphic'
 
 export default class Render {
   private scene   : Scene

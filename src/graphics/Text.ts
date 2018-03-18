@@ -1,3 +1,6 @@
+
+import Graphic from './Graphic'
+
 export class Text extends Graphic {
   public content : string
   public stroke  : boolean

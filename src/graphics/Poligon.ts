@@ -1,3 +1,6 @@
+
+import Graphic from './Graphic'
+
 export class Poligon extends Graphic {
   public cords      : Array<Point>
   public fill       : boolean = true

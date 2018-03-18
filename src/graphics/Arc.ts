@@ -1,3 +1,6 @@
+
+import Graphic from './Graphic'
+
 export class Arc extends Graphic {
   public color: string
   public radius: number

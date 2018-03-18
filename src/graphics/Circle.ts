@@ -1,3 +1,7 @@
+
+import Graphic from './Graphic'
+import Vector2D from '../Vector2D'
+
 export class Circle extends Graphic {
   public radius : number
   public color  : string

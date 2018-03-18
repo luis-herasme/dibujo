@@ -1,7 +1,7 @@
 
 import Render   from './Render'
 import Vector2D from './Vector2D'
-import * as Graphic  from './Graphic'
+import Graphic  from './graphics/Graphic'
 
 export default class Scene {
   public context
