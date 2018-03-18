@@ -15,6 +15,10 @@ export class Graphic {
   public context
   public position: Point
 
+  constructor (data) {
+    if (data.position) this.position = data.position    
+  }
+
   setStyle (styles): void {
     for (let style in styles) {
       this.context[style] = styles[style]
@@ -30,9 +34,8 @@ export class Picture extends Graphic {
   public image : Image
 
   constructor (data) {
-    super()
+    super(data)
     this.image = new Image()
-    this.position = data.position
     this.width = data.width
     this.height = data.height 
     this.image.src = data.src
@@ -54,9 +57,8 @@ export class Rect extends Graphic {
   public lineColor: string = '#000000'
 
   constructor (data) {
-    super()
+    super(data)
     if (data.color)  this.color = data.color
-    if (data.position) this.position = data.position
     if (data.width)  this.width = data.width
     if (data.height) this.height = data.height
     if (data.fill)   this.fill = data.fill
@@ -96,11 +98,11 @@ export class Line extends Graphic{
   public start: Point = {x: 0, y: 0}
   public end  : Point = {x: 1, y: 1}
 
-  constructor (start, end, color) {
-    super()
-    if (start) this.start = start
-    if (end)   this.end   = end
-    if (color) this.color = color
+  constructor (data) {
+    super(data)
+    if (data.start) this.start = data.start
+    if (data.end)   this.end   = data.end
+    if (data.color) this.color = data.color
   }
 
   render (): void {
@@ -119,7 +121,7 @@ export class Poligon extends Graphic {
   public strokeColor: string  = '#000'
 
   constructor (configuration) {
-    super()
+    super(configuration)
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke
     if (configuration.cords) this.cords = configuration.cords
@@ -148,10 +150,9 @@ export class Text extends Graphic {
   public style
 
   constructor (configuration) {
-    super()
+    super(configuration)
     if (configuration.style) this.style = configuration.style
     if (configuration.content) this.content = configuration.content
-    if (configuration.position) this.position = configuration.position
     if (configuration.stroke) this.stroke = configuration.stroke
   }
 
@@ -173,8 +174,7 @@ export class Circle extends Graphic {
   public fill   : boolean
 
   constructor (configuration) {
-    super()
-    if (configuration.position) this.position = configuration.position
+    super(configuration)
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke
@@ -218,10 +218,9 @@ export class Arc extends Graphic {
   public lineColor: string  = '#000'
 
   constructor  (configuration){
-    super()
+    super(configuration)
     if (configuration.stroke) this.stroke = configuration.stroke
     if (configuration.color) this.color = configuration.color
-    if (configuration.position) this.position = configuration.position
     if (configuration.radius) this.radius = configuration.radius
     if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
     if (configuration.eAngl) this.eAngl = configuration.eAngl
@@ -264,4 +263,3 @@ export class Group {
     this.context.restore()
   }
 }
-
