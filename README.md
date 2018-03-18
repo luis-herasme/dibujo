@@ -19,6 +19,40 @@ npm install dibujo
   after you have created the first  dibujo instance you can create a scene but if you don't create a scene and add graphics to dibujo     dibujo will use it's default scene to render the graphics you add.
 </p>
 
+
+## Scene
+<p>
+  A scene is a group of graphic objects, when you create a scene you can specify the background color 
+  of the scene for example:
+</p>
+
+```javascript
+const scene = new dibujo.Scene('#FF00FF')
+```
+
+<p>
+  When you create a scene you can add graphics to the scene
+</p>
+
+```javascript
+  const rect = new dibujo.Graphic.Rect({
+    position: {x: 10, y: 10},
+    width: 100,
+    height: 100,
+    color: 'blue'
+  })
+  
+  scene.add(rect)
+```
+
+<p>
+  And to see the scene the scene must be rendered so you have to add the scene to render in this way:
+</p>
+
+```javascript
+ render.setScene(scene)
+```
+
 ## Graphics
 <p>
   There are several kinds of Graphic objects and when you create a new graphic you have to chosse one of them
