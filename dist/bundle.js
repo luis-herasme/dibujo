@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["Dibujo"] = factory();
+		exports["dibujo"] = factory();
 	else
-		root["Dibujo"] = factory();
+		root["dibujo"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -70,11 +70,38 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Graphic = (function () {
+    function Graphic(data) {
+        if (data.position)
+            this.position = data.position;
+        if (data.anchor)
+            this.anchor = data.anchor;
+        if (data.z_index)
+            this.z_index = data.z_index;
+    }
+    Graphic.prototype.setStyle = function (styles) {
+        for (var style in styles) {
+            this.context[style] = styles[style];
+        }
+    };
+    Graphic.prototype.render = function () { };
+    return Graphic;
+}());
+exports.__esModule = true;
+exports["default"] = Graphic;
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,20 +216,24 @@ exports["default"] = Vector2D;
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(0);
+var Vector2D_1 = __webpack_require__(1);
 var Scene = (function () {
-    function Scene() {
+    function Scene(background) {
         this.childs = [];
         this.following = false;
         this.translation = new Vector2D_1["default"](0, 0);
+        this.backgroundColor = '#000';
+        this.organized = true;
+        this.backgroundColor = background;
     }
     Scene.prototype.add = function (element) {
         element.context = this.context;
+        this.organized = false;
         this.childs.push(element);
     };
     Scene.prototype.remove = function (element) {
@@ -239,6 +270,11 @@ var Scene = (function () {
         this.translation.y -= y;
         this.context.translate(-x, -y);
     };
+    Scene.prototype.organize_children = function () {
+        this.childs.sort(function (a, b) {
+            return a.z_index - b.z_index;
+        });
+    };
     Scene.prototype.update = function () {
         this.clear(this.backgroundColor);
         if (this.following) {
@@ -246,6 +282,9 @@ var Scene = (function () {
             this.temp = this.followed.copy();
             this.translate(-change.x, 0); /* -change.y To enable y following */
         }
+        if (!this.organized)
+            this.organize_children();
+        this.organized = true;
         this.childs.forEach(function (child) { return child.render(); });
     };
     return Scene;
@@ -255,7 +294,7 @@ exports["default"] = Scene;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -264,28 +303,40 @@ var defaultCss = document.createElement('style');
 defaultCss.type = 'text/css';
 defaultCss.innerHTML = "\n* {\n  margin:0%;\n  padding: 0%;\n}\ncanvas {\n  display: block;\n}\n";
 document.body.appendChild(defaultCss);
-var Scene_1 = __webpack_require__(1);
+var Scene_1 = __webpack_require__(2);
 exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(3);
+var Render_1 = __webpack_require__(4);
 exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(4);
-exports.Sprite = Sprite_1["default"];
-var Graphic = __webpack_require__(5);
-exports.Graphic = Graphic;
-var Animation_1 = __webpack_require__(6);
+var Graphic_1 = __webpack_require__(0);
+exports.Graphic = Graphic_1["default"];
+var Animation_1 = __webpack_require__(5);
 exports.Animation = Animation_1["default"];
-var Color_1 = __webpack_require__(7);
+var Rect_1 = __webpack_require__(6);
+exports.Rect = Rect_1["default"];
+var Circle_1 = __webpack_require__(7);
+exports.Circle = Circle_1["default"];
+var Line_1 = __webpack_require__(8);
+exports.Line = Line_1["default"];
+var Poligon_1 = __webpack_require__(9);
+exports.Poligon = Poligon_1["default"];
+var Picture_1 = __webpack_require__(10);
+exports.Picture = Picture_1["default"];
+var Text_1 = __webpack_require__(11);
+exports.Text = Text_1["default"];
+var Arc_1 = __webpack_require__(12);
+exports.Arc = Arc_1["default"];
+var Color_1 = __webpack_require__(13);
 exports.Color = Color_1["default"];
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(0);
-var Scene_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(1);
+var Scene_1 = __webpack_require__(2);
 var Render = (function () {
     function Render(canvas, width, height) {
         var _this = this;
@@ -353,328 +404,7 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* global Image */
-
-var Vector2D = (function () {
-    function Vector2D(x, y) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        this.x = x;
-        this.y = y;
-    }
-    return Vector2D;
-}());
-var Sprite = (function () {
-    function Sprite(src, position, scale, rotation, anchor) {
-        if (position === void 0) { position = new Vector2D(); }
-        if (scale === void 0) { scale = new Vector2D(1, 1); }
-        if (rotation === void 0) { rotation = 0; }
-        if (anchor === void 0) { anchor = new Vector2D(0.5, 0.5); }
-        this.load(src);
-        this.position = position;
-        this.scale = scale;
-        this.anchor = anchor;
-        this.rotation = rotation;
-    }
-    Sprite.prototype.load = function (src) {
-        this.image = new Image();
-        this.image.src = src;
-    };
-    Sprite.prototype.getSize = function () {
-        var realSize = new Vector2D(this.scale.x * this.image.width, this.scale.y * this.image.height);
-        return realSize;
-    };
-    Sprite.prototype.render = function () {
-        this.context.save();
-        this.context.translate(this.position.x, this.position.y);
-        this.context.rotate(this.rotation);
-        var realWidth = this.scale.x * this.image.width;
-        var realHeight = this.scale.y * this.image.height;
-        this.context.drawImage(this.image, -(realWidth * this.anchor.x), -(realHeight * this.anchor.y), realWidth, realHeight);
-        this.context.restore();
-    };
-    return Sprite;
-}());
-exports.__esModule = true;
-exports["default"] = Sprite;
-
-
-/***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* globla Image */
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Vector2D_1 = __webpack_require__(0);
-var Point = (function () {
-    function Point(x, y) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        this.x = x;
-        this.y = y;
-    }
-    return Point;
-}());
-var Graphic = (function () {
-    function Graphic() {
-    }
-    Graphic.prototype.setStyle = function (styles) {
-        for (var style in styles) {
-            this.context[style] = styles[style];
-        }
-    };
-    Graphic.prototype.render = function () { };
-    return Graphic;
-}());
-exports.Graphic = Graphic;
-var Picture = (function (_super) {
-    __extends(Picture, _super);
-    function Picture(data) {
-        var _this = _super.call(this) || this;
-        _this.width = 1;
-        _this.height = 1;
-        _this.image = new Image();
-        _this.position = data.position;
-        _this.width = data.width;
-        _this.height = data.height;
-        _this.image.src = data.src;
-        return _this;
-    }
-    Picture.prototype.render = function () {
-        this.context.beginPath();
-        this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-    };
-    return Picture;
-}(Graphic));
-exports.Picture = Picture;
-var Rect = (function (_super) {
-    __extends(Rect, _super);
-    function Rect(data) {
-        var _this = _super.call(this) || this;
-        _this.color = '#FFFFFF';
-        _this.width = 1;
-        _this.height = 1;
-        _this.fill = true;
-        _this.stroke = false;
-        _this.strokeColor = '#000000';
-        if (data.color)
-            _this.color = data.color;
-        if (data.position)
-            _this.position = data.position;
-        if (data.width)
-            _this.width = data.width;
-        if (data.height)
-            _this.height = data.height;
-        if (data.fill)
-            _this.fill = data.fill;
-        if (data.stroke)
-            _this.stroke = data.stroke;
-        if (data.strokeColor)
-            _this.strokeColor = data.strokeColor;
-        return _this;
-    }
-    Rect.prototype.render = function () {
-        this.context.fillStyle = this.color;
-        this.context.beginPath();
-        if (this.fill) {
-            this.context.fillRect(this.position.x, this.position.y, this.width, this.height);
-        }
-        if (this.stroke) {
-            this.context.strokeRect(this.position.x, this.position.y, this.width, this.height);
-        }
-    };
-    return Rect;
-}(Graphic));
-exports.Rect = Rect;
-var Line = (function (_super) {
-    __extends(Line, _super);
-    function Line(start, end, color) {
-        var _this = _super.call(this) || this;
-        _this.start = { x: 0, y: 0 };
-        _this.end = { x: 1, y: 1 };
-        if (start)
-            _this.start = start;
-        if (end)
-            _this.end = end;
-        if (color)
-            _this.color = color;
-        return _this;
-    }
-    Line.prototype.render = function () {
-        this.context.beginPath();
-        this.context.moveTo(this.start.x, this.start.y);
-        this.context.lineTo(this.end.x, this.end.y);
-        this.context.stroke();
-    };
-    return Line;
-}(Graphic));
-exports.Line = Line;
-var Poligon = (function (_super) {
-    __extends(Poligon, _super);
-    function Poligon(configuration) {
-        var _this = _super.call(this) || this;
-        _this.fill = true;
-        _this.stroke = false;
-        _this.color = '#FFF';
-        _this.strokeColor = '#000';
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        if (configuration.cords)
-            _this.cords = configuration.cords;
-        if (configuration.fill)
-            _this.fill = configuration.fill;
-        if (configuration.strokeColor)
-            _this.strokeColor = configuration.strokeColor;
-        return _this;
-    }
-    Poligon.prototype.render = function () {
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.moveTo(this.cords[0].x, this.cords[0].y);
-        for (var i = 0; i < this.cords.length; i++) {
-            this.context.lineTo(this.cords[i].x, this.cords[i].y);
-        }
-        this.context.closePath();
-        this.context.fill();
-        if (this.stroke)
-            this.context.stroke;
-    };
-    return Poligon;
-}(Graphic));
-exports.Poligon = Poligon;
-var Text = (function (_super) {
-    __extends(Text, _super);
-    function Text(configuration) {
-        var _this = _super.call(this) || this;
-        if (configuration.style)
-            _this.style = configuration.style;
-        if (configuration.content)
-            _this.content = configuration.content;
-        if (configuration.position)
-            _this.position = configuration.position;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        return _this;
-    }
-    Text.prototype.render = function () {
-        this.setStyle(this.style);
-        if (this.stroke) {
-            this.context.strokeText(this.content, this.position.x, this.position.y);
-        }
-        this.context.fillText(this.content, this.position.x, this.position.y);
-    };
-    return Text;
-}(Graphic));
-exports.Text = Text;
-var Circle = (function (_super) {
-    __extends(Circle, _super);
-    function Circle(configuration) {
-        var _this = _super.call(this) || this;
-        _this.lineWidth = 1;
-        if (configuration.position)
-            _this.position = configuration.position;
-        if (configuration.radius)
-            _this.radius = configuration.radius;
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
-        if (configuration.lineWidth)
-            _this.lineWidth = configuration.lineWidth;
-        if (configuration.lineColor)
-            _this.lineColor = configuration.lineColor;
-        if (configuration.fill)
-            _this.fill = configuration.fill;
-        return _this;
-    }
-    Circle.prototype.onClick = function (func) {
-        var _this = this;
-        var f = func.bind(this);
-        document.addEventListener('click', function (event) {
-            var mouse = new Vector2D_1["default"](event.clientX, event.clientY);
-            var position = new Vector2D_1["default"](_this.position.x, _this.position.y);
-            mouse.sub(position);
-            if (mouse.mag() < _this.radius) {
-                f();
-            }
-        });
-    };
-    Circle.prototype.render = function () {
-        this.context.beginPath();
-        this.context.fillStyle = this.color;
-        this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        this.context.fill();
-        if (this.stroke) {
-            this.context.lineWidth = this.lineWidth;
-            this.context.strokeStyle = this.lineColor;
-            this.context.stroke();
-        }
-    };
-    return Circle;
-}(Graphic));
-exports.Circle = Circle;
-var Arc = (function (_super) {
-    __extends(Arc, _super);
-    function Arc(configuration) {
-        var _this = _super.call(this) || this;
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.position)
-            _this.position = configuration.position;
-        if (configuration.radius)
-            _this.radius = configuration.radius;
-        if (configuration.lineWidth)
-            _this.lineWidth = configuration.lineWidth;
-        if (configuration.eAngl)
-            _this.eAngl = configuration.eAngl;
-        if (configuration.aAngl)
-            _this.aAngl = configuration.aAngl;
-        return _this;
-    }
-    Arc.prototype.render = function () {
-        this.context.beginPath();
-        this.context.strokeStyle = this.color;
-        this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true);
-        this.context.lineWidth = this.lineWidth;
-        this.context.stroke();
-    };
-    return Arc;
-}(Graphic));
-exports.Arc = Arc;
-var Group = (function () {
-    function Group() {
-        this.childs = [];
-    }
-    Group.prototype.add = function (child) {
-        this.childs.push(child);
-    };
-    Group.prototype.render = function () {
-        this.context.save();
-        this.context.scale(this.scale.x, this.scale.y);
-        this.context.rotate(this.rotation);
-        this.context.translate(this.position.x, this.position.y);
-        this.childs.forEach(function (child) { return child.render(); });
-        this.context.restore();
-    };
-    return Group;
-}());
-exports.Group = Group;
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -743,7 +473,339 @@ exports["default"] = Animation;
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Rect = (function (_super) {
+    __extends(Rect, _super);
+    function Rect(data) {
+        var _this = _super.call(this, data) || this;
+        _this.color = '#FFFFFF';
+        _this.width = 1;
+        _this.height = 1;
+        _this.lineWidth = 1;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.lineColor = '#000000';
+        if (data.color)
+            _this.color = data.color;
+        if (data.width)
+            _this.width = data.width;
+        if (data.height)
+            _this.height = data.height;
+        if (data.fill)
+            _this.fill = data.fill;
+        if (data.stroke)
+            _this.stroke = data.stroke;
+        if (data.lineWidth)
+            _this.lineWidth = data.lineWidth;
+        if (data.lineColor)
+            _this.lineColor = data.lineColor;
+        return _this;
+    }
+    Rect.prototype.render = function () {
+        this.context.fillStyle = this.color;
+        this.context.beginPath();
+        if (this.fill) {
+            this.context.fillRect(this.position.x, this.position.y, this.width, this.height);
+        }
+        if (this.stroke) {
+            this.context.strokeStyle = this.lineColor;
+            this.context.lineWidth = this.lineWidth;
+            this.context.strokeRect(this.position.x, this.position.y, this.width, this.height);
+        }
+    };
+    return Rect;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Rect;
+
+
+/***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Vector2D_1 = __webpack_require__(1);
+var Circle = (function (_super) {
+    __extends(Circle, _super);
+    function Circle(configuration) {
+        var _this = _super.call(this, configuration) || this;
+        _this.lineWidth = 1;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.lineColor)
+            _this.lineColor = configuration.lineColor;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        return _this;
+    }
+    Circle.prototype.onClick = function (func) {
+        var _this = this;
+        var f = func.bind(this);
+        document.addEventListener('click', function (event) {
+            var mouse = new Vector2D_1["default"](event.clientX, event.clientY);
+            var position = new Vector2D_1["default"](_this.position.x, _this.position.y);
+            mouse.sub(position);
+            if (mouse.mag() < _this.radius) {
+                f();
+            }
+        });
+    };
+    Circle.prototype.render = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+        this.context.fill();
+        if (this.stroke) {
+            this.context.lineWidth = this.lineWidth;
+            this.context.strokeStyle = this.lineColor;
+            this.context.stroke();
+        }
+    };
+    return Circle;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Circle;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Line = (function (_super) {
+    __extends(Line, _super);
+    function Line(data) {
+        var _this = _super.call(this, data) || this;
+        _this.start = { x: 0, y: 0 };
+        _this.end = { x: 1, y: 1 };
+        if (data.start)
+            _this.start = data.start;
+        if (data.end)
+            _this.end = data.end;
+        if (data.color)
+            _this.color = data.color;
+        return _this;
+    }
+    Line.prototype.render = function () {
+        this.context.beginPath();
+        this.context.moveTo(this.start.x, this.start.y);
+        this.context.lineTo(this.end.x, this.end.y);
+        this.context.stroke();
+    };
+    return Line;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Line;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Poligon = (function (_super) {
+    __extends(Poligon, _super);
+    function Poligon(configuration) {
+        var _this = _super.call(this, configuration) || this;
+        _this.fill = true;
+        _this.stroke = false;
+        _this.color = '#FFF';
+        _this.strokeColor = '#000';
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.cords)
+            _this.cords = configuration.cords;
+        if (configuration.fill)
+            _this.fill = configuration.fill;
+        if (configuration.strokeColor)
+            _this.strokeColor = configuration.strokeColor;
+        return _this;
+    }
+    Poligon.prototype.render = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.moveTo(this.cords[0].x, this.cords[0].y);
+        for (var i = 0; i < this.cords.length; i++) {
+            this.context.lineTo(this.cords[i].x, this.cords[i].y);
+        }
+        this.context.closePath();
+        this.context.fill();
+        if (this.stroke)
+            this.context.stroke;
+    };
+    return Poligon;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Poligon;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* global Image */
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+/*
+interface Image {
+  src: string
+}
+*/
+var Graphic_1 = __webpack_require__(0);
+var Picture = (function (_super) {
+    __extends(Picture, _super);
+    function Picture(data) {
+        var _this = _super.call(this, data) || this;
+        _this.width = 1;
+        _this.height = 1;
+        _this.image = new Image();
+        _this.width = data.width;
+        _this.height = data.height;
+        _this.image.src = data.src;
+        return _this;
+    }
+    Picture.prototype.render = function () {
+        this.context.beginPath();
+        this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+    };
+    return Picture;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Picture;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Text = (function (_super) {
+    __extends(Text, _super);
+    function Text(configuration) {
+        var _this = _super.call(this, configuration) || this;
+        if (configuration.style)
+            _this.style = configuration.style;
+        if (configuration.content)
+            _this.content = configuration.content;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        return _this;
+    }
+    Text.prototype.render = function () {
+        this.setStyle(this.style);
+        if (this.stroke) {
+            this.context.strokeText(this.content, this.position.x, this.position.y);
+        }
+        this.context.fillText(this.content, this.position.x, this.position.y);
+    };
+    return Text;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Text;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Graphic_1 = __webpack_require__(0);
+var Arc = (function (_super) {
+    __extends(Arc, _super);
+    function Arc(configuration) {
+        var _this = _super.call(this, configuration) || this;
+        _this.lineColor = '#000';
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.color)
+            _this.color = configuration.color;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.lineWidth)
+            _this.lineWidth = configuration.lineWidth;
+        if (configuration.eAngl)
+            _this.eAngl = configuration.eAngl;
+        if (configuration.aAngl)
+            _this.aAngl = configuration.aAngl;
+        if (configuration.lineColor)
+            _this.lineColor = configuration.lineColor;
+        return _this;
+    }
+    Arc.prototype.render = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true);
+        if (this.stroke) {
+            this.context.strokeStyle = this.lineColor;
+            this.context.lineWidth = this.lineWidth;
+            this.context.stroke();
+        }
+    };
+    return Arc;
+}(Graphic_1["default"]));
+exports.__esModule = true;
+exports["default"] = Arc;
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
