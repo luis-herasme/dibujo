@@ -9,6 +9,7 @@ export default class Graphic {
 
   constructor (data) {
     if (data.position) this.position = data.position    
+    if (data.z_index) this.z_index = data.z_index    
   }
 
   setStyle (styles): void {
