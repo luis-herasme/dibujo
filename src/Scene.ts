@@ -5,6 +5,7 @@ import Graphic from './graphics/Graphic'
 
 export default class Scene {
   public context
+
   public renderer         : Render
   public followed         : Vector2D
   public temp             : Vector2D
@@ -14,11 +15,13 @@ export default class Scene {
   public backgroundColor  : string         = '#000000'
   public translation      : Vector2D       = new Vector2D(0, 0)
 
-  constructor (background?: string) {
+  constructor (renderer: Render, background?: string) {
+    this.renderer = renderer
     this.backgroundColor = background
   }
 
   add (element: Graphic): void {
+    if(!this.context) this.context = this.renderer.context
     element.context = this.context
     this.organized = false
     this.childs.push(element)
