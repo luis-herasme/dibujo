@@ -325,7 +325,9 @@ var Text_1 = __webpack_require__(11);
 exports.Text = Text_1["default"];
 var Arc_1 = __webpack_require__(12);
 exports.Arc = Arc_1["default"];
-var Color_1 = __webpack_require__(13);
+var Group_1 = __webpack_require__(13);
+exports.Group = Group_1["default"];
+var Color_1 = __webpack_require__(14);
 exports.Color = Color_1["default"];
 
 
@@ -806,6 +808,33 @@ exports["default"] = Arc;
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Group = (function () {
+    function Group() {
+        this.childs = [];
+    }
+    Group.prototype.add = function (child) {
+        this.childs.push(child);
+    };
+    Group.prototype.render = function () {
+        this.context.save();
+        this.context.scale(this.scale.x, this.scale.y);
+        this.context.rotate(this.rotation);
+        this.context.translate(this.position.x, this.position.y);
+        this.childs.forEach(function (child) { return child.render(); });
+        this.context.restore();
+    };
+    return Group;
+}());
+exports.__esModule = true;
+exports["default"] = Group;
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
