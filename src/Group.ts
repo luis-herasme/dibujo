@@ -2,7 +2,7 @@
 import Graphic from './graphics/Graphic'
 import Point from './Point'
 
-export class Group {
+export default class Group {
   private childs : Array<Graphic> = []
   private context
   public position: Point

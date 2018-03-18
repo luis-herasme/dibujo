@@ -9,7 +9,7 @@ module.exports = {
     // export itself to a global var
     libraryTarget: 'umd',
     // name of the global var: "Foo"
-    library: 'Dibujo'
+    library: 'dibujo'
   },
   resolve: {
     // Add `.ts` and `.tsx` as a resolvable extension.
