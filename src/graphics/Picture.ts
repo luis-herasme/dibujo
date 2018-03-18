@@ -10,8 +10,8 @@ interface Image {
 import Graphic from './Graphic'
 
 export default class Picture extends Graphic {
-  public width  : number  = 1
-  public height : number  = 1
+  public width  : number = 1
+  public height : number = 1
   public image  : Image
 
   constructor (data) {

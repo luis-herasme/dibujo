@@ -11,12 +11,16 @@ export default class Scene {
   public childs      : Array<Graphic> = []
   public following   : boolean  = false
   public translation : Vector2D = new Vector2D(0, 0)
-  public backgroundColor : string
-  public organized   : Boolean = true;
+  public backgroundColor : string = '#000'
+  public organized   : Boolean = true
+
+  constructor (background?: string) {
+    this.backgroundColor = background
+  }
 
   add (element: Graphic): void {
     element.context = this.context
-    this.organized = false;
+    this.organized = false
     this.childs.push(element)
   }
 
@@ -64,7 +68,7 @@ export default class Scene {
 
   organize_children (): void {
     this.childs.sort(function(a,b) :number{
-      return a.z_index - b.z_index;
+      return a.z_index - b.z_index
     })
   }
 
@@ -76,7 +80,7 @@ export default class Scene {
       this.translate(-change.x, 0) /* -change.y To enable y following */
     }
     if(!this.organized) this.organize_children()
-    this.organized = true;
+    this.organized = true
     this.childs.forEach(child => child.render())
   }
 }
