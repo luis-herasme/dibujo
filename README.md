@@ -34,7 +34,6 @@ npm install dibujo
 * Arc
 
 ## Picture
-This function creates an image object
 
 ```javascript
   const picture = new dibujo.Graphic.Picture({
@@ -53,7 +52,6 @@ This function creates an image object
 | height | <code>number</code> | The height |
 
 ## Rect
-This function creates an image object
 
 ```javascript
   const rect = new dibujo.Graphic.Rect({
@@ -70,7 +68,9 @@ This function creates an image object
 | color | <code>string</code> | The color of the rect |
 | width | <code>number</code> | The width |
 | height | <code>number</code> | The height |
-
+| stroke | <code>boolean</code> | Draw stroke |
+| lineColor | <code>number</code> | Stroke color |
+| lineWidth | <code>number</code> | Line width |
 
 ## Point(x, y)
 This function creates an Point object
@@ -82,4 +82,94 @@ This function creates an Point object
 
 <a name="init"></a>
 
+## Text
 
+```javascript
+  const text = new dibujo.Graphic.Text({
+    position: {x: 10, y: 10},
+    content: 'Hello World'
+  })
+```
+
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>Point</code> | The coordinates of the text |
+| content | <code>string</code> | The content |
+| style | <code>object</code> | This is the style of the text |
+
+## Line
+
+```javascript
+  const line = new dibujo.Graphic.Line({
+    start: {x: 10, y: 10},
+    end: {x: 20, y: 20},
+    color: 'blue'
+  })
+```
+
+| Param | Type | Description |
+| --- | --- | --- |
+| start | <code>Point</code> | The start coordinate of the line |
+| end | <code>Point</code> | The end coordinate of the line |
+| color | <code>string</code> | This is the color of the line |
+
+## Poligon
+
+```javascript
+  const poli = new dibujo.Graphic.Poligon({
+    cords: [
+      {x: 10, y: 10},
+      {x: 20, y: 20},
+      {x: 10, y: 20}
+    ],
+    color: 'blue'
+  })
+```
+
+| Param | Type | Description |
+| --- | --- | --- | 
+| cords | <code>Array<Point></code> | Array of the vertex of the poligon |
+| fill | <code>boolean</code> | Fill the poligon |
+| stroke | <code>boolean</code> | Stroke the poligon |
+| strokeColor | <code>string</code> | This is the color of the lines of the poligon |
+| color | <code>string</code> | This is the color of the poligon |
+  
+## Circle
+
+```javascript
+  const circle = new dibujo.Graphic.Circle({
+    position: {x: 10, y: 10},
+    radius: 10,
+    color: 'blue'
+  })
+```
+
+| Param | Type | Description |
+| --- | --- | --- | 
+| position | <code>Point</code> | Position of the circle |
+| radius | <code>number</code> | Radius of the circle |
+| color | <code>string</code> | Color of the circle |
+| stroke | <code>boolean</code> | Show stroke |
+| lineWidth | <code>number</code> | Width of the line |
+| lineColor | <code>string</code> | Color of the line |
+
+## Arc
+
+```javascript
+  const arc = new dibujo.Graphic.Arc({
+    position: {x: 10, y: 10},
+    radius: 10,
+    color: 'blue'
+  })
+```
+
+| Param | Type | Description |
+| --- | --- | --- | 
+| color | <code>string</code> | Color of the arc |
+| position | <code>Point</code> | Position of the arc |
+| radius | <code>number</code> | Radius of the arc |
+| lineWidth | <code>number</code> | Width of the line |
+| stroke | <code>boolean</code> | Show stroke |
+| lineColor | <code>string</code> | Color of the line |
+| eAngl | <code>number</code> | End angle of the arc |
+| aAngl | <code>number</code> | Start angle of the arc |
