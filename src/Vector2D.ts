@@ -1,5 +1,5 @@
 
-class Vector2D {
+class Vector {
   public x: number
   public y: number
 
@@ -8,12 +8,12 @@ class Vector2D {
     this.y = y
   }
 
-  add (vector: Vector2D): void {
+  add (vector: Vector): void {
     this.x += vector.x
     this.y += vector.y
   }
 
-  sub (vector: Vector2D): void {
+  sub (vector: Vector): void {
     this.x -= vector.x
     this.y -= vector.y
   }
@@ -37,20 +37,20 @@ class Vector2D {
     return Math.sqrt(this.x * this.x + this.y * this.y)
   }
 
-  dot (vector: Vector2D): number {
+  dot (vector: Vector): number {
     return this.x * vector.x + this.y * vector.y
   }
 
-  distance (vector: Vector2D): number {
-    return Vector2D.sub(this, vector).mag()
+  distance (vector: Vector): number {
+    return Vector.sub(this, vector).mag()
   }
 
   angle (): number {
     return Math.atan2(this.y, this.x)
   }
 
-  copy (): Vector2D {
-    return new Vector2D(this.x, this.y)
+  copy (): Vector {
+    return new Vector(this.x, this.y)
   }
 
   normalize (): void {
@@ -79,9 +79,9 @@ class Vector2D {
     }
   }
 
-  moveTowards (vector: Vector2D, speed: number, stop: number): void {
+  moveTowards (vector: Vector, speed: number, stop: number): void {
     if (this.distance(vector) > stop) {
-      const unit = Vector2D.normalize(vector)
+      const unit = Vector.normalize(vector)
       unit.mult(speed)
       this.add(unit)
     }
@@ -92,45 +92,45 @@ class Vector2D {
     this.y = 0
   }
 
-  static add (vector1: Vector2D, vector2: Vector2D): Vector2D {
-    return new Vector2D(vector1.x + vector2.x, vector1.y + vector2.y)
+  static add (vector1: Vector, vector2: Vector): Vector {
+    return new Vector(vector1.x + vector2.x, vector1.y + vector2.y)
   }
 
-  static sub (vector1: Vector2D, vector2: Vector2D): Vector2D {
-    return new Vector2D(vector1.x - vector2.x, vector1.y - vector2.y)
+  static sub (vector1: Vector, vector2: Vector): Vector {
+    return new Vector(vector1.x - vector2.x, vector1.y - vector2.y)
   }
 
-  static mult (vector: Vector2D, scalar: number): Vector2D {
-    return new Vector2D(vector.x * scalar, vector.y * scalar)
+  static mult (vector: Vector, scalar: number): Vector {
+    return new Vector(vector.x * scalar, vector.y * scalar)
   }
 
-  static div (vector: Vector2D, scalar: number): Vector2D {
-    return new Vector2D(vector.x / scalar, vector.y / scalar)
+  static div (vector: Vector, scalar: number): Vector {
+    return new Vector(vector.x / scalar, vector.y / scalar)
   }
 
-  static inverse (vector: Vector2D): Vector2D {
-    return new Vector2D(vector.x * -1, vector.y * -1)
+  static inverse (vector: Vector): Vector {
+    return new Vector(vector.x * -1, vector.y * -1)
   }
 
-  static distance (vector1: Vector2D, vector2: Vector2D): number {
+  static distance (vector1: Vector, vector2: Vector): number {
     return this.sub(vector1, vector2).mag()
   }
 
-  static normalize (vector: Vector2D): Vector2D {
+  static normalize (vector: Vector): Vector {
     return this.div(vector, vector.mag())
   }
 
-  static cross (vector1: Vector2D, vector2: Vector2D): number {
+  static cross (vector1: Vector, vector2: Vector): number {
     return vector1.x * vector2.y - vector2.x * vector1.y
   }
 
-  static random (x: number, y: number): Vector2D {
+  static random (x: number, y: number): Vector {
     if (Math.random() > 0.5) {
-      return new Vector2D(x * Math.random(), y * Math.random())
+      return new Vector(x * Math.random(), y * Math.random())
     } else {
-      return new Vector2D(-x * Math.random(), -y * Math.random())
+      return new Vector(-x * Math.random(), -y * Math.random())
     }
   }
 }
 
-export default Vector2D
+export default Vector
