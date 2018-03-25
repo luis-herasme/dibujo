@@ -44,10 +44,8 @@ export default class Render {
     this.scene.remove(element)
   }
 
-  addMultiple (e) {
-    e.forEach((m) => {
-      this.add(m)
-    })
+  addMultiple (e): void {
+    e.forEach((m) => this.add(m))
   }
 
   getWidth (): number {

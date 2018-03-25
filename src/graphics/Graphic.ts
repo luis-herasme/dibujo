@@ -2,16 +2,16 @@
 import Point from '../Point'
 import Vector2D from '../Vector2D'
 
-export default class Graphic {
+class Graphic {
   public context
-  public position: Vector2D
-  public anchor  : Vector2D
-  public z_index : number
+  public position : Vector2D
+  public anchor   : Vector2D
+  public z_index  : number
 
   constructor (data) {
     if (data.position) this.position = data.position    
-    if (data.anchor) this.anchor = data.anchor
-    if (data.z_index) this.z_index = data.z_index    
+    if (data.anchor)   this.anchor   = data.anchor
+    if (data.z_index)  this.z_index  = data.z_index    
   }
 
   setStyle (styles): void {
@@ -22,3 +22,5 @@ export default class Graphic {
 
   render (): void {}
 }
+
+export default Graphic

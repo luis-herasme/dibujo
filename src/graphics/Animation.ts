@@ -1,43 +1,38 @@
-class Vector2D {
-  public x
-  public y
-  constructor (x = 0,y = 0) {
-    this.x = x
-    this.y = y
-  }
-}
 
-class Animation {
-  public position: Vector2D
-  public scale: Vector2D
+import Vector2D from '../Vector2D'
+import Graphic  from './Graphic'
+
+class Animation extends Graphic {
+
+  public scale    : Vector2D
+  public size     : Vector2D
   public frameRate: number
-  public size: Vector2D
-  public loop: boolean = true
+  public loop     : boolean = true
 
-  public x // Current frame
-  public y // Current frame
+  public x        : number // Current frame
+  public y        : number // Current frame
 
-  public context
+  public context  : CanvasRenderingContext2D
   public image
-  public interval
+  public interval 
 
   constructor (
-    src: string,
-    scale: Vector2D = new Vector2D(1, 1),
-    position: Vector2D = new Vector2D(1, 1),
-    frameRate: number = 100,
-    size: Vector2D = new Vector2D(32, 32),
-    loop = true
+    src       : string,
+    scale     : Vector2D = new Vector2D(1, 1),
+    position  : Vector2D = new Vector2D(1, 1),
+    frameRate : number   = 100,
+    size      : Vector2D = new Vector2D(32, 32),
+    loop      : boolean  = true
   ) {
-    this.loop = loop
+    super(position)
     this.load(src)
-    this.size = size
-    this.position = position
-    this.scale = scale
+    this.loop      = loop
+    this.size      = size
+    this.scale     = scale
     this.frameRate = frameRate
-    let frame = new Vector2D(0, 0)
-    this.x = 0
-    this.y = 0
+    let frame      = new Vector2D(0, 0)
+    this.x         = 0
+    this.y         = 0
 
     this.interval = setInterval(() => {
       frame.x += 1
