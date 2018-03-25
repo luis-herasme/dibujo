@@ -6,6 +6,7 @@ export default class Line extends Graphic{
   public color: string
   public start: Point = {x: 0, y: 0}
   public end  : Point = {x: 1, y: 1}
+  public type: string = "line"
 
   constructor (data) {
     super(data)

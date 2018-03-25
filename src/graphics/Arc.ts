@@ -9,6 +9,7 @@ export default class Arc extends Graphic {
   public eAngl: number
   public aAngl: number
   public lineColor: string  = '#000'
+  public type: string = "arc"
 
   constructor  (configuration){
     super(configuration)
