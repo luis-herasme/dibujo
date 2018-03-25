@@ -1,10 +1,11 @@
 
 import Point from '../Point'
+import Vector2D from '../Vector2D'
 
 export default class Graphic {
   public context
-  public position: Point
-  public anchor  : Point
+  public position: Vector2D
+  public anchor  : Vector2D
   public z_index : number
 
   constructor (data) {

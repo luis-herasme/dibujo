@@ -4,10 +4,12 @@ import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
 
 export default class Render {
-  private scene   : Scene
-  private canvas  : HTMLCanvasElement
-  public context : CanvasRenderingContext2D
+
+  private scene    : Scene
+  private canvas   : HTMLCanvasElement
+  public context   : CanvasRenderingContext2D
   public timeFrame : number = 0
+
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
     if (canvas) {
       this.canvas = canvas
