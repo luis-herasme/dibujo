@@ -83,6 +83,7 @@ const scene = new dibujo.Scene('#FF00FF')
 | position | <code>object</code> | This object contains the position of the image |
 | src | <code>string</code> | This will be the location where the image is saved |
 | width | <code>number</code> | The width |
+| opacity | <code>number</code> | The opacity |
 | height | <code>number</code> | The height |
 
 ## Rect

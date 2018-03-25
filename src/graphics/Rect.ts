@@ -20,6 +20,9 @@ export default class Rect extends Graphic {
     if (data.lineWidth) this.lineWidth = data.lineWidth
     if (data.lineColor) this.lineColor = data.lineColor
   }
+
+  onClick (func: Function): void {}
+
   render(): void {
     this.context.fillStyle = this.color
     this.context.beginPath()

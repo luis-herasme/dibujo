@@ -4,15 +4,12 @@ import Graphic  from './Graphic'
 
 class Animation extends Graphic {
 
+  public loop     : boolean = true
   public scale    : Vector2D
   public size     : Vector2D
   public frameRate: number
-  public loop     : boolean = true
-
-  public x        : number // Current frame
-  public y        : number // Current frame
-
-  public context  : CanvasRenderingContext2D
+  public x        : number
+  public y        : number
   public image
   public interval 
 
@@ -56,6 +53,8 @@ class Animation extends Graphic {
       
     }, this.frameRate)
   }
+
+  onClick (func: Function): void {}
 
   load (src: string): void {
     this.image = new Image()

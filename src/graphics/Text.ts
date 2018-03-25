@@ -8,9 +8,9 @@ export default class Text extends Graphic {
 
   constructor (configuration) {
     super(configuration)
-    if (configuration.style) this.style = configuration.style
+    if (configuration.style)   this.style   = configuration.style
     if (configuration.content) this.content = configuration.content
-    if (configuration.stroke) this.stroke = configuration.stroke
+    if (configuration.stroke)  this.stroke  = configuration.stroke
   }
 
   render () :void{

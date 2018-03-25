@@ -3,7 +3,7 @@ import Point from '../Point'
 import Vector2D from '../Vector2D'
 
 class Graphic {
-  public context
+  public context  : CanvasRenderingContext2D
   public position : Vector2D
   public anchor   : Vector2D
   public z_index  : number
