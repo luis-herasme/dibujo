@@ -3,7 +3,7 @@ import Vector2D from './Vector2D'
 import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
 
-export default class Render {
+class Render {
 
   private scene    : Scene
   private canvas   : HTMLCanvasElement
@@ -19,20 +19,20 @@ export default class Render {
     }
 
     if (width && height) {
-      this.canvas.width = width
+      this.canvas.width  = width
       this.canvas.height = height
     } else {
-      this.canvas.width = window.innerWidth
+      this.canvas.width  = window.innerWidth
       this.canvas.height = window.innerHeight
     }
 
     window.addEventListener('resize', () => {
-      this.canvas.width = window.innerWidth
+      this.canvas.width  = window.innerWidth
       this.canvas.height = window.innerHeight
     })
 
     this.context = this.canvas.getContext('2d')
-    const scene = new Scene(this)
+    const scene  = new Scene(this)
     this.setScene(scene)
   }
 
@@ -54,6 +54,12 @@ export default class Render {
 
   getHeight (): number {
     return this.canvas.height
+  }
+
+  getSize (): Vector2D {
+    return new Vector2D(
+      this.canvas.width,
+      this.canvas.height)
   }
 
   getCenter (): Vector2D {
@@ -79,3 +85,5 @@ export default class Render {
     this.scene.smoth(false)
   }
 }
+
+export default Render
