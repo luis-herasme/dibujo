@@ -13,12 +13,14 @@ export default class Line extends Graphic{
     if (data.start) this.start = data.start
     if (data.end)   this.end   = data.end
     if (data.color) this.color = data.color
+    this.position = data.start
+    this.end = new Point(this.end.x - this.start.x, this.end.y - this.start.y)
   }
 
   render (): void {
     this.context.beginPath()
-    this.context.moveTo(this.start.x, this.start.y)
-    this.context.lineTo(this.end.x, this.end.y)
+    this.context.moveTo(this.position.x, this.position.y)
+    this.context.lineTo(this.end.x + this.position.x, this.end.y + this.position.y)
     this.context.stroke()
   }
 }

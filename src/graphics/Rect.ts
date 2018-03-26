@@ -9,6 +9,7 @@ export default class Rect extends Graphic {
   public fill   : boolean = true
   public stroke : boolean = false
   public lineColor: string = '#000000'
+  public type: string = "rect"
 
   constructor (data) {
     super(data)

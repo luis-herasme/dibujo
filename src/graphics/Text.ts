@@ -5,6 +5,7 @@ export default class Text extends Graphic {
   public content : string
   public stroke  : boolean
   public style
+  public type: string = "text"
 
   constructor (configuration) {
     super(configuration)

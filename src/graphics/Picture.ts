@@ -6,6 +6,7 @@ export default class Picture extends Graphic {
   public height  : number = 1
   public opacity : number = 1
   public image
+  public type: string = "img"
 
   constructor (data) {
     super(data)
