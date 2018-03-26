@@ -1,13 +1,23 @@
+
 import Render   from './Render'
 import Vector2D from './Vector2D'
 import Graphic  from './graphics/Graphic'
 import Camera   from './Camera'
 
+/**
+ * This is the detail about the constructor
+ * @class This is the detail about the class
+ * @memberOf namespace
+ * @param {Render} renderer The first argument
+ */
 class Scene {
-  public context
+
+  public context          : CanvasRenderingContext2D
   public camera           : Camera
-  public childs           : Array<Graphic> = []
   public renderer         : Render
+  public childs           : Array<Graphic> = []
+  public frameRate        : number         = 0
+  public interval         : any
 
   constructor (renderer: Render) {
     this.renderer = renderer
@@ -15,19 +25,29 @@ class Scene {
     this.camera   = new Camera(this)
   }
 
-  // Adds an element to the scene
+  /**
+   * This method adds one element to the scene
+   * @param {Graphic} element any graphic object
+   * @returns {void}
+   */
   add (element: Graphic): void {
     element.context = this.context
     this.childs.push(element)
     this.organizeByZindex()
   }
 
-  // Removes an element from the scene
+  /**
+   * Removes an element from the scene
+   * @param {Graphic} element any graphic object
+   * @returns {void}
+   */
   remove (element: Graphic): void {
     this.childs.splice(this.childs.indexOf(element), 1)
   }
 
-  // Removes an element from the scene
+  /**
+   * This method clears the screen
+   */
   clearScreen (): void {
     this.context.save()
     this.context.setTransform(1, 0, 0, 1, 0, 0)
@@ -35,7 +55,10 @@ class Scene {
     this.context.restore()
   }
 
-
+  /**
+   * This method enables or disables the image smoothing
+   * @param {boolean} state enable or disable
+   */
   smoth (state: boolean): void {
     if (this.context.imageSmoothingEnabled) {
       this.context.imageSmoothingEnabled = state
@@ -46,12 +69,31 @@ class Scene {
     }
   }
 
-  // Organizes the childs of the scene by their property z_indez
+  /**
+   * This method organizes the childs of the scene by their property z_indez
+   */
   organizeByZindex (): void {
     this.childs.sort((a,b) => a.z_index - b.z_index)
   }
 
-  update (): void {
+  /**
+   * This method renders the screne ultil you call stopAutoRender
+   */
+  autoRender (): void {
+    this.interval = setInterval(() => this.render(), this.frameRate)
+  }
+
+  /**
+   * This method stops autoRender
+   */
+  stopAutoRender (): void {
+    clearInterval(this.interval)
+  }
+
+  /**
+   * This method renders the screne
+   */
+  render (): void {
     this.clearScreen()
     this.childs.forEach(child => child.render())
     this.camera.update()

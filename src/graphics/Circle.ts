@@ -10,7 +10,7 @@ class Circle extends Graphic {
   public stroke    : boolean = false
   public fill      : boolean = true
 
-  constructor (configuration) {
+  constructor (configuration: any) {
     super(configuration)
     if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
     if (configuration.lineColor) this.lineColor = configuration.lineColor

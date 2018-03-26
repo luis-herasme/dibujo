@@ -2,7 +2,7 @@ import Vector2D from '../Vector2D'
 import Graphic  from './Graphic'
 import Events   from '../Events'
 
-class Animation extends Graphic implements Events {
+class Animation extends Graphic {
 
   public loop     : boolean = true
   public scale    : Vector2D
@@ -10,8 +10,8 @@ class Animation extends Graphic implements Events {
   public frameRate: number
   public x        : number
   public y        : number
-  public image
-  public interval 
+  public image    : HTMLImageElement
+  public interval : any
 
   constructor (
     src       : string,

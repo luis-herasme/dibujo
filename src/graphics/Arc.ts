@@ -11,7 +11,7 @@ export default class Arc extends Graphic {
   public lineColor: string  = '#000'
   public type     : string = "arc"
 
-  constructor  (configuration){
+  constructor  (configuration: any){
     super(configuration)
     if (configuration.stroke) this.stroke = configuration.stroke
     if (configuration.color) this.color = configuration.color

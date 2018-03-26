@@ -4,7 +4,7 @@ import Point from './Point'
 
 export default class Group {
   private childs : Array<Graphic> = []
-  private context
+  private context: CanvasRenderingContext2D
   public position: Point
   public scale   : Point
   public rotation: number

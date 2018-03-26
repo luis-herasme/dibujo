@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "typedoc": "^0.11.1",
     "webpack": "^3.6.0",
     "yargs": "^9.0.1"
   }

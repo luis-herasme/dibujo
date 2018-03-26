@@ -9,7 +9,7 @@ class Rect extends Graphic {
   public stroke    : boolean = false
   public lineColor : string  = '#000000'
 
-  constructor (data) {
+  constructor (data: any) {
     super(data)
     if (data.color)  this.color = data.color
     if (data.width)  this.width = data.width

@@ -24,7 +24,7 @@ class Color {
     else if (this.alpha < 0) this.alpha = 0
   }
 
-  setRed (color) {
+  setRed (color: number) {
     if (color > 255) {
       this.red = 255
     } else if (color < 0) {
@@ -34,7 +34,7 @@ class Color {
     }
   }
 
-  setGree (color) {
+  setGree (color: number) {
     if (color > 255) {
       this.green = 255
     } else if (color < 0) {
@@ -44,7 +44,7 @@ class Color {
     }
   }
 
-  setBlue (color) {
+  setBlue (color: number) {
     if (color > 255) {
       this.blue = 255
     } else if (color < 0) {

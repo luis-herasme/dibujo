@@ -1,6 +1,7 @@
 import Vector2D from './Vector2D'
 import Graphic  from './graphics/Graphic'
 import Scene    from './Scene'
+import Mouse    from './Mouse'
 
 class Camera {
   public context          : CanvasRenderingContext2D
@@ -10,7 +11,7 @@ class Camera {
   public translation      : Vector2D = new Vector2D(0, 0)
   public followedPosition : Vector2D
   public fLastPosition    : Vector2D
-  public mouse
+  public mouse            : Mouse            
 
   public keyMap = {
     up   : 'w',
@@ -21,26 +22,7 @@ class Camera {
 
   constructor (scene: Scene) {
     this.context = scene.context
-
-    this.mouse = {
-      velocity:     new Vector2D(0, 0),
-      acceleration: new Vector2D(0, 0),
-      friction:     0.9,
-    
-      x: 0,
-      y: 0,
-    
-      update () {
-        this.velocity.add(this.acceleration)
-        this.context.translate(this.velocity.x, this.velocity.y)
-        this.velocity.mult(this.friction)
-        this.acceleration.zero()
-      },
-    
-      addForce(force) {
-        this.acceleration.add(force)
-      }
-    }
+    this.mouse = new Mouse(this.context)
   }
 
   enable () {

@@ -3,15 +3,14 @@ import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
 
 class Render {
-  private scene    : Scene
-  private canvas   : HTMLCanvasElement
-  public context   : CanvasRenderingContext2D
-  public frameRate : number = 0
+  public scene    : Scene
+  public canvas   : HTMLCanvasElement
+  public context  : CanvasRenderingContext2D
 
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
-    if (canvas) {
-      this.canvas = canvas
-    } else {
+
+    if (canvas) this.canvas = canvas
+    else {
       this.canvas = document.createElement('canvas')
       document.body.appendChild(this.canvas)
     }
@@ -42,7 +41,7 @@ class Render {
     this.scene.remove(element)
   }
 
-  addMultiple (e): void {
+  addMultiple (e: Array<Graphic>): void {
     e.forEach((m) => this.add(m))
   }
 
@@ -67,16 +66,10 @@ class Render {
   }
 
   render () {
-    this.scene.update()
+    this.scene.render()
   }
 
-  update () {
-    setInterval(() => {
-      this.render()
-    }, this.frameRate)
-  }
-
-  setScene (scene): void {
+  setScene (scene: Scene): void {
     this.scene = scene
     this.scene.renderer = this
     this.scene.context = this.context

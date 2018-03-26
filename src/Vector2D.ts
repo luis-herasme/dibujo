@@ -1,5 +1,6 @@
 
-class Vector {
+
+export default class Vector {
   public x: number
   public y: number
 
@@ -62,7 +63,7 @@ class Vector {
     this.mult(mag)
   }
 
-  setAngle (angle): void {
+  setAngle (angle: number): void {
     const magnitude = this.mag()
 
     this.x = magnitude * Math.cos(angle)
@@ -132,5 +133,3 @@ class Vector {
     }
   }
 }
-
-export default Vector

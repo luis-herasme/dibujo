@@ -5,9 +5,9 @@ export default class Picture extends Graphic {
   public width   : number = 1
   public height  : number = 1
   public opacity : number = 1
-  public image
+  public image   : HTMLImageElement
 
-  constructor (data) {
+  constructor (data: any) {
     super(data)
     this.image     = new Image()
     this.image.src = data.src

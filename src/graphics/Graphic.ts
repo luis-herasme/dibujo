@@ -3,18 +3,18 @@ import Point from '../Point'
 import Vector2D from '../Vector2D'
 
 class Graphic {
-  public context  : CanvasRenderingContext2D
+  public context  : any
   public position : Vector2D
   public anchor   : Vector2D
   public z_index  : number
 
-  constructor (data) {
+  constructor (data: any) {
     if (data.position) this.position = data.position    
     if (data.anchor)   this.anchor   = data.anchor
     if (data.z_index)  this.z_index  = data.z_index    
   }
 
-  setStyle (styles): void {
+  setStyle (styles: any): void {
     for (let style in styles) {
       this.context[style] = styles[style]
     }

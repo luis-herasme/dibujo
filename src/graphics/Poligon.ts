@@ -9,7 +9,7 @@ export default class Poligon extends Graphic {
   public color      : string  = '#FFF'
   public strokeColor: string  = '#000'
 
-  constructor (configuration) {
+  constructor (configuration: any) {
     super(configuration)
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke

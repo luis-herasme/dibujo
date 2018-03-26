@@ -8,7 +8,7 @@ export default class Line extends Graphic{
   public end  : Point = {x: 1, y: 1}
   public type: string = "line"
 
-  constructor (data) {
+  constructor (data: any) {
     super(data)
     if (data.start) this.start = data.start
     if (data.end)   this.end   = data.end

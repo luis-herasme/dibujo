@@ -3,9 +3,9 @@ import Graphic from './Graphic'
 class Text extends Graphic {
   public content : string
   public stroke  : boolean
-  public style
+  public style   : any
 
-  constructor (configuration) {
+  constructor (configuration: any) {
     super(configuration)
     if (configuration.style)   this.style   = configuration.style
     if (configuration.content) this.content = configuration.content
