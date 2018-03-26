@@ -1,6 +1,6 @@
 
 import Graphic from './Graphic'
-import Vector2D from '../Vector2D'
+import Vector from '../Vector'
 
 class Circle extends Graphic {
   public radius    : number  = 5
@@ -24,8 +24,8 @@ class Circle extends Graphic {
   onClick (func: Function): void {
     const f = func.bind(this)
     document.addEventListener('click', (event) => {
-      const mouse = new Vector2D(event.clientX, event.clientY)
-      const position = new Vector2D(this.position.x, this.position.y)
+      const mouse = new Vector(event.clientX, event.clientY)
+      const position = new Vector(this.position.x, this.position.y)
       mouse.sub(position)
       if (mouse.mag() < this.radius) {
         f()

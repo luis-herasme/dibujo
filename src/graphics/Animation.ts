@@ -1,12 +1,12 @@
-import Vector2D from '../Vector2D'
+import Vector   from '../Vector'
 import Graphic  from './Graphic'
 import Events   from '../Events'
 
 class Animation extends Graphic {
 
   public loop     : boolean = true
-  public scale    : Vector2D
-  public size     : Vector2D
+  public scale    : Vector
+  public size     : Vector
   public frameRate: number
   public x        : number
   public y        : number
@@ -15,10 +15,10 @@ class Animation extends Graphic {
 
   constructor (
     src       : string,
-    scale     : Vector2D = new Vector2D(1, 1),
-    position  : Vector2D = new Vector2D(1, 1),
+    scale     : Vector = new Vector(1, 1),
+    position  : Vector = new Vector(1, 1),
     frameRate : number   = 100,
-    size      : Vector2D = new Vector2D(32, 32),
+    size      : Vector = new Vector(32, 32),
     loop      : boolean  = true
   ) {
     super(position)
@@ -27,7 +27,7 @@ class Animation extends Graphic {
     this.size      = size
     this.scale     = scale
     this.frameRate = frameRate
-    let frame      = new Vector2D(0, 0)
+    let frame      = new Vector(0, 0)
     this.x         = 0
     this.y         = 0
 
@@ -66,7 +66,7 @@ class Animation extends Graphic {
   }
 
   getSize () {
-    return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y)
+    return new Vector(this.size.x * this.scale.x, this.size.y * this.scale.y)
   }
 
   render () {

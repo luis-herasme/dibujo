@@ -1,4 +1,3 @@
-
 interface Events {
   type: string,
   mouseDown(func: Function): void,

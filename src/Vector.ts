@@ -1,6 +1,4 @@
-
-
-export default class Vector {
+class Vector {
   public x: number
   public y: number
 
@@ -133,3 +131,5 @@ export default class Vector {
     }
   }
 }
+
+export default Vector

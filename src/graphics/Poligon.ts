@@ -1,9 +1,8 @@
-
 import Graphic from './Graphic'
-import Point from '../Point'
+import Vector  from '../Vector'
 
-export default class Poligon extends Graphic {
-  public cords      : Array<Point>
+class Poligon extends Graphic {
+  public cords      : Array<Vector>
   public fill       : boolean = true
   public stroke     : boolean = false
   public color      : string  = '#FFF'
@@ -20,7 +19,7 @@ export default class Poligon extends Graphic {
     if (configuration.strokeColor) this.strokeColor = configuration.strokeColor
     this.position = configuration.cords.slice[0]
     this.cords.filter((pnt) => {
-      return new Point(pnt.x - this.position.x, pnt.y - this.position.y)
+      return new Vector(pnt.x - this.position.x, pnt.y - this.position.y)
     })
   }
 
@@ -37,3 +36,5 @@ export default class Poligon extends Graphic {
     if (this.stroke) this.context.stroke
   }
 }
+
+export default Poligon

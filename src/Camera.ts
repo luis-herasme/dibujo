@@ -1,4 +1,4 @@
-import Vector2D from './Vector2D'
+import Vector   from './Vector'
 import Graphic  from './graphics/Graphic'
 import Scene    from './Scene'
 import Mouse    from './Mouse'
@@ -8,10 +8,10 @@ class Camera {
   public followingX       : boolean  = false
   public followingY       : boolean  = false
 
-  public translation      : Vector2D = new Vector2D(0, 0)
-  public followedPosition : Vector2D
-  public fLastPosition    : Vector2D
-  public mouse            : Mouse            
+  public translation      : Vector = new Vector(0, 0)
+  public followedPosition : Vector
+  public fLastPosition    : Vector
+  public mouse            : Mouse
 
   public keyMap = {
     up   : 'w',
@@ -36,16 +36,16 @@ class Camera {
     document.addEventListener('keypress', (e) => {
 
       if (e.key.toLowerCase() === this.keyMap.up) {
-        this.mouse.addForce(new Vector2D(0, 10))
+        this.mouse.addForce(new Vector(0, 10))
       }
       if (e.key.toLowerCase() === this.keyMap.down) {
-        this.mouse.addForce(new Vector2D(0, -10))
+        this.mouse.addForce(new Vector(0, -10))
       }
       if (e.key.toLowerCase() === this.keyMap.left) {
-        this.mouse.addForce(new Vector2D(10, 0))
+        this.mouse.addForce(new Vector(10, 0))
       }
       if (e.key.toLowerCase() === this.keyMap.right) {
-        this.mouse.addForce(new Vector2D(-10, 0))
+        this.mouse.addForce(new Vector(-10, 0))
       }
 
       /*
@@ -91,7 +91,7 @@ class Camera {
     this.followingY = false
   }
 
-  zoom (where: Vector2D, howMuch: Vector2D): void {
+  zoom (where: Vector, howMuch: Vector): void {
     this.context.translate(where.x, where.y)
     this.context.scale(howMuch.x, howMuch.y)
     this.context.translate(-where.x, -where.y)
@@ -103,7 +103,7 @@ class Camera {
 
   update () {
     if (this.followingX || this.followingY) {
-      const change = Vector2D.sub(this.fLastPosition, this.followedPosition)
+      const change = Vector.sub(this.fLastPosition, this.followedPosition)
       this.fLastPosition = this.followedPosition.copy()
       this.translate(change.x, change.y)
     }

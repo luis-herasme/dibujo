@@ -1,4 +1,3 @@
-
 import Graphic from './Graphic'
 
 export default class Picture extends Graphic {

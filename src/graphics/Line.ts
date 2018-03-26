@@ -1,11 +1,10 @@
-
 import Graphic from './Graphic'
-import Point from '../Point'
+import Vector from '../Vector'
 
-export default class Line extends Graphic{
+ class Line extends Graphic{
   public color: string
-  public start: Point = {x: 0, y: 0}
-  public end  : Point = {x: 1, y: 1}
+  public start: Vector = new Vector(0, 0)
+  public end  : Vector = new Vector(1, 1)
   public type: string = "line"
 
   constructor (data: any) {
@@ -14,7 +13,7 @@ export default class Line extends Graphic{
     if (data.end)   this.end   = data.end
     if (data.color) this.color = data.color
     this.position = data.start
-    this.end = new Point(this.end.x - this.start.x, this.end.y - this.start.y)
+    this.end = new Vector(this.end.x - this.start.x, this.end.y - this.start.y)
   }
 
   render (): void {
@@ -24,3 +23,5 @@ export default class Line extends Graphic{
     this.context.stroke()
   }
 }
+
+export default Line

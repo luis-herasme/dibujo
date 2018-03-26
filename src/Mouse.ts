@@ -1,9 +1,8 @@
-
-import Vector2D from './Vector2D'
+import Vector from './Vector'
 
 class Mouse {
-  private velocity    : Vector2D = new Vector2D(0, 0)
-  private acceleration: Vector2D = new Vector2D(0, 0)
+  private velocity    : Vector = new Vector(0, 0)
+  private acceleration: Vector = new Vector(0, 0)
   private friction    : number   = 0.9
   private context     : CanvasRenderingContext2D
 
@@ -21,7 +20,7 @@ class Mouse {
     this.acceleration.zero()
   }
 
-  addForce(force: Vector2D) {
+  addForce(force: Vector) {
     this.acceleration.add(force)
   }
 }

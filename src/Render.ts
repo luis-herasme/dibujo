@@ -1,4 +1,4 @@
-import Vector2D from './Vector2D'
+import Vector from './Vector'
 import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
 
@@ -53,14 +53,14 @@ class Render {
     return this.canvas.height
   }
 
-  getSize (): Vector2D {
-    return new Vector2D(
+  getSize (): Vector {
+    return new Vector(
       this.canvas.width,
       this.canvas.height)
   }
 
-  getCenter (): Vector2D {
-    return new Vector2D(
+  getCenter (): Vector {
+    return new Vector(
       this.canvas.width / 2,
       this.canvas.height / 2)
   }

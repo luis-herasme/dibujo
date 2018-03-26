@@ -1,11 +1,10 @@
 
-import Point from '../Point'
-import Vector2D from '../Vector2D'
+import Vector from '../Vector'
 
 class Graphic {
   public context  : any
-  public position : Vector2D
-  public anchor   : Vector2D
+  public position : Vector
+  public anchor   : Vector
   public z_index  : number
 
   constructor (data: any) {

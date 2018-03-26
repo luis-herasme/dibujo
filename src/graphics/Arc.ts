@@ -1,7 +1,6 @@
-
 import Graphic from './Graphic'
 
-export default class Arc extends Graphic {
+class Arc extends Graphic {
   public color    : string
   public radius   : number
   public lineWidth: number
@@ -34,3 +33,5 @@ export default class Arc extends Graphic {
     }
   }
 }
+
+export default Arc

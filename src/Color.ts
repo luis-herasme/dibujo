@@ -1,4 +1,3 @@
-
 class Color {
   public red  : number
   public green: number

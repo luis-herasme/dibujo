@@ -1,5 +1,4 @@
-
-var defaultCss = document.createElement('style')
+const defaultCss = document.createElement('style')
 defaultCss.type = 'text/css'
 defaultCss.innerHTML = `
 * {
@@ -29,7 +28,7 @@ import Group from './Group'
 import Color from './Color'
 
 export {
- // Group,
+  Group,
   Color,
   Animation,
   Rect,
