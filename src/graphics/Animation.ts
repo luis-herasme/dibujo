@@ -1,8 +1,8 @@
-
 import Vector2D from '../Vector2D'
 import Graphic  from './Graphic'
+import Events   from '../Events'
 
-class Animation extends Graphic {
+class Animation extends Graphic implements Events {
 
   public loop     : boolean = true
   public scale    : Vector2D
@@ -52,6 +52,10 @@ class Animation extends Graphic {
       this.y = this.size.y * frame.y
       
     }, this.frameRate)
+  }
+
+  mouseDown () {
+    
   }
 
   onClick (func: Function): void {}

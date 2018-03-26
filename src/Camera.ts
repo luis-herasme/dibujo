@@ -1,10 +1,8 @@
-
 import Vector2D from './Vector2D'
 import Graphic  from './graphics/Graphic'
 import Scene    from './Scene'
 
 class Camera {
-
   public context          : CanvasRenderingContext2D
   public followingX       : boolean  = false
   public followingY       : boolean  = false

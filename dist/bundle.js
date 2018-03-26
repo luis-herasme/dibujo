@@ -106,113 +106,113 @@ exports["default"] = Graphic;
 
 "use strict";
 
-var Vector2D = (function () {
-    function Vector2D(x, y) {
+var Vector = (function () {
+    function Vector(x, y) {
         this.x = x;
         this.y = y;
     }
-    Vector2D.prototype.add = function (vector) {
+    Vector.prototype.add = function (vector) {
         this.x += vector.x;
         this.y += vector.y;
     };
-    Vector2D.prototype.sub = function (vector) {
+    Vector.prototype.sub = function (vector) {
         this.x -= vector.x;
         this.y -= vector.y;
     };
-    Vector2D.prototype.mult = function (scalar) {
+    Vector.prototype.mult = function (scalar) {
         this.x *= scalar;
         this.y *= scalar;
     };
-    Vector2D.prototype.div = function (scalar) {
+    Vector.prototype.div = function (scalar) {
         this.x /= scalar;
         this.y /= scalar;
     };
-    Vector2D.prototype.inverse = function () {
+    Vector.prototype.inverse = function () {
         this.x *= -1;
         this.y *= -1;
     };
-    Vector2D.prototype.mag = function () {
+    Vector.prototype.mag = function () {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     };
-    Vector2D.prototype.dot = function (vector) {
+    Vector.prototype.dot = function (vector) {
         return this.x * vector.x + this.y * vector.y;
     };
-    Vector2D.prototype.distance = function (vector) {
-        return Vector2D.sub(this, vector).mag();
+    Vector.prototype.distance = function (vector) {
+        return Vector.sub(this, vector).mag();
     };
-    Vector2D.prototype.angle = function () {
+    Vector.prototype.angle = function () {
         return Math.atan2(this.y, this.x);
     };
-    Vector2D.prototype.copy = function () {
-        return new Vector2D(this.x, this.y);
+    Vector.prototype.copy = function () {
+        return new Vector(this.x, this.y);
     };
-    Vector2D.prototype.normalize = function () {
+    Vector.prototype.normalize = function () {
         this.div(this.mag());
     };
-    Vector2D.prototype.setMag = function (mag) {
+    Vector.prototype.setMag = function (mag) {
         this.normalize();
         this.mult(mag);
     };
-    Vector2D.prototype.setAngle = function (angle) {
+    Vector.prototype.setAngle = function (angle) {
         var magnitude = this.mag();
         this.x = magnitude * Math.cos(angle);
         this.y = magnitude * Math.sin(angle);
     };
-    Vector2D.prototype.addAngle = function (angle) {
+    Vector.prototype.addAngle = function (angle) {
         this.setAngle(this.angle() + angle);
     };
-    Vector2D.prototype.limit = function (scalar) {
+    Vector.prototype.limit = function (scalar) {
         if (this.mag() > scalar) {
             this.setMag(scalar);
         }
     };
-    Vector2D.prototype.moveTowards = function (vector, speed, stop) {
+    Vector.prototype.moveTowards = function (vector, speed, stop) {
         if (this.distance(vector) > stop) {
-            var unit = Vector2D.normalize(vector);
+            var unit = Vector.normalize(vector);
             unit.mult(speed);
             this.add(unit);
         }
     };
-    Vector2D.prototype.zero = function () {
+    Vector.prototype.zero = function () {
         this.x = 0;
         this.y = 0;
     };
-    Vector2D.add = function (vector1, vector2) {
-        return new Vector2D(vector1.x + vector2.x, vector1.y + vector2.y);
+    Vector.add = function (vector1, vector2) {
+        return new Vector(vector1.x + vector2.x, vector1.y + vector2.y);
     };
-    Vector2D.sub = function (vector1, vector2) {
-        return new Vector2D(vector1.x - vector2.x, vector1.y - vector2.y);
+    Vector.sub = function (vector1, vector2) {
+        return new Vector(vector1.x - vector2.x, vector1.y - vector2.y);
     };
-    Vector2D.mult = function (vector, scalar) {
-        return new Vector2D(vector.x * scalar, vector.y * scalar);
+    Vector.mult = function (vector, scalar) {
+        return new Vector(vector.x * scalar, vector.y * scalar);
     };
-    Vector2D.div = function (vector, scalar) {
-        return new Vector2D(vector.x / scalar, vector.y / scalar);
+    Vector.div = function (vector, scalar) {
+        return new Vector(vector.x / scalar, vector.y / scalar);
     };
-    Vector2D.inverse = function (vector) {
-        return new Vector2D(vector.x * -1, vector.y * -1);
+    Vector.inverse = function (vector) {
+        return new Vector(vector.x * -1, vector.y * -1);
     };
-    Vector2D.distance = function (vector1, vector2) {
+    Vector.distance = function (vector1, vector2) {
         return this.sub(vector1, vector2).mag();
     };
-    Vector2D.normalize = function (vector) {
+    Vector.normalize = function (vector) {
         return this.div(vector, vector.mag());
     };
-    Vector2D.cross = function (vector1, vector2) {
+    Vector.cross = function (vector1, vector2) {
         return vector1.x * vector2.y - vector2.x * vector1.y;
     };
-    Vector2D.random = function (x, y) {
+    Vector.random = function (x, y) {
         if (Math.random() > 0.5) {
-            return new Vector2D(x * Math.random(), y * Math.random());
+            return new Vector(x * Math.random(), y * Math.random());
         }
         else {
-            return new Vector2D(-x * Math.random(), -y * Math.random());
+            return new Vector(-x * Math.random(), -y * Math.random());
         }
     };
-    return Vector2D;
+    return Vector;
 }());
 exports.__esModule = true;
-exports["default"] = Vector2D;
+exports["default"] = Vector;
 
 
 /***/ }),
@@ -221,33 +221,30 @@ exports["default"] = Vector2D;
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Camera_1 = __webpack_require__(4);
 var Scene = (function () {
-    function Scene(background) {
+    function Scene(renderer) {
         this.childs = [];
-        this.following = false;
-        this.translation = new Vector2D_1["default"](0, 0);
-        this.backgroundColor = '#000';
-        this.organized = true;
-        this.backgroundColor = background;
+        this.renderer = renderer;
+        this.context = this.renderer.context;
+        this.camera = new Camera_1["default"](this);
     }
+    // Adds an element to the scene
     Scene.prototype.add = function (element) {
         element.context = this.context;
-        this.organized = false;
         this.childs.push(element);
+        this.organizeByZindex();
     };
+    // Removes an element from the scene
     Scene.prototype.remove = function (element) {
         this.childs.splice(this.childs.indexOf(element), 1);
     };
-    Scene.prototype.clear = function (color) {
-        if (color === void 0) { color = '#000'; }
-        this.context.fillStyle = color;
-        this.context.fillRect(-this.translation.x, 0, window.innerWidth, window.innerHeight);
-    };
-    Scene.prototype.follow = function (gameObject) {
-        this.followed = gameObject.transform.position;
-        this.temp = this.followed.copy();
-        this.following = true;
+    // Removes an element from the scene
+    Scene.prototype.clearScreen = function () {
+        this.context.save();
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+        this.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        this.context.restore();
     };
     Scene.prototype.smoth = function (state) {
         if (this.context.imageSmoothingEnabled) {
@@ -260,32 +257,14 @@ var Scene = (function () {
             this.context.webkitImageSmoothingEnabled = state;
         }
     };
-    Scene.prototype.zoom = function (where, howMuch) {
-        this.context.translate(where.x, where.y);
-        this.context.scale(howMuch.x, howMuch.y);
-        this.context.translate(-where.x, -where.y);
-    };
-    Scene.prototype.translate = function (x, y) {
-        this.translation.x -= x;
-        this.translation.y -= y;
-        this.context.translate(-x, -y);
-    };
-    Scene.prototype.organize_children = function () {
-        this.childs.sort(function (a, b) {
-            return a.z_index - b.z_index;
-        });
+    // Organizes the childs of the scene by their property z_indez
+    Scene.prototype.organizeByZindex = function () {
+        this.childs.sort(function (a, b) { return a.z_index - b.z_index; });
     };
     Scene.prototype.update = function () {
-        this.clear(this.backgroundColor);
-        if (this.following) {
-            var change = Vector2D_1["default"].sub(this.temp, this.followed);
-            this.temp = this.followed.copy();
-            this.translate(-change.x, 0); /* -change.y To enable y following */
-        }
-        if (!this.organized)
-            this.organize_children();
-        this.organized = true;
+        this.clearScreen();
         this.childs.forEach(function (child) { return child.render(); });
+        this.camera.update();
     };
     return Scene;
 }());
@@ -305,34 +284,147 @@ defaultCss.innerHTML = "\n* {\n  margin:0%;\n  padding: 0%;\n}\ncanvas {\n  disp
 document.body.appendChild(defaultCss);
 var Scene_1 = __webpack_require__(2);
 exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(4);
+var Render_1 = __webpack_require__(5);
 exports.Render = Render_1["default"];
 var Graphic_1 = __webpack_require__(0);
 exports.Graphic = Graphic_1["default"];
-var Animation_1 = __webpack_require__(5);
+var Animation_1 = __webpack_require__(6);
 exports.Animation = Animation_1["default"];
-var Rect_1 = __webpack_require__(6);
+var Rect_1 = __webpack_require__(7);
 exports.Rect = Rect_1["default"];
-var Circle_1 = __webpack_require__(7);
+var Circle_1 = __webpack_require__(8);
 exports.Circle = Circle_1["default"];
-var Line_1 = __webpack_require__(8);
+var Line_1 = __webpack_require__(9);
 exports.Line = Line_1["default"];
-var Poligon_1 = __webpack_require__(9);
+var Poligon_1 = __webpack_require__(10);
 exports.Poligon = Poligon_1["default"];
-var Picture_1 = __webpack_require__(10);
+var Picture_1 = __webpack_require__(11);
 exports.Picture = Picture_1["default"];
-var Text_1 = __webpack_require__(11);
+var Text_1 = __webpack_require__(12);
 exports.Text = Text_1["default"];
-var Arc_1 = __webpack_require__(12);
+var Arc_1 = __webpack_require__(13);
 exports.Arc = Arc_1["default"];
-var Group_1 = __webpack_require__(13);
-exports.Group = Group_1["default"];
 var Color_1 = __webpack_require__(14);
 exports.Color = Color_1["default"];
 
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(1);
+var Camera = (function () {
+    function Camera(scene) {
+        this.followingX = false;
+        this.followingY = false;
+        this.translation = new Vector2D_1["default"](0, 0);
+        this.keyMap = {
+            up: 'w',
+            down: 's',
+            left: 'a',
+            right: 'd'
+        };
+        this.context = scene.context;
+        this.mouse = {
+            velocity: new Vector2D_1["default"](0, 0),
+            acceleration: new Vector2D_1["default"](0, 0),
+            friction: 0.9,
+            x: 0,
+            y: 0,
+            update: function () {
+                this.velocity.add(this.acceleration);
+                this.context.translate(this.velocity.x, this.velocity.y);
+                this.velocity.mult(this.friction);
+                this.acceleration.zero();
+            },
+            addForce: function (force) {
+                this.acceleration.add(force);
+            }
+        };
+    }
+    Camera.prototype.enable = function () {
+        var _this = this;
+        document.addEventListener('mousemove', function (e) {
+            _this.mouse.x = e.clientX;
+            _this.mouse.y = e.clientY;
+        });
+    };
+    Camera.prototype.enableKeyTranslate = function () {
+        var _this = this;
+        document.addEventListener('keypress', function (e) {
+            if (e.key.toLowerCase() === _this.keyMap.up) {
+                _this.mouse.addForce(new Vector2D_1["default"](0, 10));
+            }
+            if (e.key.toLowerCase() === _this.keyMap.down) {
+                _this.mouse.addForce(new Vector2D_1["default"](0, -10));
+            }
+            if (e.key.toLowerCase() === _this.keyMap.left) {
+                _this.mouse.addForce(new Vector2D_1["default"](10, 0));
+            }
+            if (e.key.toLowerCase() === _this.keyMap.right) {
+                _this.mouse.addForce(new Vector2D_1["default"](-10, 0));
+            }
+            /*
+            if (e.key === '+') {
+              this.context.translate(mouse.x,mouse.y)
+              this.context.scale(1.1,1.1);
+              this.context.translate(-mouse.x,-mouse.y)
+            }
+            if (e.key === '-') {
+              this.context.translate(mouse.x,mouse.y)
+              this.context.scale(0.9,0.9);
+              this.context.translate(-mouse.x,-mouse.y)
+            }*/
+        });
+    };
+    Camera.prototype.follow = function (graphic) {
+        this.followedPosition = graphic.position;
+        this.followingX = true;
+        this.followingY = true;
+    };
+    Camera.prototype.followX = function (graphic) {
+        this.followedPosition = graphic.position;
+        this.followingX = true;
+    };
+    Camera.prototype.followY = function (graphic) {
+        this.followedPosition = graphic.position;
+        this.followingY = true;
+    };
+    Camera.prototype.stopFollowing = function () {
+        this.followingX = false;
+        this.followingY = false;
+    };
+    Camera.prototype.stopFollowingX = function () {
+        this.followingX = false;
+    };
+    Camera.prototype.stopFollowingY = function () {
+        this.followingY = false;
+    };
+    Camera.prototype.zoom = function (where, howMuch) {
+        this.context.translate(where.x, where.y);
+        this.context.scale(howMuch.x, howMuch.y);
+        this.context.translate(-where.x, -where.y);
+    };
+    Camera.prototype.translate = function (x, y) {
+        this.context.translate(x, y);
+    };
+    Camera.prototype.update = function () {
+        if (this.followingX || this.followingY) {
+            var change = Vector2D_1["default"].sub(this.fLastPosition, this.followedPosition);
+            this.fLastPosition = this.followedPosition.copy();
+            this.translate(change.x, change.y);
+        }
+    };
+    return Camera;
+}());
+exports.__esModule = true;
+exports["default"] = Camera;
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -363,23 +455,27 @@ var Render = (function () {
             _this.canvas.height = window.innerHeight;
         });
         this.context = this.canvas.getContext('2d');
-        var scene = new Scene_1["default"]();
+        var scene = new Scene_1["default"](this);
         this.setScene(scene);
     }
     Render.prototype.add = function (element) {
         this.scene.add(element);
     };
+    Render.prototype.remove = function (element) {
+        this.scene.remove(element);
+    };
     Render.prototype.addMultiple = function (e) {
         var _this = this;
-        e.forEach(function (m) {
-            _this.add(m);
-        });
+        e.forEach(function (m) { return _this.add(m); });
     };
     Render.prototype.getWidth = function () {
         return this.canvas.width;
     };
     Render.prototype.getHeight = function () {
         return this.canvas.height;
+    };
+    Render.prototype.getSize = function () {
+        return new Vector2D_1["default"](this.canvas.width, this.canvas.height);
     };
     Render.prototype.getCenter = function () {
         return new Vector2D_1["default"](this.canvas.width / 2, this.canvas.height / 2);
@@ -406,39 +502,37 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D = (function () {
-    function Vector2D(x, y) {
-        if (x === void 0) { x = 0; }
-        if (y === void 0) { y = 0; }
-        this.x = x;
-        this.y = y;
-    }
-    return Vector2D;
-}());
-var Animation = (function () {
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Vector2D_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
+var Animation = (function (_super) {
+    __extends(Animation, _super);
     function Animation(src, scale, position, frameRate, size, loop) {
-        if (scale === void 0) { scale = new Vector2D(1, 1); }
-        if (position === void 0) { position = new Vector2D(1, 1); }
+        if (scale === void 0) { scale = new Vector2D_1["default"](1, 1); }
+        if (position === void 0) { position = new Vector2D_1["default"](1, 1); }
         if (frameRate === void 0) { frameRate = 100; }
-        if (size === void 0) { size = new Vector2D(32, 32); }
+        if (size === void 0) { size = new Vector2D_1["default"](32, 32); }
         if (loop === void 0) { loop = true; }
-        var _this = this;
-        this.loop = true;
-        this.loop = loop;
-        this.load(src);
-        this.size = size;
-        this.position = position;
-        this.scale = scale;
-        this.frameRate = frameRate;
-        var frame = new Vector2D(0, 0);
-        this.x = 0;
-        this.y = 0;
-        this.interval = setInterval(function () {
+        var _this = _super.call(this, position) || this;
+        _this.loop = true;
+        _this.load(src);
+        _this.loop = loop;
+        _this.size = size;
+        _this.scale = scale;
+        _this.frameRate = frameRate;
+        var frame = new Vector2D_1["default"](0, 0);
+        _this.x = 0;
+        _this.y = 0;
+        _this.interval = setInterval(function () {
             frame.x += 1;
             _this.x = _this.size.x * frame.x;
             _this.y = _this.size.y * frame.y;
@@ -453,14 +547,16 @@ var Animation = (function () {
             }
             _this.x = _this.size.x * frame.x;
             _this.y = _this.size.y * frame.y;
-        }, this.frameRate);
+        }, _this.frameRate);
+        return _this;
     }
+    Animation.prototype.onClick = function (func) { };
     Animation.prototype.load = function (src) {
         this.image = new Image();
         this.image.src = src;
     };
     Animation.prototype.getSize = function () {
-        return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y);
+        return new Vector2D_1["default"](this.size.x * this.scale.x, this.size.y * this.scale.y);
     };
     Animation.prototype.render = function () {
         this.context.drawImage(this.image, this.x, this.y, this.size.x, this.size.y, this.position.x, this.position.y, this.size.x * this.scale.x, this.size.y * this.scale.y);
@@ -469,13 +565,13 @@ var Animation = (function () {
         clearInterval(this.interval);
     };
     return Animation;
-}());
+}(Graphic_1["default"]));
 exports.__esModule = true;
 exports["default"] = Animation;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -513,6 +609,7 @@ var Rect = (function (_super) {
             _this.lineColor = data.lineColor;
         return _this;
     }
+    Rect.prototype.onClick = function (func) { };
     Rect.prototype.render = function () {
         this.context.fillStyle = this.color;
         this.context.beginPath();
@@ -532,7 +629,7 @@ exports["default"] = Rect;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -548,17 +645,22 @@ var Circle = (function (_super) {
     __extends(Circle, _super);
     function Circle(configuration) {
         var _this = _super.call(this, configuration) || this;
+        _this.radius = 5;
         _this.lineWidth = 1;
-        if (configuration.radius)
-            _this.radius = configuration.radius;
-        if (configuration.color)
-            _this.color = configuration.color;
-        if (configuration.stroke)
-            _this.stroke = configuration.stroke;
+        _this.color = '#FFFFFF';
+        _this.lineColor = '#000000';
+        _this.stroke = false;
+        _this.fill = true;
         if (configuration.lineWidth)
             _this.lineWidth = configuration.lineWidth;
         if (configuration.lineColor)
             _this.lineColor = configuration.lineColor;
+        if (configuration.radius)
+            _this.radius = configuration.radius;
+        if (configuration.stroke)
+            _this.stroke = configuration.stroke;
+        if (configuration.color)
+            _this.color = configuration.color;
         if (configuration.fill)
             _this.fill = configuration.fill;
         return _this;
@@ -593,7 +695,7 @@ exports["default"] = Circle;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -631,7 +733,7 @@ exports["default"] = Line;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -681,22 +783,16 @@ exports["default"] = Poligon;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* global Image */
 
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-/*
-interface Image {
-  src: string
-}
-*/
 var Graphic_1 = __webpack_require__(0);
 var Picture = (function (_super) {
     __extends(Picture, _super);
@@ -704,15 +800,21 @@ var Picture = (function (_super) {
         var _this = _super.call(this, data) || this;
         _this.width = 1;
         _this.height = 1;
+        _this.opacity = 1;
         _this.image = new Image();
-        _this.width = data.width;
-        _this.height = data.height;
         _this.image.src = data.src;
+        _this.width = data.width;
+        _this.opacity = data.opacity;
+        _this.height = data.height;
         return _this;
     }
+    Picture.prototype.onClick = function (func) { };
     Picture.prototype.render = function () {
         this.context.beginPath();
+        this.context.save();
+        this.context.globalAlpha = this.opacity;
         this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+        this.context.restore();
     };
     return Picture;
 }(Graphic_1["default"]));
@@ -721,7 +823,7 @@ exports["default"] = Picture;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -758,7 +860,7 @@ exports["default"] = Text;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -804,33 +906,6 @@ var Arc = (function (_super) {
 }(Graphic_1["default"]));
 exports.__esModule = true;
 exports["default"] = Arc;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Group = (function () {
-    function Group() {
-        this.childs = [];
-    }
-    Group.prototype.add = function (child) {
-        this.childs.push(child);
-    };
-    Group.prototype.render = function () {
-        this.context.save();
-        this.context.scale(this.scale.x, this.scale.y);
-        this.context.rotate(this.rotation);
-        this.context.translate(this.position.x, this.position.y);
-        this.childs.forEach(function (child) { return child.render(); });
-        this.context.restore();
-    };
-    return Group;
-}());
-exports.__esModule = true;
-exports["default"] = Group;
 
 
 /***/ }),

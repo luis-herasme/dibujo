@@ -1,14 +1,12 @@
-
 import Vector2D from './Vector2D'
 import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
 
 class Render {
-
   private scene    : Scene
   private canvas   : HTMLCanvasElement
   public context   : CanvasRenderingContext2D
-  public timeFrame : number = 0
+  public frameRate : number = 0
 
   constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
     if (canvas) {
@@ -75,7 +73,7 @@ class Render {
   update () {
     setInterval(() => {
       this.render()
-    }, this.timeFrame)
+    }, this.frameRate)
   }
 
   setScene (scene): void {

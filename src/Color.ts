@@ -1,5 +1,5 @@
 
-export default class Color {
+class Color {
   public red  : number
   public green: number
   public blue : number
@@ -66,3 +66,5 @@ export default class Color {
     return new Color(Math.random(), Math.random(), Math.random())
   }
 }
+
+export default Color

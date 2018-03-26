@@ -1,14 +1,12 @@
-
 import Render   from './Render'
 import Vector2D from './Vector2D'
 import Graphic  from './graphics/Graphic'
 import Camera   from './Camera'
 
 class Scene {
-
+  public context
   public camera           : Camera
-  public context          : CanvasRenderingContext2D
-  public childs           : Array<Graphic>           = []
+  public childs           : Array<Graphic> = []
   public renderer         : Render
 
   constructor (renderer: Render) {

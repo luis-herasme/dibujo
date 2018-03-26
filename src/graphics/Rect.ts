@@ -1,10 +1,9 @@
-
 import Graphic from './Graphic'
 
-export default class Rect extends Graphic {
-  public color  : string  = '#FFFFFF'
-  public width  : number  = 1
-  public height : number  = 1
+class Rect extends Graphic {
+  public color     : string  = '#FFFFFF'
+  public width     : number  = 1
+  public height    : number  = 1
   public lineWidth : number  = 1
   public fill   : boolean = true
   public stroke : boolean = false
@@ -49,3 +48,5 @@ export default class Rect extends Graphic {
     }
   }
 }
+
+export default Rect
