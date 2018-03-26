@@ -10,7 +10,7 @@ class Camera {
 
   public translation      : Vector = new Vector(0, 0)
   public followedPosition : Vector
-  public fLastPosition    : Vector
+  public fLastPosition    : Vector = new Vector(0, 0)
   public mouse            : Mouse
 
   public keyMap = {
@@ -34,7 +34,7 @@ class Camera {
 
   enableKeyTranslate () {
     document.addEventListener('keypress', (e) => {
-
+      console.log(this.keyMap.up)
       if (e.key.toLowerCase() === this.keyMap.up) {
         this.mouse.addForce(new Vector(0, 10))
       }
@@ -64,6 +64,7 @@ class Camera {
 
   follow (graphic: Graphic): void {
     this.followedPosition  = graphic.position
+    this.fLastPosition = this.followedPosition.copy()
     this.followingX = true
     this.followingY = true
   }

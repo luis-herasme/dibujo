@@ -366,6 +366,7 @@ var Camera = /** @class */ (function () {
         this.followingX = false;
         this.followingY = false;
         this.translation = new Vector_1["default"](0, 0);
+        this.fLastPosition = new Vector_1["default"](0, 0);
         this.keyMap = {
             up: 'w',
             down: 's',
@@ -385,6 +386,7 @@ var Camera = /** @class */ (function () {
     Camera.prototype.enableKeyTranslate = function () {
         var _this = this;
         document.addEventListener('keypress', function (e) {
+            console.log(_this.keyMap.up);
             if (e.key.toLowerCase() === _this.keyMap.up) {
                 _this.mouse.addForce(new Vector_1["default"](0, 10));
             }
@@ -412,6 +414,7 @@ var Camera = /** @class */ (function () {
     };
     Camera.prototype.follow = function (graphic) {
         this.followedPosition = graphic.position;
+        this.fLastPosition = this.followedPosition.copy();
         this.followingX = true;
         this.followingY = true;
     };
@@ -578,11 +581,12 @@ var Animation = /** @class */ (function (_super) {
     function Animation(configuration) {
         var _this = _super.call(this, configuration) || this;
         _this.loop = true;
+        _this.size = new Vector_1["default"](32, 32);
         _this.load(configuration.src);
         _this.loop ? configuration.loop : true;
-        _this.size ? configuration.size : new Vector_1["default"](32, 32),
-            _this.scale ? configuration.scale : new Vector_1["default"](1, 1),
-            _this.frameRate ? configuration.frameRate : 24;
+        _this.size ? configuration.size : new Vector_1["default"](32, 32);
+        _this.scale ? configuration.scale : new Vector_1["default"](1, 1);
+        _this.frameRate ? configuration.frameRate : 24;
         var frame = new Vector_1["default"](0, 0);
         _this.x = 0;
         _this.y = 0;

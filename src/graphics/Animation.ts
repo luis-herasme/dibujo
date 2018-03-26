@@ -6,7 +6,7 @@ class Animation extends Graphic {
 
   public loop     : boolean = true
   public scale    : Vector
-  public size     : Vector
+  public size     : Vector = new Vector(32, 32)
   public frameRate: number
   public x        : number
   public y        : number
@@ -17,8 +17,8 @@ class Animation extends Graphic {
     super(configuration)
     this.load(configuration.src)
     this.loop ? configuration.loop : true
-    this.size ? configuration.size : new Vector(32, 32),
-    this.scale ? configuration.scale : new Vector(1, 1),
+    this.size ? configuration.size : new Vector(32, 32)
+    this.scale ? configuration.scale : new Vector(1, 1)
     this.frameRate ? configuration.frameRate : 24
 
     let frame      = new Vector(0, 0)
