@@ -24,6 +24,7 @@ import Picture from './graphics/Picture'
 import Text from './graphics/Text'
 import Arc from './graphics/Arc'
 import Group from './Group'
+import Vector from './Vector'
 
 import Color from './Color'
 
@@ -33,6 +34,7 @@ export {
   Animation,
   Rect,
   Circle,
+  Vector,
   Line,
   Poligon,
   Picture,

@@ -13,20 +13,14 @@ class Animation extends Graphic {
   public image    : HTMLImageElement
   public interval : any
 
-  constructor (
-    src       : string,
-    scale     : Vector = new Vector(1, 1),
-    position  : Vector = new Vector(1, 1),
-    frameRate : number   = 100,
-    size      : Vector = new Vector(32, 32),
-    loop      : boolean  = true
-  ) {
-    super(position)
-    this.load(src)
-    this.loop      = loop
-    this.size      = size
-    this.scale     = scale
-    this.frameRate = frameRate
+  constructor (configuration: any) {
+    super(configuration)
+    this.load(configuration.src)
+    this.loop ? configuration.loop : true
+    this.size ? configuration.size : new Vector(32, 32),
+    this.scale ? configuration.scale : new Vector(1, 1),
+    this.frameRate ? configuration.frameRate : 24
+
     let frame      = new Vector(0, 0)
     this.x         = 0
     this.y         = 0
