@@ -1,13 +1,12 @@
 import Vector from './Vector'
 
 class Mouse {
+  private context     : CanvasRenderingContext2D
   private velocity    : Vector = new Vector(0, 0)
   private acceleration: Vector = new Vector(0, 0)
-  private friction    : number   = 0.9
-  private context     : CanvasRenderingContext2D
-
-  public x: number = 0
-  public y: number = 0
+  private friction    : number = 0.9
+  public x            : number = 0
+  public y            : number = 0
 
   constructor (context: CanvasRenderingContext2D) {
     this.context = context

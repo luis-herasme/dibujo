@@ -19,10 +19,11 @@ class Camera {
     left : 'a',
     right: 'd'
   }
+  private keyTranslateEnabled : boolean = false
 
   constructor (scene: Scene) {
     this.context = scene.context
-    this.mouse = new Mouse(this.context)
+    this.mouse = new Mouse(scene.context)
   }
 
   enable () {
@@ -32,7 +33,12 @@ class Camera {
     })
   }
 
+  disableKeyTranslate () {
+
+  }
+
   enableKeyTranslate () {
+    this.keyTranslateEnabled = true
     document.addEventListener('keypress', (e) => {
       console.log(this.keyMap.up)
       if (e.key.toLowerCase() === this.keyMap.up) {
@@ -103,6 +109,7 @@ class Camera {
   }
 
   update () {
+    if (this.keyTranslateEnabled) this.mouse.update()
     if (this.followingX || this.followingY) {
       const change = Vector.sub(this.fLastPosition, this.followedPosition)
       this.fLastPosition = this.followedPosition.copy()

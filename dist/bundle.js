@@ -373,8 +373,9 @@ var Camera = /** @class */ (function () {
             left: 'a',
             right: 'd'
         };
+        this.keyTranslateEnabled = false;
         this.context = scene.context;
-        this.mouse = new Mouse_1["default"](this.context);
+        this.mouse = new Mouse_1["default"](scene.context);
     }
     Camera.prototype.enable = function () {
         var _this = this;
@@ -383,8 +384,11 @@ var Camera = /** @class */ (function () {
             _this.mouse.y = e.clientY;
         });
     };
+    Camera.prototype.disableKeyTranslate = function () {
+    };
     Camera.prototype.enableKeyTranslate = function () {
         var _this = this;
+        this.keyTranslateEnabled = true;
         document.addEventListener('keypress', function (e) {
             console.log(_this.keyMap.up);
             if (e.key.toLowerCase() === _this.keyMap.up) {
@@ -445,6 +449,8 @@ var Camera = /** @class */ (function () {
         this.context.translate(x, y);
     };
     Camera.prototype.update = function () {
+        if (this.keyTranslateEnabled)
+            this.mouse.update();
         if (this.followingX || this.followingY) {
             var change = Vector_1["default"].sub(this.fLastPosition, this.followedPosition);
             this.fLastPosition = this.followedPosition.copy();
