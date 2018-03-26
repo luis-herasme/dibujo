@@ -5,9 +5,10 @@ class Rect extends Graphic {
   public width     : number  = 1
   public height    : number  = 1
   public lineWidth : number  = 1
-  public fill      : boolean = true
-  public stroke    : boolean = false
-  public lineColor : string  = '#000000'
+  public fill   : boolean = true
+  public stroke : boolean = false
+  public lineColor: string = '#000000'
+  public type: string = "rect"
 
   constructor (data: any) {
     super(data)

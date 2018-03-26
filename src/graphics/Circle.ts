@@ -9,6 +9,7 @@ class Circle extends Graphic {
   public lineColor : string  = '#000000'
   public stroke    : boolean = false
   public fill      : boolean = true
+  public type: string = "circle"
 
   constructor (configuration: any) {
     super(configuration)

@@ -4,6 +4,7 @@ class Text extends Graphic {
   public content : string
   public stroke  : boolean
   public style   : any
+  public type: string = "text"
 
   constructor (configuration: any) {
     super(configuration)
