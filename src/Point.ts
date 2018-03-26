@@ -1,5 +1,5 @@
 
-export default class Point {
+class Point {
   public x: number
   public y: number
   constructor (x = 0, y = 0) {
@@ -7,3 +7,5 @@ export default class Point {
     this.y = y
   }
 }
+
+export default Point

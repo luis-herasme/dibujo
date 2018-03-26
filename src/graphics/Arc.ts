@@ -2,14 +2,14 @@
 import Graphic from './Graphic'
 
 export default class Arc extends Graphic {
-  public color: string
-  public radius: number
+  public color    : string
+  public radius   : number
   public lineWidth: number
-  public stroke : boolean
-  public eAngl: number
-  public aAngl: number
+  public stroke   : boolean
+  public eAngl    : number
+  public aAngl    : number
   public lineColor: string  = '#000'
-  public type: string = "arc"
+  public type     : string = "arc"
 
   constructor  (configuration){
     super(configuration)

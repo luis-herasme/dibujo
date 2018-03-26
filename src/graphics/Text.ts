@@ -1,7 +1,6 @@
-
 import Graphic from './Graphic'
 
-export default class Text extends Graphic {
+class Text extends Graphic {
   public content : string
   public stroke  : boolean
   public style
@@ -21,3 +20,5 @@ export default class Text extends Graphic {
     this.context.fillText(this.content, this.position.x, this.position.y)
   }
 }
+
+export default Text
