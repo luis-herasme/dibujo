@@ -589,10 +589,10 @@ var Animation = /** @class */ (function (_super) {
         _this.loop = true;
         _this.size = new Vector_1["default"](32, 32);
         _this.load(configuration.src);
-        _this.loop ? configuration.loop : true;
-        _this.size ? configuration.size : new Vector_1["default"](32, 32);
-        _this.scale ? configuration.scale : new Vector_1["default"](1, 1);
-        _this.frameRate ? configuration.frameRate : 24;
+        _this.loop = configuration.loop ? configuration.loop : true;
+        _this.size = configuration.size ? configuration.size : new Vector_1["default"](32, 32);
+        _this.scale = configuration.scale ? configuration.scale : new Vector_1["default"](1, 1);
+        _this.frameRate = configuration.frameRate ? configuration.frameRate : 24;
         var frame = new Vector_1["default"](0, 0);
         _this.x = 0;
         _this.y = 0;
