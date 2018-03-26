@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "system",
     "sourceMap": true,
     "noImplicitAny": true
   },
