@@ -5,8 +5,7 @@ class Mouse {
   private velocity    : Vector = new Vector(0, 0)
   private acceleration: Vector = new Vector(0, 0)
   private friction    : number = 0.9
-  public x            : number = 0
-  public y            : number = 0
+  public position     : Vector = new Vector(0, 0)
 
   constructor (context: CanvasRenderingContext2D) {
     this.context = context
@@ -14,8 +13,9 @@ class Mouse {
 
   update () {
     this.velocity.add(this.acceleration)
-    this.context.translate(this.velocity.x, this.velocity.y)
     this.velocity.mult(this.friction)
+    this.position.add(this.velocity)
+    this.context.translate(this.velocity.x, this.velocity.y)
     this.acceleration.zero()
   }
 

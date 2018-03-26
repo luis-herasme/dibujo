@@ -380,8 +380,8 @@ var Camera = /** @class */ (function () {
     Camera.prototype.enable = function () {
         var _this = this;
         document.addEventListener('mousemove', function (e) {
-            _this.mouse.x = e.clientX;
-            _this.mouse.y = e.clientY;
+            _this.mouse.position.x = e.clientX;
+            _this.mouse.position.y = e.clientY;
         });
     };
     Camera.prototype.disableKeyTranslate = function () {
@@ -475,14 +475,14 @@ var Mouse = /** @class */ (function () {
         this.velocity = new Vector_1["default"](0, 0);
         this.acceleration = new Vector_1["default"](0, 0);
         this.friction = 0.9;
-        this.x = 0;
-        this.y = 0;
+        this.position = new Vector_1["default"](0, 0);
         this.context = context;
     }
     Mouse.prototype.update = function () {
         this.velocity.add(this.acceleration);
-        this.context.translate(this.velocity.x, this.velocity.y);
         this.velocity.mult(this.friction);
+        this.position.add(this.velocity);
+        this.context.translate(this.velocity.x, this.velocity.y);
         this.acceleration.zero();
     };
     Mouse.prototype.addForce = function (force) {

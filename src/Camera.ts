@@ -28,8 +28,8 @@ class Camera {
 
   enable () {
     document.addEventListener('mousemove', (e) => {
-      this.mouse.x = e.clientX
-      this.mouse.y = e.clientY
+      this.mouse.position.x = e.clientX
+      this.mouse.position.y = e.clientY
     })
   }
 
