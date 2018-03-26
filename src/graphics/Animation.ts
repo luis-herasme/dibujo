@@ -16,10 +16,10 @@ class Animation extends Graphic {
   constructor (configuration: any) {
     super(configuration)
     this.load(configuration.src)
-    this.loop ? configuration.loop : true
-    this.size ? configuration.size : new Vector(32, 32)
-    this.scale ? configuration.scale : new Vector(1, 1)
-    this.frameRate ? configuration.frameRate : 24
+    this.loop = configuration.loop ? configuration.loop : true
+    this.size = configuration.size ? configuration.size : new Vector(32, 32)
+    this.scale = configuration.scale ? configuration.scale : new Vector(1, 1)
+    this.frameRate = configuration.frameRate ? configuration.frameRate : 24
 
     let frame      = new Vector(0, 0)
     this.x         = 0
