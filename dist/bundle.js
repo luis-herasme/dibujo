@@ -363,17 +363,16 @@ var Vector_1 = __webpack_require__(0);
 var Mouse_1 = __webpack_require__(5);
 var Camera = /** @class */ (function () {
     function Camera(scene) {
+        this.fLastPosition = new Vector_1["default"](0, 0);
+        this.keyTranslateEnabled = false;
         this.followingX = false;
         this.followingY = false;
-        this.translation = new Vector_1["default"](0, 0);
-        this.fLastPosition = new Vector_1["default"](0, 0);
         this.keyMap = {
             up: 'w',
             down: 's',
             left: 'a',
             right: 'd'
         };
-        this.keyTranslateEnabled = false;
         this.context = scene.context;
         this.mouse = new Mouse_1["default"](scene.context);
     }
@@ -390,7 +389,6 @@ var Camera = /** @class */ (function () {
         var _this = this;
         this.keyTranslateEnabled = true;
         document.addEventListener('keypress', function (e) {
-            console.log(_this.keyMap.up);
             if (e.key.toLowerCase() === _this.keyMap.up) {
                 _this.mouse.addForce(new Vector_1["default"](0, 10));
             }
@@ -481,8 +479,8 @@ var Mouse = /** @class */ (function () {
     Mouse.prototype.update = function () {
         this.velocity.add(this.acceleration);
         this.velocity.mult(this.friction);
-        this.position.add(this.velocity);
         this.context.translate(this.velocity.x, this.velocity.y);
+        this.position.add(this.velocity);
         this.acceleration.zero();
     };
     Mouse.prototype.addForce = function (force) {

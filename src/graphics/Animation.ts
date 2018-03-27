@@ -5,8 +5,8 @@ import Events   from '../Events'
 class Animation extends Graphic {
 
   public loop     : boolean = true
-  public scale    : Vector
   public size     : Vector = new Vector(32, 32)
+  public scale    : Vector
   public frameRate: number
   public x        : number
   public y        : number

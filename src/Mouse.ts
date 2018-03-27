@@ -14,8 +14,8 @@ class Mouse {
   update () {
     this.velocity.add(this.acceleration)
     this.velocity.mult(this.friction)
-    this.position.add(this.velocity)
     this.context.translate(this.velocity.x, this.velocity.y)
+    this.position.add(this.velocity)
     this.acceleration.zero()
   }
 

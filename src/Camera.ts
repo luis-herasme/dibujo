@@ -4,14 +4,14 @@ import Scene    from './Scene'
 import Mouse    from './Mouse'
 
 class Camera {
-  public context          : CanvasRenderingContext2D
-  public followingX       : boolean  = false
-  public followingY       : boolean  = false
+  public context              : CanvasRenderingContext2D
+  public followedPosition     : Vector
+  public fLastPosition        : Vector   = new Vector(0, 0)
+  public mouse                : Mouse
 
-  public translation      : Vector = new Vector(0, 0)
-  public followedPosition : Vector
-  public fLastPosition    : Vector = new Vector(0, 0)
-  public mouse            : Mouse
+  private keyTranslateEnabled : boolean  = false
+  public followingX           : boolean  = false
+  public followingY           : boolean  = false
 
   public keyMap = {
     up   : 'w',
@@ -19,7 +19,6 @@ class Camera {
     left : 'a',
     right: 'd'
   }
-  private keyTranslateEnabled : boolean = false
 
   constructor (scene: Scene) {
     this.context = scene.context
@@ -40,7 +39,7 @@ class Camera {
   enableKeyTranslate () {
     this.keyTranslateEnabled = true
     document.addEventListener('keypress', (e) => {
-      console.log(this.keyMap.up)
+
       if (e.key.toLowerCase() === this.keyMap.up) {
         this.mouse.addForce(new Vector(0, 10))
       }
