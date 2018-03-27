@@ -20,7 +20,7 @@ class Scene {
   constructor (renderer: Render) {
     this.renderer = renderer
     this.context  = this.renderer.context
-    this.camera   = new Camera(this)
+    this.camera   = new Camera(this.context)
   }
 
   /**

@@ -80,6 +80,33 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 exports.__esModule = true;
+var Graphic = /** @class */ (function () {
+    function Graphic(data) {
+        if (data.position)
+            this.position = data.position;
+        if (data.anchor)
+            this.anchor = data.anchor;
+        if (data.z_index)
+            this.z_index = data.z_index;
+    }
+    Graphic.prototype.setStyle = function (styles) {
+        for (var style in styles) {
+            this.context[style] = styles[style];
+        }
+    };
+    Graphic.prototype.render = function () { };
+    return Graphic;
+}());
+exports["default"] = Graphic;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
 var Vector = /** @class */ (function () {
     function Vector(x, y) {
         this.x = x;
@@ -189,33 +216,6 @@ exports["default"] = Vector;
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var Graphic = /** @class */ (function () {
-    function Graphic(data) {
-        if (data.position)
-            this.position = data.position;
-        if (data.anchor)
-            this.anchor = data.anchor;
-        if (data.z_index)
-            this.z_index = data.z_index;
-    }
-    Graphic.prototype.setStyle = function (styles) {
-        for (var style in styles) {
-            this.context[style] = styles[style];
-        }
-    };
-    Graphic.prototype.render = function () { };
-    return Graphic;
-}());
-exports["default"] = Graphic;
-
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -235,7 +235,7 @@ var Scene = /** @class */ (function () {
         this.frameRate = 0;
         this.renderer = renderer;
         this.context = this.renderer.context;
-        this.camera = new Camera_1["default"](this);
+        this.camera = new Camera_1["default"](this.context);
     }
     /**
      * This method adds one element to the scene
@@ -324,31 +324,31 @@ defaultCss.innerHTML = "\n* {\n  margin:0%;\n  padding: 0%;\n}\ncanvas {\n  disp
 document.body.appendChild(defaultCss);
 var Scene_1 = __webpack_require__(2);
 exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(6);
+var Render_1 = __webpack_require__(5);
 exports.Render = Render_1["default"];
-var Graphic_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 exports.Graphic = Graphic_1["default"];
-var Animation_1 = __webpack_require__(7);
+var Animation_1 = __webpack_require__(6);
 exports.Animation = Animation_1["default"];
-var Rect_1 = __webpack_require__(8);
+var Rect_1 = __webpack_require__(7);
 exports.Rect = Rect_1["default"];
-var Circle_1 = __webpack_require__(9);
+var Circle_1 = __webpack_require__(8);
 exports.Circle = Circle_1["default"];
-var Line_1 = __webpack_require__(10);
+var Line_1 = __webpack_require__(9);
 exports.Line = Line_1["default"];
-var Poligon_1 = __webpack_require__(11);
+var Poligon_1 = __webpack_require__(10);
 exports.Poligon = Poligon_1["default"];
-var Picture_1 = __webpack_require__(12);
+var Picture_1 = __webpack_require__(11);
 exports.Picture = Picture_1["default"];
-var Text_1 = __webpack_require__(13);
+var Text_1 = __webpack_require__(12);
 exports.Text = Text_1["default"];
-var Arc_1 = __webpack_require__(14);
+var Arc_1 = __webpack_require__(13);
 exports.Arc = Arc_1["default"];
-var Group_1 = __webpack_require__(15);
+var Group_1 = __webpack_require__(14);
 exports.Group = Group_1["default"];
-var Vector_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 exports.Vector = Vector_1["default"];
-var Color_1 = __webpack_require__(16);
+var Color_1 = __webpack_require__(15);
 exports.Color = Color_1["default"];
 
 
@@ -359,30 +359,31 @@ exports.Color = Color_1["default"];
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(0);
-var Mouse_1 = __webpack_require__(5);
+var Vector_1 = __webpack_require__(1);
 var Camera = /** @class */ (function () {
-    function Camera(scene) {
+    function Camera(context) {
+        this.keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
+        this.position = new Vector_1["default"](0, 0);
         this.fLastPosition = new Vector_1["default"](0, 0);
-        this.keyTranslateEnabled = false;
         this.followingX = false;
         this.followingY = false;
-        this.keyMap = {
-            up: 'w',
-            down: 's',
-            left: 'a',
-            right: 'd'
-        };
-        this.context = scene.context;
-        this.mouse = new Mouse_1["default"](scene.context);
+        this.keyTranslateEnabled = false;
+        this.velocity = new Vector_1["default"](0, 0);
+        this.acceleration = new Vector_1["default"](0, 0);
+        this.friction = 0.9;
+        this.context = context;
     }
-    Camera.prototype.enable = function () {
-        var _this = this;
-        document.addEventListener('mousemove', function (e) {
-            _this.mouse.position.x = e.clientX;
-            _this.mouse.position.y = e.clientY;
-        });
+    Camera.prototype.addForce = function (force) {
+        this.acceleration.add(force);
     };
+    /*
+      enable() {
+        document.addEventListener('mousemove', (e) => {
+          this.mouse.position.x = e.clientX
+          this.mouse.position.y = e.clientY
+        })
+      }
+    */
     Camera.prototype.disableKeyTranslate = function () {
     };
     Camera.prototype.enableKeyTranslate = function () {
@@ -390,28 +391,17 @@ var Camera = /** @class */ (function () {
         this.keyTranslateEnabled = true;
         document.addEventListener('keypress', function (e) {
             if (e.key.toLowerCase() === _this.keyMap.up) {
-                _this.mouse.addForce(new Vector_1["default"](0, 10));
+                _this.addForce(new Vector_1["default"](0, 10));
             }
             if (e.key.toLowerCase() === _this.keyMap.down) {
-                _this.mouse.addForce(new Vector_1["default"](0, -10));
+                _this.addForce(new Vector_1["default"](0, -10));
             }
             if (e.key.toLowerCase() === _this.keyMap.left) {
-                _this.mouse.addForce(new Vector_1["default"](10, 0));
+                _this.addForce(new Vector_1["default"](10, 0));
             }
             if (e.key.toLowerCase() === _this.keyMap.right) {
-                _this.mouse.addForce(new Vector_1["default"](-10, 0));
+                _this.addForce(new Vector_1["default"](-10, 0));
             }
-            /*
-            if (e.key === '+') {
-              this.context.translate(mouse.x,mouse.y)
-              this.context.scale(1.1,1.1);
-              this.context.translate(-mouse.x,-mouse.y)
-            }
-            if (e.key === '-') {
-              this.context.translate(mouse.x,mouse.y)
-              this.context.scale(0.9,0.9);
-              this.context.translate(-mouse.x,-mouse.y)
-            }*/
         });
     };
     Camera.prototype.follow = function (graphic) {
@@ -447,8 +437,13 @@ var Camera = /** @class */ (function () {
         this.context.translate(x, y);
     };
     Camera.prototype.update = function () {
-        if (this.keyTranslateEnabled)
-            this.mouse.update();
+        if (this.keyTranslateEnabled) {
+            this.velocity.add(this.acceleration);
+            this.velocity.mult(this.friction);
+            this.translate(this.velocity.x, this.velocity.y);
+            this.position.add(this.velocity);
+            this.acceleration.zero();
+        }
         if (this.followingX || this.followingY) {
             var change = Vector_1["default"].sub(this.fLastPosition, this.followedPosition);
             this.fLastPosition = this.followedPosition.copy();
@@ -467,38 +462,7 @@ exports["default"] = Camera;
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(0);
-var Mouse = /** @class */ (function () {
-    function Mouse(context) {
-        this.velocity = new Vector_1["default"](0, 0);
-        this.acceleration = new Vector_1["default"](0, 0);
-        this.friction = 0.9;
-        this.position = new Vector_1["default"](0, 0);
-        this.context = context;
-    }
-    Mouse.prototype.update = function () {
-        this.velocity.add(this.acceleration);
-        this.velocity.mult(this.friction);
-        this.context.translate(this.velocity.x, this.velocity.y);
-        this.position.add(this.velocity);
-        this.acceleration.zero();
-    };
-    Mouse.prototype.addForce = function (force) {
-        this.acceleration.add(force);
-    };
-    return Mouse;
-}());
-exports["default"] = Mouse;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var Vector_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 var Scene_1 = __webpack_require__(2);
 var Render = /** @class */ (function () {
     function Render(canvas, width, height) {
@@ -562,7 +526,7 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -578,8 +542,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(0);
-var Graphic_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 var Animation = /** @class */ (function (_super) {
     __extends(Animation, _super);
     function Animation(configuration) {
@@ -634,7 +598,7 @@ exports["default"] = Animation;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -650,7 +614,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 var Rect = /** @class */ (function (_super) {
     __extends(Rect, _super);
     function Rect(data) {
@@ -698,7 +662,7 @@ exports["default"] = Rect;
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -714,8 +678,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
-var Vector_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 var Circle = /** @class */ (function (_super) {
     __extends(Circle, _super);
     function Circle(configuration) {
@@ -770,7 +734,7 @@ exports["default"] = Circle;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -786,8 +750,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
-var Vector_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 var Line = /** @class */ (function (_super) {
     __extends(Line, _super);
     function Line(data) {
@@ -817,7 +781,7 @@ exports["default"] = Line;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -833,8 +797,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
-var Vector_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 var Poligon = /** @class */ (function (_super) {
     __extends(Poligon, _super);
     function Poligon(configuration) {
@@ -878,7 +842,7 @@ exports["default"] = Poligon;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -894,7 +858,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 var Picture = /** @class */ (function (_super) {
     __extends(Picture, _super);
     function Picture(data) {
@@ -924,7 +888,7 @@ exports["default"] = Picture;
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -940,7 +904,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 var Text = /** @class */ (function (_super) {
     __extends(Text, _super);
     function Text(configuration) {
@@ -967,7 +931,7 @@ exports["default"] = Text;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -983,7 +947,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(0);
 var Arc = /** @class */ (function (_super) {
     __extends(Arc, _super);
     function Arc(configuration) {
@@ -1022,13 +986,13 @@ exports["default"] = Arc;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(1);
 var Group = /** @class */ (function () {
     function Group() {
         this.childs = [];
@@ -1082,7 +1046,7 @@ exports["default"] = Group;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
