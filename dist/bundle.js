@@ -80,33 +80,6 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 exports.__esModule = true;
-var Graphic = /** @class */ (function () {
-    function Graphic(data) {
-        if (data.position)
-            this.position = data.position;
-        if (data.anchor)
-            this.anchor = data.anchor;
-        if (data.z_index)
-            this.z_index = data.z_index;
-    }
-    Graphic.prototype.setStyle = function (styles) {
-        for (var style in styles) {
-            this.context[style] = styles[style];
-        }
-    };
-    Graphic.prototype.render = function () { };
-    return Graphic;
-}());
-exports["default"] = Graphic;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
 var Vector = /** @class */ (function () {
     function Vector(x, y) {
         this.x = x;
@@ -213,6 +186,31 @@ var Vector = /** @class */ (function () {
     return Vector;
 }());
 exports["default"] = Vector;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var Vector_1 = __webpack_require__(0);
+var Graphic = /** @class */ (function () {
+    function Graphic(data) {
+        this.position = data.position ? data.position : new Vector_1["default"](0, 0);
+        this.anchor = data.anchor ? data.anchor : new Vector_1["default"](1, 1);
+        this.z_index = data.z_index ? data.z_index : 1;
+    }
+    Graphic.prototype.setStyle = function (styles) {
+        for (var style in styles) {
+            this.context[style] = styles[style];
+        }
+    };
+    Graphic.prototype.render = function () { };
+    return Graphic;
+}());
+exports["default"] = Graphic;
 
 
 /***/ }),
@@ -326,7 +324,7 @@ var Scene_1 = __webpack_require__(2);
 exports.Scene = Scene_1["default"];
 var Render_1 = __webpack_require__(5);
 exports.Render = Render_1["default"];
-var Graphic_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 exports.Graphic = Graphic_1["default"];
 var Animation_1 = __webpack_require__(6);
 exports.Animation = Animation_1["default"];
@@ -346,7 +344,7 @@ var Arc_1 = __webpack_require__(13);
 exports.Arc = Arc_1["default"];
 var Group_1 = __webpack_require__(14);
 exports.Group = Group_1["default"];
-var Vector_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 exports.Vector = Vector_1["default"];
 var Color_1 = __webpack_require__(15);
 exports.Color = Color_1["default"];
@@ -359,7 +357,7 @@ exports.Color = Color_1["default"];
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Camera = /** @class */ (function () {
     function Camera(context) {
         this.keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
@@ -462,7 +460,7 @@ exports["default"] = Camera;
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Scene_1 = __webpack_require__(2);
 var Render = /** @class */ (function () {
     function Render(canvas, width, height) {
@@ -542,40 +540,46 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(1);
-var Graphic_1 = __webpack_require__(0);
+var Vector_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 var Animation = /** @class */ (function (_super) {
     __extends(Animation, _super);
     function Animation(configuration) {
         var _this = _super.call(this, configuration) || this;
         _this.loop = true;
         _this.size = new Vector_1["default"](32, 32);
+        _this.frame = new Vector_1["default"](0, 0);
+        _this.animationPlaying = false;
         _this.load(configuration.src);
         _this.loop = configuration.loop ? configuration.loop : true;
         _this.size = configuration.size ? configuration.size : new Vector_1["default"](32, 32);
         _this.scale = configuration.scale ? configuration.scale : new Vector_1["default"](1, 1);
         _this.frameRate = configuration.frameRate ? configuration.frameRate : 24;
-        var frame = new Vector_1["default"](0, 0);
+        _this.animations = configuration.animations;
         _this.x = 0;
         _this.y = 0;
-        _this.interval = setInterval(function () {
-            frame.x += 1;
-            _this.x = _this.size.x * frame.x;
-            _this.y = _this.size.y * frame.y;
-            if (_this.x >= _this.image.width) {
-                frame.x = 0;
-            }
-            if (_this.y >= _this.image.height) {
-                frame.y = 0;
-                if (!_this.loop) {
-                    _this.destroy();
-                }
-            }
-            _this.x = _this.size.x * frame.x;
-            _this.y = _this.size.y * frame.y;
-        }, _this.frameRate);
         return _this;
     }
+    Animation.prototype.playAnimation = function (name) {
+        if (!this.animationPlaying) {
+            this.animationPlaying = true;
+            this.frame.x = 0;
+            this.frame.y = this.animations[name][1];
+            this.reproduceAnimation(name);
+        }
+    };
+    Animation.prototype.reproduceAnimation = function (name) {
+        var _this = this;
+        this.x = this.size.x * this.frame.x;
+        this.y = this.size.y * this.frame.y;
+        this.frame.x += 1;
+        if (this.frame.x >= this.animations[name][0]) {
+            this.animationPlaying = false;
+        }
+        else {
+            setTimeout(function () { return _this.reproduceAnimation(name); }, this.frameRate);
+        }
+    };
     Animation.prototype.mouseDown = function () {
     };
     Animation.prototype.onClick = function (func) { };
@@ -614,7 +618,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 var Rect = /** @class */ (function (_super) {
     __extends(Rect, _super);
     function Rect(data) {
@@ -678,8 +682,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
-var Vector_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Circle = /** @class */ (function (_super) {
     __extends(Circle, _super);
     function Circle(configuration) {
@@ -750,8 +754,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
-var Vector_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Line = /** @class */ (function (_super) {
     __extends(Line, _super);
     function Line(data) {
@@ -797,8 +801,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
-var Vector_1 = __webpack_require__(1);
+var Graphic_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Poligon = /** @class */ (function (_super) {
     __extends(Poligon, _super);
     function Poligon(configuration) {
@@ -858,7 +862,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 var Picture = /** @class */ (function (_super) {
     __extends(Picture, _super);
     function Picture(data) {
@@ -904,7 +908,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 var Text = /** @class */ (function (_super) {
     __extends(Text, _super);
     function Text(configuration) {
@@ -947,7 +951,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var Graphic_1 = __webpack_require__(0);
+var Graphic_1 = __webpack_require__(1);
 var Arc = /** @class */ (function (_super) {
     __extends(Arc, _super);
     function Arc(configuration) {
@@ -992,7 +996,7 @@ exports["default"] = Arc;
 "use strict";
 
 exports.__esModule = true;
-var Vector_1 = __webpack_require__(1);
+var Vector_1 = __webpack_require__(0);
 var Group = /** @class */ (function () {
     function Group() {
         this.childs = [];
@@ -1031,12 +1035,11 @@ var Group = /** @class */ (function () {
         var _this = this;
         this.context.save();
         this.childs.forEach(function (child) {
-            var temp_child = child;
-            temp_child.position.x += _this.position.x;
-            temp_child.position.y += _this.position.y;
-            temp_child.context = _this.context;
-            temp_child = _this.scaling_objects(temp_child);
-            temp_child.render();
+            child.position.add(_this.position);
+            child.context = _this.context;
+            //temp_child = _this.scaling_objects(temp_child); NO FUNCION EN ANIMATION!!!!!!!
+            child.render();
+            child.position.sub(_this.position);
         });
         this.context.restore();
     };

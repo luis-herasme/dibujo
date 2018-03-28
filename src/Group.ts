@@ -35,12 +35,11 @@ export default class Group {
   render(): void {
     this.context.save()
     this.childs.forEach((child) => {
-      let temp_child = child
-      temp_child.position.x += this.position.x
-      temp_child.position.y += this.position.y
-      temp_child.context = this.context
-      temp_child = this.scaling_objects(temp_child)
-      temp_child.render()
+      child.position.add(this.position)
+      child.context = this.context;
+      //temp_child = _this.scaling_objects(temp_child); NO FUNCION EN ANIMATION!!!!!!!
+      child.render();
+      child.position.sub(this.position)
     })
     this.context.restore()
   }

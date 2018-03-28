@@ -1,4 +1,3 @@
-
 import Vector from '../Vector'
 
 class Graphic {
@@ -8,9 +7,9 @@ class Graphic {
   public z_index  : number
 
   constructor (data: any) {
-    if (data.position) this.position = data.position    
-    if (data.anchor)   this.anchor   = data.anchor
-    if (data.z_index)  this.z_index  = data.z_index    
+    this.position = data.position ? data.position : new Vector(0, 0)
+    this.anchor   = data.anchor ? data.anchor : new Vector(1, 1)
+    this.z_index  = data.z_index ? data.z_index : 1
   }
 
   setStyle (styles: any): void {
@@ -23,3 +22,4 @@ class Graphic {
 }
 
 export default Graphic
+  
