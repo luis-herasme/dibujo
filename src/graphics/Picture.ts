@@ -1,24 +1,24 @@
 import Graphic from './Graphic'
 
 export default class Picture extends Graphic {
-  public width   : number = 1
-  public height  : number = 1
-  public opacity : number = 1
-  public image   : HTMLImageElement
+  public width: number
+  public height: number
+  public opacity: number
+  public image: HTMLImageElement
   public type: string = "img"
 
-  constructor (data: any) {
+  constructor(data: any) {
     super(data)
-    this.image     = new Image()
+    this.image = new Image()
     this.image.src = data.src
-    this.width     = data.width
-    this.opacity   = data.opacity
-    this.height    = data.height 
+    this.opacity = data.opacity ? data.opacity: 1
+    this.width = data.width ? data.width : 100
+    this.height = data.height ? data.height : 100
   }
 
-  onClick (func: Function): void {}
+  onClick(func: Function): void { }
 
-  render (): void {
+  render(): void {
     this.context.beginPath()
     this.context.save()
     this.context.globalAlpha = this.opacity
