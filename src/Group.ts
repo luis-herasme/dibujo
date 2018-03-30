@@ -12,22 +12,35 @@ export default class Group {
     this.childs.push(child)
   }
 
-  scaling_objects(child: any) {
+  scaleObject(child: any) {
     if (child.type == "arc") {
       child.radius *= this.scale.x;
+      child.render();
+      child.radius /= this.scale.x;
     } else if (child.type == "line") {
       child.end = new Vector(child.end.x * this.scale.x, child.end.y * this.scale.y)
+      child.render();
+      child.end = new Vector(child.end.x / this.scale.x, child.end.y / this.scale.y)
     } else if (child.type == "img" || child.type == "rect") {
       child.width *= this.scale.x
       child.height *= this.scale.y
+      child.render();
+      child.width /= this.scale.x
+      child.height /= this.scale.y
     } else if (child.type == "poligon") {
       child.cords.filter((pnt: any) => {
         return new Vector(pnt.x * this.scale.x, pnt.y * this.scale.y)
       })
+      child.render();
+      child.cords.filter((pnt: any) => {
+        return new Vector(pnt.x / this.scale.x, pnt.y / this.scale.y)
+      })
     } else if (child.type == "circle") {
       child.radius *= this.scale.x
+      child.render();
+      child.radius /= this.scale.x
     } else {
-      console.error("Scale isnt supported for this object");
+      throw "error, no se puede escalar dicho objeto"
     }
     return child
   }
@@ -37,8 +50,11 @@ export default class Group {
     this.childs.forEach((child) => {
       child.position.add(this.position)
       child.context = this.context;
-      //temp_child = _this.scaling_objects(temp_child); NO FUNCION EN ANIMATION!!!!!!!
-      child.render();
+      try{
+        this.scaleObject(child)
+      }catch(err){
+        console.log(err)
+      }
       child.position.sub(this.position)
     })
     this.context.restore()
