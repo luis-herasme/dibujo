@@ -35,8 +35,8 @@ const scene = new dibujo.Scene('#FF00FF')
 </p>
 
 ```javascript
-  const rect = new dibujo.Graphic.Rect({
-    position: {x: 10, y: 10},
+  const rect = new dibujo.Rect({
+    position: new dibujo.Vector(10, 10),
     width: 100,
     height: 100,
     color: 'blue'
@@ -70,8 +70,8 @@ const scene = new dibujo.Scene('#FF00FF')
 ## Picture
 
 ```javascript
-  const picture = new dibujo.Graphic.Picture({
-    position: {x: 10, y: 10},
+  const picture = new dibujo.Picture({
+    position: new dibujo.Vector(10, 10),
     width: 100,
     height: 100,
     src: './apple.png'
@@ -89,8 +89,8 @@ const scene = new dibujo.Scene('#FF00FF')
 ## Rect
 
 ```javascript
-  const rect = new dibujo.Graphic.Rect({
-    position: {x: 10, y: 10},
+  const rect = new dibujo.Rect({
+    position: new dibujo.Vector(10, 10),
     width: 100,
     height: 100,
     color: 'blue'
@@ -120,8 +120,8 @@ This function creates an Point object
 ## Text
 
 ```javascript
-  const text = new dibujo.Graphic.Text({
-    position: {x: 10, y: 10},
+  const text = new dibujo.Text({
+    position: new dibujo.Vector(10, 10),
     content: 'Hello World'
   })
 ```
@@ -135,9 +135,9 @@ This function creates an Point object
 ## Line
 
 ```javascript
-  const line = new dibujo.Graphic.Line({
-    start: {x: 10, y: 10},
-    end: {x: 20, y: 20},
+  const line = new dibujo.Line({
+    start: new dibujo.Vector(10, 10),
+    end: new dibujo.Vector(20, 20),
     color: 'blue'
   })
 ```
@@ -151,7 +151,7 @@ This function creates an Point object
 ## Poligon
 
 ```javascript
-  const poli = new dibujo.Graphic.Poligon({
+  const poli = new dibujo.Poligon({
     cords: [
       {x: 10, y: 10},
       {x: 20, y: 20},
@@ -172,8 +172,8 @@ This function creates an Point object
 ## Circle
 
 ```javascript
-  const circle = new dibujo.Graphic.Circle({
-    position: {x: 10, y: 10},
+  const circle = new dibujo.Circle({
+    position: new dibujo.Vector(10, 10),
     radius: 10,
     color: 'blue'
   })
@@ -191,8 +191,8 @@ This function creates an Point object
 ## Arc
 
 ```javascript
-  const arc = new dibujo.Graphic.Arc({
-    position: {x: 10, y: 10},
+  const arc = new dibujo.Arc({
+    position: new dibujo.Vector(10, 10),
     radius: 10,
     color: 'blue'
   })
