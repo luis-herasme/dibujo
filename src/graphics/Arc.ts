@@ -1,6 +1,7 @@
 import Graphic from './Graphic'
+import Events from '../Events'
 
-class Arc extends Graphic {
+class Arc extends Graphic implements Events {
   public color    : string
   public radius   : number
   public lineWidth: number
@@ -21,6 +22,13 @@ class Arc extends Graphic {
     if (configuration.lineColor) this.lineColor = configuration.lineColor
 
   }
+
+  mouseDown(func: Function): void{}
+  mouseUp(func: Function): void{}
+  hover(func: Function): void{}
+  dragStart(func: Function): void{}
+  draging(func: Function): void{}
+  dragEnd(func: Function): void{}
 
   render (): void {
     this.context.beginPath()
