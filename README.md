@@ -107,16 +107,6 @@ const scene = new dibujo.Scene('#FF00FF')
 | lineColor | <code>number</code> | Stroke color |
 | lineWidth | <code>number</code> | Line width |
 
-## Point(x, y)
-This function creates an Point object
-
-| Param | Type | Description |
-| --- | --- | --- |
-| x | <code>number</code> | The X coordinate |
-| y | <code>number</code> | The Y coordinate |
-
-<a name="init"></a>
-
 ## Text
 
 ```javascript
