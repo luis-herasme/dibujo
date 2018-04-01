@@ -45,6 +45,10 @@ class Render {
     e.forEach((m) => this.add(m))
   }
 
+  autoUpdateRender (func?: Function) {
+    this.scene.autoRender(func)
+  }
+
   getWidth (): number {
     return this.canvas.width
   }
@@ -63,6 +67,26 @@ class Render {
     return new Vector(
       this.canvas.width / 2,
       this.canvas.height / 2)
+  }
+
+  getCanvasImage () {
+    return this.canvas.toDataURL()
+  }
+/*
+  filter () {
+    let image = new Image()
+    image.src = this.getCanvasImage()
+
+  }
+*/
+  fullScreen () {
+    let isFull = false
+    document.addEventListener('click', () => {
+      if (!isFull) {
+        this.canvas.webkitRequestFullScreen()
+
+      }
+    })
   }
 
   render () {
