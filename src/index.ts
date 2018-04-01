@@ -13,23 +13,24 @@ document.head.appendChild(defaultCss)
 
 import Scene from './Scene'
 import Render from './Render'
-import Graphic from './graphics/Graphic'
-import Animation from './graphics/Animation'
-
-import Rect from './graphics/Rect'
-import Circle from './graphics/Circle'
-import Ellipse from './graphics/Ellipse'
 import LinearGradient from './LinearGradient'
-import Line from './graphics/Line'
-import Poligon from './graphics/Poligon'
-import Picture from './graphics/Picture'
-import Video from './graphics/Video'
-import Text from './graphics/Text'
-import Arc from './graphics/Arc'
 import Group from './Group'
 import Vector from './Vector'
-
 import Color from './Color'
+
+// Graphics
+import Animation from './graphics/Animation'
+import Graphic from './graphics/Graphic'
+import Ellipse from './graphics/Ellipse'
+import Poligon from './graphics/Poligon'
+import Picture from './graphics/Picture'
+import Circle from './graphics/Circle'
+import Video from './graphics/Video'
+import Rect from './graphics/Rect'
+import Line from './graphics/Line'
+import Text from './graphics/Text'
+import Arc from './graphics/Arc'
+
 
 // Events
 import Mouse from './Events/Mouse'
