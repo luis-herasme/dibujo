@@ -2,7 +2,7 @@ class Vector {
   public x: number
   public y: number
 
-  constructor (x: number, y: number) {
+  constructor (x: number = 0, y: number = 0) {
     this.x = x
     this.y = y
   }
@@ -78,9 +78,9 @@ class Vector {
     }
   }
 
-  moveTowards (vector: Vector, speed: number, stop: number): void {
+  moveTowards (vector: Vector, speed: number = 1, stop: number = 1): void {
     if (this.distance(vector) > stop) {
-      const unit = Vector.normalize(vector)
+      const unit = Vector.normalize(Vector.sub(vector, this))
       unit.mult(speed)
       this.add(unit)
     }
@@ -123,12 +123,16 @@ class Vector {
     return vector1.x * vector2.y - vector2.x * vector1.y
   }
 
+  static randomP (x: number, y: number): Vector {
+    return new Vector(x * Math.random(), y * Math.random())
+  }
+
   static random (x: number, y: number): Vector {
-    if (Math.random() > 0.5) {
-      return new Vector(x * Math.random(), y * Math.random())
-    } else {
-      return new Vector(-x * Math.random(), -y * Math.random())
-    }
+    let s1 = 1
+    let s2 = 1
+    if (Math.random() > 0.5) s1 = -1
+    if (Math.random() > 0.5) s2 = -1
+    return new Vector(x * Math.random() * s1, y * Math.random() * s2)
   }
 }
 
