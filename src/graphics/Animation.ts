@@ -1,6 +1,5 @@
 import Vector from '../Vector'
 import Graphic from './Graphic'
-import Events from '../Events'
 
 class Animation extends Graphic {
   public loop: boolean = true
