@@ -1,6 +1,7 @@
 import Vector from './Vector'
 import Graphic from './graphics/Graphic'
 import Scene from './Scene'
+import {mouse} from './index'
 
 class Camera {
   public context: CanvasRenderingContext2D
@@ -30,6 +31,10 @@ class Camera {
     })
   }
 */
+  getMouse () {
+    return Vector.add(mouse.position, this.position)
+  }
+
   disableKeyTranslate() {
 
   }
@@ -89,6 +94,8 @@ class Camera {
   }
 
   translate(x: number, y: number): void {
+    this.position.x -= x
+    this.position.y -= y
     this.context.translate(x, y)
   }
 
