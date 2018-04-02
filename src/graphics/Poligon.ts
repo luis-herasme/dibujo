@@ -1,16 +1,16 @@
 import Graphic from './Graphic'
-import Vector  from '../Vector'
+import Vector from '../Vector'
 
 class Poligon extends Graphic {
-  public cords      : Array<Vector>
-  public fill       : boolean = true
-  public stroke     : boolean = false
-  public color      : string  = '#FFF'
-  public strokeColor: string  = '#000'
+  public cords: Array<Vector>
+  public fill: boolean = true
+  public stroke: boolean = false
+  public color: string = '#FFF'
+  public strokeColor: string = '#000'
   public type: string = "poligon"
-  
 
-  constructor (configuration: any) {
+
+  constructor(configuration: any) {
     super(configuration)
     if (configuration.color) this.color = configuration.color
     if (configuration.stroke) this.stroke = configuration.stroke
@@ -23,7 +23,7 @@ class Poligon extends Graphic {
     })
   }
 
-  render (): void {
+  render(): void {
     this.context.beginPath()
     this.context.fillStyle = this.color
     this.context.moveTo(this.cords[0].x, this.cords[0].y)

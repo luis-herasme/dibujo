@@ -1,5 +1,9 @@
 import Graphic from './Graphic'
-import Vector from '../Vector';
+import Vector from '../Vector'
+
+// Imaginary canvas
+const canvas = document.createElement('canvas')
+const context = canvas.getContext('2d')    
 
 class Picture extends Graphic {
   public width: number
@@ -13,7 +17,6 @@ class Picture extends Graphic {
   public todo: Array<Function> = []
   public params: Array<any> = []
 
-
   constructor(data: any) {
     super(data)
     this.image = new Image()
@@ -21,9 +24,6 @@ class Picture extends Graphic {
 
     this.image.addEventListener('load', () => {
       this.ready = true
-      console.info(`Image ${data.src} correctly loaded.`)
-      console.log(this.todo)
-      console.log(this.params)
       this.todo.forEach((met, i) => {
         met(...this.params[i])
       })
@@ -44,14 +44,10 @@ class Picture extends Graphic {
   }
 
   getImageData() {
-    const canvas = document.createElement('canvas')
-    // console.log(canvas)
-    document.body.appendChild(canvas)
-    const context = canvas.getContext('2d')
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight)
     canvas.width = this.width
     canvas.height = this.height
     context.drawImage(this.image, 0, 0, this.width, this.height)
-     document.body.removeChild(canvas)
     return context.getImageData(0, 0, this.width, this.height)
   }
 

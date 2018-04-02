@@ -1,39 +1,38 @@
-
 import Graphic from './Graphic'
 import Vector from '../Vector'
 
 class Circle extends Graphic {
-  public radius    : number  = 5
-  public lineWidth : number  = 1
-  public color     : string  = '#000000'
-  public lineColor : string  = '#FFFFFF'
-  public stroke    : boolean = false
-  public fill      : boolean = true
+  public radius: number = 5
+  public lineWidth: number = 1
+  public color: string = '#000000'
+  public lineColor: string = '#FFFFFF'
+  public stroke: boolean = false
+  public fill: boolean = true
   public type: string = "circle"
 
-  public shadowColor: string = 'rgba(0,0,0,0)'
+  public shadowColor: string = 'rgba(0, 0, 0, 0)'
   public shadowBlur: number = 0
   public shadowOffsetX: number = 0
   public shadowOffsetY: number = 0
 
-  constructor (configuration?: any) {
+  constructor(configuration?: any) {
     super(configuration)
     if (configuration) {
       if (configuration.lineWidth) this.lineWidth = configuration.lineWidth
       if (configuration.lineColor) this.lineColor = configuration.lineColor
-      if (configuration.radius)    this.radius    = configuration.radius
-      if (configuration.stroke)    this.stroke    = configuration.stroke
-      if (configuration.color)     this.color     = configuration.color
-      if (configuration.fill)      this.fill      = configuration.fill
+      if (configuration.radius) this.radius = configuration.radius
+      if (configuration.stroke) this.stroke = configuration.stroke
+      if (configuration.color) this.color = configuration.color
+      if (configuration.fill) this.fill = configuration.fill
 
       this.shadowColor = configuration.shadowColor ? configuration.shadowColor : 'rgba(0,0,0,0)'
-      this.shadowBlur = configuration.shadowBlur ?  configuration.shadowBlur : 0
+      this.shadowBlur = configuration.shadowBlur ? configuration.shadowBlur : 0
       this.shadowOffsetX = configuration.shadowOffsetX ? configuration.shadowOffsetX : 0
       this.shadowOffsetY = configuration.shadowOffsetY ? configuration.shadowOffsetY : 0
     }
   }
 
-  enableMouseDrag () {
+  enableMouseDrag() {
     let mouse = new Vector()
     let isDraging = false
     let distance = new Vector()
@@ -77,7 +76,7 @@ class Circle extends Graphic {
     })
   }
 
-  onClick (func: Function): void {
+  onClick(func: Function): void {
     const f = func.bind(this)
     document.addEventListener('click', (event) => {
       const mouse = new Vector(event.clientX, event.clientY)
@@ -89,7 +88,7 @@ class Circle extends Graphic {
     })
   }
 
-  render (): void {
+  render(): void {
     this.context.beginPath()
     this.context.shadowColor = this.shadowColor
     this.context.shadowBlur = this.shadowBlur
@@ -106,6 +105,6 @@ class Circle extends Graphic {
       this.context.stroke()
     }
   }
-} 
+}
 
 export default Circle

@@ -14,30 +14,30 @@ export default class Group {
 
   scaleObject(child: any) {
     if (child.type == "arc") {
-      child.radius *= this.scale.x;
-      child.render();
-      child.radius /= this.scale.x;
+      child.radius *= this.scale.x
+      child.render()
+      child.radius /= this.scale.x
     } else if (child.type == "line") {
       child.end = new Vector(child.end.x * this.scale.x, child.end.y * this.scale.y)
-      child.render();
+      child.render()
       child.end = new Vector(child.end.x / this.scale.x, child.end.y / this.scale.y)
     } else if (child.type == "img" || child.type == "rect") {
       child.width *= this.scale.x
       child.height *= this.scale.y
-      child.render();
+      child.render()
       child.width /= this.scale.x
       child.height /= this.scale.y
     } else if (child.type == "poligon") {
       child.cords.filter((pnt: any) => {
         return new Vector(pnt.x * this.scale.x, pnt.y * this.scale.y)
       })
-      child.render();
+      child.render()
       child.cords.filter((pnt: any) => {
         return new Vector(pnt.x / this.scale.x, pnt.y / this.scale.y)
       })
     } else if (child.type == "circle") {
       child.radius *= this.scale.x
-      child.render();
+      child.render()
       child.radius /= this.scale.x
     } else {
       throw "error, no se puede escalar dicho objeto"
@@ -49,10 +49,10 @@ export default class Group {
     this.context.save()
     this.childs.forEach((child) => {
       child.position.add(this.position)
-      child.context = this.context;
-      try{
+      child.context = this.context
+      try {
         this.scaleObject(child)
-      }catch(err){
+      } catch(err) {
         console.log(err)
       }
       child.position.sub(this.position)
