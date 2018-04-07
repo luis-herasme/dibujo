@@ -6,6 +6,7 @@ interface Events {
   dragStart(func: Function): void,
   draging(func: Function): void,
   dragEnd(func: Function): void,
+  whell(func: Function): void
 }
 
 export default Events

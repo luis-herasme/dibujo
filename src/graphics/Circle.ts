@@ -1,7 +1,8 @@
 import Graphic from './Graphic'
 import Vector from '../Vector'
+import Events from '../Events/EventsInterface'
 
-class Circle extends Graphic {
+class Circle extends Graphic implements Events {
   public radius: number = 5
   public lineWidth: number = 1
   public color: string = '#000000'
@@ -10,10 +11,21 @@ class Circle extends Graphic {
   public fill: boolean = true
   public type: string = "circle"
 
-  public shadowColor: string = 'rgba(0, 0, 0, 0)'
-  public shadowBlur: number = 0
-  public shadowOffsetX: number = 0
-  public shadowOffsetY: number = 0
+  // Private
+  private mouseDownEnabled: boolean = false
+  private dragStartEnabled: boolean = false
+  private dragEndEnabled: boolean = false
+  private dragingEnabled: boolean = false
+  private mouseUpEnabled: boolean = false
+  private hoverEnabled: boolean = false
+
+  private mouseDownMethods: Array<Function> = []
+  private mouseUpMethods: Array<Function> = []
+  private hoverMethods: Array<Function> = []
+  private dragStartMethods: Array<Function> = []
+  private dragEndMethods: Array<Function> = []
+  private dragingMethods: Array<Function> = []
+
 
   constructor(configuration?: any) {
     super(configuration)
@@ -24,12 +36,49 @@ class Circle extends Graphic {
       if (configuration.stroke) this.stroke = configuration.stroke
       if (configuration.color) this.color = configuration.color
       if (configuration.fill) this.fill = configuration.fill
-
-      this.shadowColor = configuration.shadowColor ? configuration.shadowColor : 'rgba(0,0,0,0)'
-      this.shadowBlur = configuration.shadowBlur ? configuration.shadowBlur : 0
-      this.shadowOffsetX = configuration.shadowOffsetX ? configuration.shadowOffsetX : 0
-      this.shadowOffsetY = configuration.shadowOffsetY ? configuration.shadowOffsetY : 0
     }
+  }
+
+
+  checkIfInside(point: Vector): boolean {
+    return this.position.distance(point) < this.radius
+  }
+
+  private enableEvent (eventName: string, methods: Array<Function>): void {
+    let mouse: Vector
+    document.addEventListener(eventName, (event) => {
+      mouse = new Vector(event.clientX, event.clientY)
+      if (this.checkIfInside(mouse)) {
+        methods.forEach((method: Function) => method(mouse))
+      }
+    })
+  }
+
+  mouseDown(func: Function): void {
+    if (!this.mouseDownEnabled) this.enableEvent('mousedown', this.mouseDownMethods)
+    this.mouseDownMethods.push(func.bind(this))
+  }
+
+  mouseUp(func: Function): void {
+    if (!this.mouseUpEnabled) this.enableEvent('mouseup', this.mouseUpMethods)
+    this.mouseUpMethods.push(func.bind(this))
+  }
+
+  hover(func: Function): void {
+    if (!this.hoverEnabled) this.enableEvent('mousemove', this.hoverMethods)
+    this.hoverMethods.push(func.bind(this))
+  }
+
+  dragStart(func: Function): void {
+    this.dragStartMethods.push(func.bind(this))
+  }
+
+  draging(func: Function): void {
+    this.dragingMethods.push(func.bind(this))
+  }
+
+  dragEnd(func: Function): void {
+    this.dragEndMethods.push(func.bind(this))
   }
 
   enableMouseDrag() {

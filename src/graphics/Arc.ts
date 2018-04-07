@@ -4,16 +4,9 @@ import Vector from '../Vector'
 
 class Arc extends Graphic implements Events {
   // Dynamic properties
-  public color: string
   public radius: number
-  public fill: boolean
-  public lineWidth: number
-  public stroke: boolean
   public eAngl: number
   public aAngl: number
-  public lineColor: string
-
-  public childs: Array<any> = []
 
   // Private
   private mouseDownEnabled: boolean = false
@@ -33,32 +26,9 @@ class Arc extends Graphic implements Events {
   constructor(configuration?: any) {
     super(configuration)
     if (configuration) {
-      if (configuration.stroke !== undefined) {
-        if (typeof configuration.stroke === 'boolean') {
-          this.stroke = configuration.stroke
-        } else {
-          console.error(`Type of stroke is not boolean`)
-        }
-      } else {
-        this.stroke = false
-      }
-
-      if (configuration.fill !== undefined) {
-        if (typeof configuration.fill === 'boolean') {
-          this.fill = configuration.fill
-        } else {
-          console.error(`Type of fill is not boolean`)
-        }
-      } else {
-        this.fill = true
-      }
-
-      this.color = configuration.color ? configuration.color : 'grey'
       this.radius = configuration.radius ? configuration.radius : 5
-      this.lineWidth = configuration.lineWidth ? configuration.lineWidth : 2
       this.eAngl = configuration.eAngl ? configuration.eAngl : 0
       this.aAngl = configuration.aAngl ? configuration.aAngl : Math.PI
-      this.lineColor = configuration.lineColor ? configuration.lineColor : 'black'
     } else {
       this.stroke = false
       this.fill = true
@@ -71,10 +41,7 @@ class Arc extends Graphic implements Events {
     }
   }
 
-  add(child: any): void {
-    child.context = this.context
-    this.childs.push(child)
-  }
+
 
   checkIfInside(point: Vector): boolean {
     return this.position.distance(point) < this.radius

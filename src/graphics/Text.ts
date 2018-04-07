@@ -19,6 +19,9 @@ class Text extends Graphic {
   public fontConfig: string = ''
   public textAlign:string
   public textBaseline:string
+  public lineHeight: number = 12
+  public maxWidth: number = 500
+
   constructor(configuration: any) {
     super(configuration)
     this.textAlign = configuration.textAlign ? configuration.textAlign : 'center'
@@ -29,6 +32,28 @@ class Text extends Graphic {
     this.family = configuration.family ? configuration.family : 'Arial'
     this.content = configuration.content ? configuration.content : ''
     this.stroke = configuration.stroke ? configuration.stroke : false
+  }
+
+  wrapText() {
+    let x = this.position.x
+    let y = this.position.y
+    var words = this.content.split(' ')
+    var line = ''
+  
+    for(var n = 0; n < words.length; n++) {
+      var testLine = line + words[n] + ' '
+      var metrics = this.context.measureText(testLine)
+      var testWidth = metrics.width
+      if (testWidth > this.maxWidth && n > 0) {
+        this.context.fillText(line, x, y)
+        line = words[n] + ' '
+        y += this.lineHeight
+      }
+      else {
+        line = testLine
+      }
+    }
+    this.context.fillText(line, x, y)
   }
 
   render(): void {
