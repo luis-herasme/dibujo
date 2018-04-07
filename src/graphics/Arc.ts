@@ -150,6 +150,8 @@ class Arc extends Graphic implements Events {
   renderChild(): void {
     // this.context.save()
     // this.context.translate(this.position.x, this.position.y)
+    this.context.lineCap = this.lineCap
+    this.context.lineJoin = this.lineJoin
     this.childs.forEach(c => c.context = this.context)
  
     this.childs.forEach(c => c.render())

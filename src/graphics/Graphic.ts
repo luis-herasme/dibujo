@@ -20,6 +20,7 @@ class Graphic {
   public rotation: number = 0
   public lineCap: string = LineCap.round
   public lineJoin: string = LineJoin.round
+  public miterLimit: number
 
   constructor(data?: any) {
     if (data) {
@@ -27,10 +28,12 @@ class Graphic {
       this.anchor = data.anchor ? data.anchor : new Vector(0.5, 0.5)
       this.z_index = data.z_index ? data.z_index : 1
       this.lineCap = data.lineCap ? data.lineCap : LineCap.round
+      this.miterLimit = data.miterLimit ? data.miterLimit : 10
     } else {
       this.position = new Vector(0, 0)
       this.anchor = new Vector(0.5, 0.5)
       this.z_index = 1
+      this.miterLimit = 10
       this.lineCap = LineCap.round
     }
   }
