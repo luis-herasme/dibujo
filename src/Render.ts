@@ -1,6 +1,7 @@
 import Vector from './Vector'
 import Scene    from './Scene'
 import Graphic  from './graphics/Graphic'
+import Group from './Group'
 
 class Render {
   public scene    : Scene
@@ -33,7 +34,7 @@ class Render {
     this.setScene(scene)
   }
 
-  add (element: Graphic): void {
+  add (element: any): void {
     this.scene.add(element)
   }
 

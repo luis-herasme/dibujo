@@ -46,17 +46,13 @@ export default class Group {
   }
 
   render(): void {
-    this.context.save()
+    // this.context.save()
     this.childs.forEach((child) => {
       child.position.add(this.position)
       child.context = this.context
-      try {
-        this.scaleObject(child)
-      } catch(err) {
-        console.log(err)
-      }
+      child.render()
       child.position.sub(this.position)
     })
-    this.context.restore()
+    // this.context.restore()
   }
 }

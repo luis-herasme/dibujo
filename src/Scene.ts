@@ -3,6 +3,7 @@ import Graphic from './graphics/Graphic'
 import Camera from './Camera'
 import Picture from './graphics/Picture'
 import Video from './graphics/Video'
+import Group from './Group'
 
 /**
  * This is the detail about the constructor
@@ -13,6 +14,7 @@ import Video from './graphics/Video'
 class Scene {
 
   public context: CanvasRenderingContext2D
+  public backgroundColor: string = 'black'
   public camera: Camera
   public renderer: Render
   public childs: Array<any> = []
@@ -43,7 +45,7 @@ class Scene {
    * @param {Graphic} element any graphic object
    * @returns {void}
    */
-  add(element: Graphic): void {
+  add(element: any): void {
     element.context = this.context
     this.childs.push(element)
     this.organizeByZindex()
@@ -67,7 +69,8 @@ class Scene {
   clearScreen(): void {
     this.context.save()
     this.context.setTransform(1, 0, 0, 1, 0, 0)
-    this.context.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    this.context.fillStyle = this.backgroundColor
+    this.context.fillRect(0, 0, window.innerWidth, window.innerHeight)
     this.context.restore()
   }
 

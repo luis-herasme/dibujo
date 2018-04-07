@@ -30,6 +30,8 @@ import Rect from './graphics/Rect'
 import Line from './graphics/Line'
 import Text from './graphics/Text'
 import Arc from './graphics/Arc'
+import BezierCurve from './graphics/BezierCurve'
+import QuadraticCurve from './graphics/QuadraticCurve'
 
 
 // Events
@@ -40,7 +42,9 @@ const mouse = new Mouse()
 const keyboard = new KeyBoard()
 
 export {
+  QuadraticCurve,
   Video,
+  BezierCurve,
   LinearGradient,
   Ellipse,
   mouse,

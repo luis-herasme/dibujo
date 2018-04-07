@@ -13,6 +13,8 @@ class Arc extends Graphic implements Events {
   public aAngl: number
   public lineColor: string
 
+  public childs: Array<any> = []
+
   // Private
   private mouseDownEnabled: boolean = false
   private dragStartEnabled: boolean = false
@@ -31,8 +33,26 @@ class Arc extends Graphic implements Events {
   constructor(configuration?: any) {
     super(configuration)
     if (configuration) {
-      this.stroke = configuration.stroke ? configuration.stroke : false
-      this.fill = configuration.fill ? configuration.fill : true
+      if (configuration.stroke !== undefined) {
+        if (typeof configuration.stroke === 'boolean') {
+          this.stroke = configuration.stroke
+        } else {
+          console.error(`Type of stroke is not boolean`)
+        }
+      } else {
+        this.stroke = false
+      }
+
+      if (configuration.fill !== undefined) {
+        if (typeof configuration.fill === 'boolean') {
+          this.fill = configuration.fill
+        } else {
+          console.error(`Type of fill is not boolean`)
+        }
+      } else {
+        this.fill = true
+      }
+
       this.color = configuration.color ? configuration.color : 'grey'
       this.radius = configuration.radius ? configuration.radius : 5
       this.lineWidth = configuration.lineWidth ? configuration.lineWidth : 2
@@ -49,6 +69,11 @@ class Arc extends Graphic implements Events {
       this.aAngl = Math.PI
       this.lineColor = 'black'
     }
+  }
+
+  add(child: any): void {
+    child.context = this.context
+    this.childs.push(child)
   }
 
   checkIfInside(point: Vector): boolean {
@@ -105,28 +130,34 @@ class Arc extends Graphic implements Events {
 
     this.mouseDown((mouse: Vector) => {
       if (!isDraging) {
+        document.body.style.cursor = 'pointer'
         isDraging = true
         distance = Vector.sub(this.position, mouse)
         this.position = Vector.add(distance, mouse)
-        document.body.style.cursor = 'pointer'
         this.dragStartMethods.forEach((meth: Function) => meth())
       }
     })
 
     this.mouseUp(() => {
       if (isDraging) {
-        isDraging = false
         document.body.style.cursor = 'default'
+        isDraging = false
         this.dragEndMethods.forEach((meth: Function) => meth())
       }
     })
   }
 
-  render(): void {
+  renderChild(): void {
+    // this.context.save()
+    // this.context.translate(this.position.x, this.position.y)
+    this.childs.forEach(c => c.context = this.context)
+ 
+    this.childs.forEach(c => c.render())
     this.context.beginPath()
+    this.context.arc(0, 0, this.radius, this.eAngl, this.aAngl, true)
+
     if (this.fill) {
       this.context.fillStyle = this.color
-      this.context.arc(this.position.x, this.position.y, this.radius, this.eAngl, this.aAngl, true)
       this.context.fill()
     }
     if (this.stroke) {
@@ -134,6 +165,8 @@ class Arc extends Graphic implements Events {
       this.context.lineWidth = this.lineWidth
       this.context.stroke()
     }
+
+    // this.context.restore()
   }
 }
 

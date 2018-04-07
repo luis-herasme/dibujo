@@ -104,6 +104,7 @@ class Circle extends Graphic {
       this.context.strokeStyle = this.lineColor
       this.context.stroke()
     }
+    this.context.shadowColor = 'rgba(0,0,0,0)'
   }
 }
 

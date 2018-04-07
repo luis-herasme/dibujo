@@ -17,6 +17,7 @@ class Poligon extends Graphic {
     if (configuration.cords) this.cords = configuration.cords.slice(1, configuration.cords.length)
     if (configuration.fill) this.fill = configuration.fill
     if (configuration.strokeColor) this.strokeColor = configuration.strokeColor
+    
     this.position = configuration.cords.slice[0]
     this.cords.filter((pnt) => {
       return new Vector(pnt.x - this.position.x, pnt.y - this.position.y)
@@ -25,7 +26,9 @@ class Poligon extends Graphic {
 
   render(): void {
     this.context.beginPath()
+    this.context.lineCap = this.lineCap
     this.context.fillStyle = this.color
+    this.context.lineJoin = this.lineJoin
     this.context.moveTo(this.cords[0].x, this.cords[0].y)
     for (var i = 0; i < this.cords.length; i++) {
       this.context.lineTo(this.cords[i].x + this.position.x, this.cords[i].y + this.position.y)
