@@ -1,126 +1,22 @@
-import Graphic from './Graphic'
-import Events from '../Events'
-import Vector from '../Vector'
+import CircleEvents from './CircleEvents'
 
-class Arc extends Graphic implements Events {
-  // Dynamic properties
-  public radius: number
+class Arc extends CircleEvents {
   public eAngl: number
   public aAngl: number
-
-  // Private
-  private mouseDownEnabled: boolean = false
-  private dragStartEnabled: boolean = false
-  private dragEndEnabled: boolean = false
-  private dragingEnabled: boolean = false
-  private mouseUpEnabled: boolean = false
-  private hoverEnabled: boolean = false
-
-  private mouseDownMethods: Array<Function> = []
-  private mouseUpMethods: Array<Function> = []
-  private hoverMethods: Array<Function> = []
-  private dragStartMethods: Array<Function> = []
-  private dragEndMethods: Array<Function> = []
-  private dragingMethods: Array<Function> = []
 
   constructor(configuration?: any) {
     super(configuration)
     if (configuration) {
-      this.radius = configuration.radius ? configuration.radius : 5
       this.eAngl = configuration.eAngl ? configuration.eAngl : 0
       this.aAngl = configuration.aAngl ? configuration.aAngl : Math.PI
     } else {
-      this.stroke = false
-      this.fill = true
-      this.color = 'grey'
-      this.radius = 5
-      this.lineWidth = 2
       this.eAngl = 0
       this.aAngl = Math.PI
-      this.lineColor = 'black'
     }
   }
-
-
-
-  checkIfInside(point: Vector): boolean {
-    return this.position.distance(point) < this.radius
-  }
-
-  private enableEvent (eventName: string, methods: Array<Function>): void {
-    let mouse: Vector
-    document.addEventListener(eventName, (event) => {
-      mouse = new Vector(event.clientX, event.clientY)
-      if (this.checkIfInside(mouse)) {
-        methods.forEach((method: Function) => method(mouse))
-      }
-    })
-  }
-
-  mouseDown(func: Function): void {
-    if (!this.mouseDownEnabled) this.enableEvent('mousedown', this.mouseDownMethods)
-    this.mouseDownMethods.push(func.bind(this))
-  }
-
-  mouseUp(func: Function): void {
-    if (!this.mouseUpEnabled) this.enableEvent('mouseup', this.mouseUpMethods)
-    this.mouseUpMethods.push(func.bind(this))
-  }
-
-  hover(func: Function): void {
-    if (!this.hoverEnabled) this.enableEvent('mousemove', this.hoverMethods)
-    this.hoverMethods.push(func.bind(this))
-  }
-
-  dragStart(func: Function): void {
-    this.dragStartMethods.push(func.bind(this))
-  }
-
-  draging(func: Function): void {
-    this.dragingMethods.push(func.bind(this))
-  }
-
-  dragEnd(func: Function): void {
-    this.dragEndMethods.push(func.bind(this))
-  }
-
-  enableMouseDrag() {
-    let isDraging = false
-    let distance: Vector = new Vector()
-
-    document.addEventListener('mousemove', (event) => {
-      if (isDraging) {
-        this.position = Vector.add(distance, new Vector(event.clientX, event.clientY))
-        this.dragingMethods.forEach((meth: Function) => meth())
-      }
-    })
-
-    this.mouseDown((mouse: Vector) => {
-      if (!isDraging) {
-        document.body.style.cursor = 'pointer'
-        isDraging = true
-        distance = Vector.sub(this.position, mouse)
-        this.position = Vector.add(distance, mouse)
-        this.dragStartMethods.forEach((meth: Function) => meth())
-      }
-    })
-
-    this.mouseUp(() => {
-      if (isDraging) {
-        document.body.style.cursor = 'default'
-        isDraging = false
-        this.dragEndMethods.forEach((meth: Function) => meth())
-      }
-    })
-  }
-
+  
   renderChild(): void {
-    // this.context.save()
-    // this.context.translate(this.position.x, this.position.y)
-    this.context.lineCap = this.lineCap
-    this.context.lineJoin = this.lineJoin
     this.childs.forEach(c => c.context = this.context)
- 
     this.childs.forEach(c => c.render())
     this.context.beginPath()
     this.context.arc(0, 0, this.radius, this.eAngl, this.aAngl, true)
@@ -129,13 +25,12 @@ class Arc extends Graphic implements Events {
       this.context.fillStyle = this.color
       this.context.fill()
     }
+
     if (this.stroke) {
       this.context.strokeStyle = this.lineColor
       this.context.lineWidth = this.lineWidth
       this.context.stroke()
     }
-
-    // this.context.restore()
   }
 }
 

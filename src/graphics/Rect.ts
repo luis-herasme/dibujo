@@ -1,14 +1,8 @@
 import Graphic from './Graphic'
 
 class Rect extends Graphic {
-  public color: string = '#FFFFFF'
   public width: number = 1
   public height: number = 1
-  public lineWidth: number = 1
-  public fill: boolean = true
-  public stroke: boolean = false
-  public lineColor: string = '#000000'
-  public type: string = "rect"
 
   constructor(data: any) {
     super(data)
@@ -20,8 +14,6 @@ class Rect extends Graphic {
     if (data.lineWidth) this.lineWidth = data.lineWidth
     if (data.lineColor) this.lineColor = data.lineColor
   }
-
-  onClick(func: Function): void { }
 
   render(): void {
     this.context.fillStyle = this.color

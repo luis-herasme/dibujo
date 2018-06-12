@@ -2,10 +2,8 @@ import Graphic from './Graphic'
 import Vector from '../Vector'
 
 class Line extends Graphic {
-  public color: string
   public start: Vector = new Vector(0, 0)
   public end: Vector = new Vector(1, 1)
-  public type: string = "line"
   public width: number
 
   constructor(data: any) {

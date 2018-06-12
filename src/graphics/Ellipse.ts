@@ -5,13 +5,6 @@ import LinearGradient from '../LinearGradient'
 class Ellipse extends Graphic {
   public radiusX: number = 10
   public radiusY: number = 5
-  public lineWidth: number = 1
-  public color: any = '#000000'
-  public lineColor: string = '#FFFFFF'
-  public stroke: boolean = false
-  public fill: boolean = true
-  public type: string = "circle"
-  public linearGradient: any
 
   constructor(configuration?: any) {
     super(configuration)
