@@ -2,7 +2,7 @@ import Graphic from './Graphic'
 import Events from '../Events'
 import Vector from '../Vector'
 
-class CircleEvents extends Graphic implements Events{
+class CircleEvents extends Graphic implements Events {
   public radius: number
   // Private
   private mouseDownEnabled: boolean = false
