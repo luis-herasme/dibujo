@@ -1,8 +1,8 @@
 import Render from './Render'
 import Graphic from './graphics/Graphic'
 import Camera from './Camera'
-import Picture from './graphics/Picture'
-import Video from './graphics/Video'
+import Picture from './Media/Picture'
+import Video from './Media/Video'
 import Group from './Group'
 
 /**

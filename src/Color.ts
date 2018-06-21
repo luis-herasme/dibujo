@@ -33,7 +33,7 @@ class Color {
     }
   }
 
-  setGree (color: number) {
+  setGreen (color: number) {
     if (color > 255) {
       this.green = 255
     } else if (color < 0) {

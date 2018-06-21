@@ -7,11 +7,23 @@ class Render {
   public scene    : Scene
   public canvas   : HTMLCanvasElement
   public context  : CanvasRenderingContext2D
+  public interval: any
+  public frameRate: number = 1000 / 60
 
-  constructor (canvas?: HTMLCanvasElement, width?: number, height?: number) {
+  constructor (canvas?: string, width?: number, height?: number) {
 
-    if (canvas) this.canvas = canvas
-    else {
+    if (canvas) {
+      const _canvas = document.getElementById(canvas)
+      if (_canvas !== null) {
+        if (_canvas.tagName === 'CANVAS') {
+          this.canvas = _canvas
+        } else {
+          console.error('The ID provided is not a of canvas elements')
+        }
+      } else {
+        console.error('The ID provided is not in the DOM')
+      }
+    } else {
       this.canvas = document.createElement('canvas')
       document.body.appendChild(this.canvas)
     }
@@ -46,9 +58,11 @@ class Render {
     e.forEach((m) => this.add(m))
   }
 
+  /*
   autoUpdateRender (func?: Function) {
     this.scene.autoRender(func)
   }
+  */
 
   getWidth (): number {
     return this.canvas.width
@@ -76,7 +90,7 @@ class Render {
 /*
   filter () {
     let image = new Image()
-    image.src = this.getCanvasImage()
+    image.src = this.getCanvasImage() 
 
   }
 */
@@ -85,9 +99,18 @@ class Render {
     document.addEventListener('click', () => {
       if (!isFull) {
         this.canvas.webkitRequestFullScreen()
-
       }
     })
+  }
+
+  /**
+   * This method renders the screne ultil you call stopAutoRender
+   */
+  autoRender(func?: Function): void {
+     this.interval = setInterval(() => {
+      if (func) func()
+      this.render()
+     }, this.frameRate)
   }
 
   render () {

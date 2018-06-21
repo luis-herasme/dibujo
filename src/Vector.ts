@@ -127,7 +127,7 @@ class Vector {
     return new Vector(x * Math.random(), y * Math.random())
   }
 
-  static random (x: number, y: number): Vector {
+  static random (x: number = 1, y: number = 1): Vector {
     let s1 = 1
     let s2 = 1
     if (Math.random() > 0.5) s1 = -1

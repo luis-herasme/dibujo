@@ -1,4 +1,4 @@
-import Graphic from './Graphic'
+import Graphic from '../graphics/Graphic'
 import Vector from '../Vector';
 
 class Video extends Graphic {

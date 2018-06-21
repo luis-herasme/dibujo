@@ -2,21 +2,15 @@ import Graphic from './Graphic'
 
 class Text extends Graphic {
   public content: string
-  
-
   public fontConfig: string = ''
-
   public lineHeight: number = 12
   public maxWidth: number = 500
 
   constructor(configuration: any) {
     super(configuration)
-    this.textAlign = configuration.textAlign ? configuration.textAlign : 'center'
-    this.textBaseline = configuration.textBaseline ? configuration.textBaseline : 'middle'
-
-    this.size = configuration.size ? configuration.size : 12
-    this.family = configuration.family ? configuration.family : 'Arial'
-    this.content = configuration.content ? configuration.content : ''
+    if (configuration) {
+      this.content = configuration.content ? configuration.content : ''
+    }
   }
 
   wrapText() {

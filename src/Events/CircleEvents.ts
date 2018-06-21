@@ -1,4 +1,4 @@
-import Graphic from './Graphic'
+import Graphic from '../graphics/Graphic'
 import Events from '../Events'
 import Vector from '../Vector'
 

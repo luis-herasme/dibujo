@@ -4,15 +4,18 @@
   "description": "",
   "main": "./dist/bundle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "docz dev",
+    "build": "docz build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "docz": "^0.2.6",
     "ts-loader": "3.5.0",
     "typedoc": "^0.11.1",
     "typescript": "^2.8.1",
-    "webpack": "3.10.0",
+    "webpack": "^3.10.0",
     "yargs": "^9.0.1"
   },
   "dependencies": {}

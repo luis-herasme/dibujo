@@ -33,7 +33,7 @@ class Graphic {
         if (typeof data.stroke === 'boolean') {
           this.stroke = data.stroke
         } else {
-          console.error(`Type of stroke is not boolean`)
+          console.info(`Type of stroke is not boolean`)
         }
       } else {
         this.stroke = false
@@ -42,7 +42,7 @@ class Graphic {
         if (typeof data.fill === 'boolean') {
           this.fill = data.fill
         } else {
-          console.error(`Type of fill is not boolean`)
+          console.info(`Type of fill is not boolean`)
         }
       } else {
         this.fill = true
@@ -60,7 +60,7 @@ class Graphic {
       this.color = data.color ? data.color : 'grey'
       this.family = data.family ? data.family : 'Arial'
       this.lineJoin = data.lineJoin ? data.lineJoin : LineJoin.round
-      this.lineColor = data.lineColor ? data.lineColor : 'rgb(0, 0, 0)'
+      this.lineColor = data.lineColor ? data.lineColor : 'rgb(50, 50, 50)'
       this.textAlign = data.textAlign ? data.textAlign : 'center'
       this.textBaseline = data.textBaseline ? data.textBaseline : 'middle'
       this.size = data.size ? data.size : 12
@@ -78,16 +78,16 @@ class Graphic {
     this.childs.push(child)
   }
 
-  font() {
+  getFont() {
     return `${this.weight} ${this.size}px ${this.family}`
   }
 
   setStyle(): void {
-    this.context.font = this.font()
+    this.context.font = this.getFont()
     this.context.fillStyle = this.color
     this.context.lineCap = this.lineCap
     this.context.lineJoin = this.lineJoin
-    this.context.lineColor = this.lineColor
+    this.context.strokeStyle = this.lineColor
     this.context.lineWidth = this.lineWidth
     this.context.textAlign = this.textAlign
     this.context.shadowColor = this.shadowColor
@@ -98,33 +98,26 @@ class Graphic {
     this.context.shadowOffsetY = this.shadowOffsetY
   }
 
+/*
+    Most be somewhere here
+
+    this.childs.forEach(c => c.context = this.context)
+    this.childs.forEach(c => c.render())
+
+
+*/
+
   render(): void {
-    this.context.save()
-    this.context.beginPath()
-    if (this.context.fill || this.context.stroke) {
+    // this.context.save()
+   this.context.beginPath()
+   // if (this.context.fill || this.context.stroke) {
       this.setStyle()
       this.selfRender()
-    }
-    this.context.restore()
+   // }
+    // this.context.restore()
   }
 
-  selfRender() {}
+  selfRender() { }
 }
 
 export default Graphic
-
-  /*
-  locate() {
-    // this.context.anchor:         Vector = new Vector(0.5, 0.5)
-    this.context.translate(this.position.x, this.position.y)
-    this.context.rotate(this.rotation)
-  }
-
-  var pat=ctx.createPattern(img,"repeat");
-  ctx.fillStyle=pat;
-  // this.context.linearGradient: any
-  public linearGradient: any
-  
-  // renderChild() { }
-  */
-

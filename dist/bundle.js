@@ -1134,6 +1134,7 @@ var Scene_1 = __webpack_require__(3);
 var Render = /** @class */ (function () {
     function Render(canvas, width, height) {
         var _this = this;
+        this.frameRate = 0;
         if (canvas)
             this.canvas = canvas;
         else {
@@ -1199,6 +1200,17 @@ var Render = /** @class */ (function () {
                 _this.canvas.webkitRequestFullScreen();
             }
         });
+    };
+    /**
+     * This method renders the screne ultil you call stopAutoRender
+     */
+    Render.prototype.autoRender = function (func) {
+        var _this = this;
+        this.interval = setInterval(function () {
+            if (func)
+                func();
+            _this.render();
+        }, this.frameRate);
     };
     Render.prototype.render = function () {
         this.scene.render();

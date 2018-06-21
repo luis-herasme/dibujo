@@ -1,5 +1,5 @@
 import Vector from '../Vector'
-import CircleEvents from './CircleEvents'
+import CircleEvents from '../Events/CircleEvents'
 
 class Circle extends CircleEvents {
   public radius: number = 5
@@ -12,8 +12,14 @@ class Circle extends CircleEvents {
   }
   selfRender(): void {
     this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
-    if (this.fill) this.context.fill()
-    if (this.stroke) this.context.stroke()
+
+    if (this.fill) {
+      this.context.fill()
+    }
+
+    if (this.stroke) {
+      this.context.stroke()
+    }
   }
 }
 
