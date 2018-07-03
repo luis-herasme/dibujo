@@ -1,9 +1,9 @@
 import Graphic from './Graphic'
-import {Vector2D} from 'Vector2D'
+import {Vector2D} from 'vector_class'
 
 class Line extends Graphic {
-  public start: Vector = new Vector(0, 0)
-  public end: Vector = new Vector(1, 1)
+  public start: Vector2D = new Vector2D(0, 0)
+  public end: Vector2D = new Vector2D(1, 1)
 
   constructor(data: any) {
     super(data)
@@ -12,7 +12,7 @@ class Line extends Graphic {
       if (data.end) this.end = data.end
       if (data.color) this.color = data.color
       if (data.start) this.position = data.start
-      this.end = new Vector(this.end.x - this.start.x, this.end.y - this.start.y)
+      this.end = new Vector2D(this.end.x - this.start.x, this.end.y - this.start.y)
     }
   }
 
