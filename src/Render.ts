@@ -1,16 +1,16 @@
-import Vector from './Vector'
-import Scene    from './Scene'
-import Graphic  from './graphics/Graphic'
+import { Vector2D } from 'vector_class'
+import Scene from './Scene'
+import Graphic from './graphics/Graphic'
 import Group from './Group'
 
 class Render {
-  public scene    : Scene
-  public canvas   : HTMLCanvasElement
-  public context  : CanvasRenderingContext2D
+  public scene: Scene
+  public canvas: HTMLCanvasElement
+  public context: CanvasRenderingContext2D
   public interval: any
   public frameRate: number = 1000 / 60
 
-  constructor (canvas?: string, width?: number, height?: number) {
+  constructor(canvas?: string, width?: number, height?: number) {
 
     if (canvas) {
       const _canvas = document.getElementById(canvas)
@@ -29,32 +29,32 @@ class Render {
     }
 
     if (width && height) {
-      this.canvas.width  = width
+      this.canvas.width = width
       this.canvas.height = height
     } else {
-      this.canvas.width  = window.innerWidth
+      this.canvas.width = window.innerWidth
       this.canvas.height = window.innerHeight
     }
 
     window.addEventListener('resize', () => {
-      this.canvas.width  = window.innerWidth
+      this.canvas.width = window.innerWidth
       this.canvas.height = window.innerHeight
     })
 
     this.context = this.canvas.getContext('2d')
-    const scene  = new Scene(this)
+    const scene = new Scene(this)
     this.setScene(scene)
   }
 
-  add (element: any): void {
+  add(element: any): void {
     this.scene.add(element)
   }
 
-  remove (element: Graphic): void {
+  remove(element: Graphic): void {
     this.scene.remove(element)
   }
 
-  addMultiple (e: Array<Graphic>): void {
+  addMultiple(e: Array<Graphic>): void {
     e.forEach((m) => this.add(m))
   }
 
@@ -64,37 +64,37 @@ class Render {
   }
   */
 
-  getWidth (): number {
+  getWidth(): number {
     return this.canvas.width
   }
 
-  getHeight (): number {
+  getHeight(): number {
     return this.canvas.height
   }
 
-  getSize (): Vector {
-    return new Vector(
+  getSize(): Vector2D {
+    return new Vector2D(
       this.canvas.width,
       this.canvas.height)
   }
 
-  getCenter (): Vector {
-    return new Vector(
+  getCenter(): Vector2D {
+    return new Vector2D(
       this.canvas.width / 2,
       this.canvas.height / 2)
   }
 
-  getCanvasImage () {
+  getCanvasImage() {
     return this.canvas.toDataURL()
   }
-/*
-  filter () {
-    let image = new Image()
-    image.src = this.getCanvasImage() 
-
-  }
-*/
-  fullScreen () {
+  /*
+    filter () {
+      let image = new Image()
+      image.src = this.getCanvasImage() 
+  
+    }
+  */
+  fullScreen() {
     let isFull = false
     document.addEventListener('click', () => {
       if (!isFull) {
@@ -107,17 +107,17 @@ class Render {
    * This method renders the screne ultil you call stopAutoRender
    */
   autoRender(func?: Function): void {
-     this.interval = setInterval(() => {
+    this.interval = setInterval(() => {
       if (func) func()
       this.render()
-     }, this.frameRate)
+    }, this.frameRate)
   }
 
-  render () {
+  render() {
     this.scene.render()
   }
 
-  setScene (scene: Scene): void {
+  setScene(scene: Scene): void {
     this.scene = scene
     this.scene.renderer = this
     this.scene.context = this.context

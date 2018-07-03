@@ -1,5 +1,5 @@
 import Graphic from './Graphic'
-import Vector from '../Vector'
+import {Vector2D} from 'Vector2D'
 
 class Line extends Graphic {
   public start: Vector = new Vector(0, 0)

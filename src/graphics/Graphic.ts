@@ -1,4 +1,4 @@
-import Vector from '../Vector'
+import {Vector2D} from 'vector_class'
 import { weights, LineCap, LineJoin } from '../Properties'
 
 class Graphic {
@@ -7,8 +7,8 @@ class Graphic {
   public linearGradient: any
   public fill: Boolean = true
   public stroke: Boolean = false
-  public anchor: Vector = new Vector(0.5, 0.5)
-  public position: Vector = new Vector(0, 0)
+  public anchor: Vector2D = new Vector2D(0.5, 0.5)
+  public position: Vector2D = new Vector2D(0, 0)
   public color: String = 'grey'
   public family: String = 'Arial'
   public lineCap: String = LineCap.round
@@ -48,8 +48,8 @@ class Graphic {
         this.fill = true
       }
       this.weight = data.weights ? data.weights : weights.normal
-      this.anchor = data.anchor ? data.anchor : new Vector(0.5, 0.5)
-      this.position = data.position ? data.position : new Vector(0, 0)
+      this.anchor = data.anchor ? data.anchor : new Vector2D(0.5, 0.5)
+      this.position = data.position ? data.position : new Vector2D(0, 0)
       this.z_index = data.z_index ? data.z_index : 1
       this.shadowBlur = data.shadowBlur ? data.shadowBlur : 0
       this.shadowOffsetX = data.shadowOffsetX ? data.shadowOffsetX : 0
@@ -121,3 +121,77 @@ class Graphic {
 }
 
 export default Graphic
+
+
+/*
+
+
+
+
+-------------------------------- GRUPO --------------------------------
+
+
+
+
+
+
+import Graphic from './graphics/Graphic'
+import {Vector2D} from 'vector_class'
+
+export default class Group {
+  private childs: Array<Graphic> = []
+  private context: CanvasRenderingContext2D
+  public position: Vector2D = new Vector2D(0, 0) // la posicion tu la tenias publica, asi que no tiene sentido ese metodo de translate que querias hacer
+  public scale: Vector2D = new Vector2D(1, 1)
+  public rotation: number
+
+  add(child: Graphic): void {
+    this.childs.push(child)
+  }
+
+  scaleObject(child: any) {
+    if (child.type == "arc") {
+      child.radius *= this.scale.x
+      child.render()
+      child.radius /= this.scale.x
+    } else if (child.type == "line") {
+      child.end = new Vector(child.end.x * this.scale.x, child.end.y * this.scale.y)
+      child.render()
+      child.end = new Vector(child.end.x / this.scale.x, child.end.y / this.scale.y)
+    } else if (child.type == "img" || child.type == "rect") {
+      child.width *= this.scale.x
+      child.height *= this.scale.y
+      child.render()
+      child.width /= this.scale.x
+      child.height /= this.scale.y
+    } else if (child.type == "poligon") {
+      child.cords.filter((pnt: any) => {
+        return new Vector(pnt.x * this.scale.x, pnt.y * this.scale.y)
+      })
+      child.render()
+      child.cords.filter((pnt: any) => {
+        return new Vector(pnt.x / this.scale.x, pnt.y / this.scale.y)
+      })
+    } else if (child.type == "circle") {
+      child.radius *= this.scale.x
+      child.render()
+      child.radius /= this.scale.x
+    } else {
+      throw "error, no se puede escalar dicho objeto"
+    }
+    return child
+  }
+
+  render(): void {
+    // this.context.save()
+    this.childs.forEach((child) => {
+      child.position.add(this.position)
+      child.context = this.context
+      child.render()
+      child.position.sub(this.position)
+    })
+    // this.context.restore()
+  }
+}
+
+*/

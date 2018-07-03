@@ -1,18 +1,15 @@
 const defaultCss = document.createElement('style')
 defaultCss.type = 'text/css'
 defaultCss.innerHTML = `
+
 * {
   margin:0%;
   padding: 0%;
 }
+
 canvas {
   display: block;
 }
-
-
-
-
-
 
 /* 
             GUI
@@ -40,16 +37,6 @@ button {
 /* 
             END GUI
 */
-
-
-
-
-
-
-
-
-
-
 `
 document.head.appendChild(defaultCss)
 
@@ -57,7 +44,7 @@ import Scene from './Scene'
 import Render from './Render'
 import LinearGradient from './LinearGradient'
 import Group from './Group'
-import Vector from './Vector'
+import { Vector2D } from 'vector_class'
 import Color from './Color'
 
 import Wind from './GUI/Window'
@@ -100,7 +87,7 @@ export {
   Animation,
   Rect,
   Circle,
-  Vector,
+  Vector2D,
   Line,
   Poligon,
   Picture,
