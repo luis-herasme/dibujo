@@ -8,6 +8,48 @@ defaultCss.innerHTML = `
 canvas {
   display: block;
 }
+
+
+
+
+
+
+/* 
+            GUI
+*/
+
+.wind {
+  position: fixed;
+  background: #333;
+  color: white;
+  font-family: arial;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid #111;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  padding: 5px;
+  border: 1px solid #333;
+  color:black;
+  border-radius: 5px;
+}
+
+/* 
+            END GUI
+*/
+
+
+
+
+
+
+
+
+
+
 `
 document.head.appendChild(defaultCss)
 
@@ -17,6 +59,9 @@ import LinearGradient from './LinearGradient'
 import Group from './Group'
 import Vector from './Vector'
 import Color from './Color'
+
+import Wind from './GUI/Window'
+
 
 // Graphics
 import Animation from './Media/Animation'
@@ -42,6 +87,7 @@ const mouse = new Mouse()
 const keyboard = new KeyBoard()
 
 export {
+  Wind,
   QuadraticCurve,
   Video,
   BezierCurve,

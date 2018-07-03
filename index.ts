@@ -1,5 +1,29 @@
-/*
 
+
+
+
+
+import { Render, Line, Circle, Color, Vector, Rect, Text, Wind } from './src/index'
+//const render = new Render('lienzo')
+
+setInterval(() => {
+  const w = new Wind('asd')
+  w.setMsg('You have won gold')
+}, 10000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 import { Render, Line, Circle, Color, Vector, Rect, Text } from './src/index'
 const render = new Render('lienzo')
 
@@ -15,21 +39,24 @@ class _Circle extends Circle {
     this.acc.add(f)
   }
   update() {
-    this.c.alpha = 5 / this.vel.mag()
-    this.color = this.c.rgba()
+   // this.c.alpha = 5 / this.vel.mag()
+    //this.color = this.c.rgba()
     this.position.add(this.vel)
-    this.vel.mult(0.5)
+    this.vel.mult(0.75)
     this.vel.add(this.acc)
     this.acc.zero()
   }
 }
 
-for (let y = 0; y < 5; y++) {
-  for (let x = 0; x < 5; x++) {
+const spacing = 35
+
+for (let y = 0; y < 10; y++) {
+  for (let x = 0; x < 10; x++) {
     const color = Color.random()
     const circle = new _Circle({
-      position: new Vector((x * 50) + 100, (50 * y) + 100 ),
-      color: color.rgb()
+      position: new Vector((x * spacing) + 100, (spacing * y) + 100 ),
+      color: 'white',//color.rgb(),
+      z_index: 5
     })
     circle.c = color
     balls.push(circle)
@@ -71,64 +98,72 @@ class _Line extends Line{
     this.b2.addForce(v)
   }
 }
+let links = []
 
 for (let b1 = 0; b1 < balls.length; b1++) {
   balls[b1].lines = []
   for (let b2 = 0; b2 < balls.length; b2++) {
     if (b1 != b2) {
-      const line = new _Line({
-        start: balls[b1],
-        end: balls[b2],
-        lineColor: balls[b1].color,
-        lineWidth: 0.5
-      })
-      render.add(line)
-      balls[b1].lines.push({line, ball: balls[b2]})
+      const code = String(b1) + String(b2)
+      const iCode = String(b1) + String(b2)
+      if (!links.includes(code) || !links.includes(iCode)) {
+        const line = new _Line({
+          start: balls[b1],
+          end: balls[b2],
+          lineColor: balls[b1].color,
+          lineWidth: 0.25
+        })
+        render.add(line)
+        balls[b1].lines.push({line, ball: balls[b2]})
+        links.push(code)
+        links.push(iCode)
+        
+      }
     }
   }
 
   balls[b1].mouseMove((mouse) => {
-    balls[b1].addForce(Vector.normalize(Vector.sub(balls[b1].position, mouse)))
+    balls[b1].addForce(Vector.mult(Vector.normalize(Vector.sub(balls[b1].position, mouse)), 2))
   })
 }
 
 render.autoRender(() => {
   balls.forEach(ball => {
     ball.update()
-    for (let i = 0; i < balls.length - 1; i++) {
-      ball.lines[i].line.end = Vector.sub(ball.lines[i].ball.position, ball.position)
-      ball.lines[i].line.update()
-    }
+    ball.lines.forEach((line) => {
+      
+      line.line.end = Vector.sub(line.ball.position, ball.position)
+      line.line.update()
+    })
   })
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
 
 import { Render, Color, Vector, Rect, Text } from './src/index'
 
-const render = new Render('lienzo', 800, 600)
-const scale = 50
+const render = new Render('lienzo', 130, 100)
+const scale = 1
 let balls = []
 for (let x = 0; x < render.getWidth() / scale; x++) {
     for (let y = 0; y < render.getHeight() / scale; y++) {
@@ -162,5 +197,5 @@ render.add(new Text({
   size: 24,
   position: new Vector(300, 300)
 }))
-
+*/
 // render.autoRender()
