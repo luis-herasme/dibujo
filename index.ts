@@ -1,8 +1,4 @@
 
-
-
-
-
 import { Render, Line, Circle, Color, Vector, Rect, Text, Wind } from './src/index'
 //const render = new Render('lienzo')
 
@@ -10,17 +6,6 @@ setInterval(() => {
   const w = new Wind('asd')
   w.setMsg('You have won gold')
 }, 10000)
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

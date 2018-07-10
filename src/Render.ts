@@ -1,9 +1,10 @@
-import { Vector2D } from 'vector_class'
+
 import Scene from './Scene'
 import Graphic from './graphics/Graphic'
-import Group from './Group'
+import { Vector2D } from 'vector_class'
 
 class Render {
+  
   public scene: Scene
   public canvas: HTMLCanvasElement
   public context: CanvasRenderingContext2D
