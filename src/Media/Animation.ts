@@ -1,25 +1,23 @@
-import Vector from '../Vector'
-import Graphic from '../graphics/Graphic'
+import { Vector2D } from 'vector_class'
 
-class Animation extends Graphic {
+class Animation {
   public loop: boolean = true
-  public size: Vector = new Vector(32, 32)
-  public scale: Vector
+  public size: Vector2D = new Vector2D(32, 32)
+  public scale: Vector2D
   public frameRate: number
   public x: number
   public y: number
   public image: HTMLImageElement
   public interval: any
-  public frame:Vector = new Vector(0, 0)
+  public frame:Vector2D = new Vector2D(0, 0)
   public animations: any
   public animationPlaying: boolean = false
 
   constructor(configuration: any) {
-    super(configuration)
     this.load(configuration.src)
     this.loop = configuration.loop ? configuration.loop : true
-    this.size = configuration.size ? configuration.size : new Vector(32, 32)
-    this.scale = configuration.scale ? configuration.scale : new Vector(1, 1)
+    this.size = configuration.size ? configuration.size : new Vector2D(32, 32)
+    this.scale = configuration.scale ? configuration.scale : new Vector2D(1, 1)
     this.frameRate = configuration.frameRate ? configuration.frameRate : 24
     this.animations = configuration.animations
     this.x = 0
@@ -58,7 +56,7 @@ class Animation extends Graphic {
   }
 
   getSize() {
-    return new Vector(this.size.x * this.scale.x, this.size.y * this.scale.y)
+    return new Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y)
   }
 
   render() {
