@@ -1,5 +1,5 @@
 import Graphic from './Graphic'
-import Vector from '../Vector'
+import { Vector2D } from 'vector_class'
 import LinearGradient from '../LinearGradient'
 
 class Ellipse extends Graphic {
@@ -27,8 +27,8 @@ class Ellipse extends Graphic {
     this.color = new LinearGradient({
       context: this.context,
       colors: this.linearGradient,
-      size: new Vector(this.position.x, this.position.y + this.radiusY),
-      position: new Vector(this.position.x, this.position.y - this.radiusY / 2)
+      size: new Vector2D(this.position.x, this.position.y + this.radiusY),
+      position: new Vector2D(this.position.x, this.position.y - this.radiusY / 2)
     }).gradient
 
     if (this.fill) {
