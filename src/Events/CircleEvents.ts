@@ -1,6 +1,6 @@
 import Graphic from '../graphics/Graphic'
 import Events from '../Events'
-import Vector from '../Vector'
+import { Vector2D } from 'vector_class'
 
 class CircleEvents extends Graphic implements Events {
   public radius: number
@@ -28,14 +28,14 @@ class CircleEvents extends Graphic implements Events {
     }
   }
 
-  checkIfInside(point: Vector): boolean {
+  checkIfInside(point: Vector2D): boolean {
     return this.position.distance(point) < this.radius
   }
 
   private enableEvent (eventName: string, methods: Array<Function>): void {
-    let mouse: Vector
+    let mouse: Vector2D
     document.addEventListener(eventName, (event) => {
-      mouse = new Vector(event.clientX, event.clientY)
+      mouse = new Vector2D(event.clientX, event.clientY)
       if (this.checkIfInside(mouse)) {
         methods.forEach((method: Function) => method(mouse))
       }
@@ -71,7 +71,7 @@ class CircleEvents extends Graphic implements Events {
       this.moveEnabled = !this.moveEnabled
       let mouse: any
       document.addEventListener('mousemove', (event) => {
-        mouse = new Vector(event.clientX, event.clientY)
+        mouse = new Vector2D(event.clientX, event.clientY)
         this.moveMethods.forEach((method: Function) => method(mouse))
       })
     }
@@ -94,21 +94,21 @@ class CircleEvents extends Graphic implements Events {
 
   enableMouseDrag() {
     let isDraging = false
-    let distance: Vector = new Vector()
+    let distance: Vector2D = new Vector2D()
 
     document.addEventListener('mousemove', (event) => {
       if (isDraging) {
-        this.position = Vector.add(distance, new Vector(event.clientX, event.clientY))
+        this.position = Vector2D.add(distance, new Vector2D(event.clientX, event.clientY))
         this.dragingMethods.forEach((meth: Function) => meth())
       }
     })
 
-    this.mouseDown((mouse: Vector) => {
+    this.mouseDown((mouse: Vector2D) => {
       if (!isDraging) {
         document.body.style.cursor = 'pointer'
         isDraging = true
-        distance = Vector.sub(this.position, mouse)
-        this.position = Vector.add(distance, mouse)
+        distance = Vector2D.sub(this.position, mouse)
+        this.position = Vector2D.add(distance, mouse)
         this.dragStartMethods.forEach((meth: Function) => meth())
       }
     })

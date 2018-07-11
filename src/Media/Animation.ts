@@ -12,7 +12,8 @@ class Animation {
   public frame:Vector2D = new Vector2D(0, 0)
   public animations: any
   public animationPlaying: boolean = false
-
+  public context: CanvasRenderingContext2D
+  public position: Vector2D  
   constructor(configuration: any) {
     this.load(configuration.src)
     this.loop = configuration.loop ? configuration.loop : true

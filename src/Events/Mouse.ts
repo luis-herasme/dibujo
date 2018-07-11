@@ -1,9 +1,9 @@
 
-import Vector from '../Vector'
+import { Vector2D } from 'vector_class'
 import Event from './Event'
 
 class Mouse extends Event {
-  public position: Vector = new Vector(0, 0)
+  public position: Vector2D = new Vector2D(0, 0)
   public clicked: boolean = false
 
   constructor () {
