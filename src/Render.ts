@@ -95,7 +95,7 @@ class Render {
   
     }
   */
-  fullScreen() {
+  fullScreen(): void {
     let isFull = false
     document.addEventListener('click', () => {
       if (!isFull) {
@@ -114,7 +114,7 @@ class Render {
     }, this.frameRate)
   }
 
-  render() {
+  render(): void {
     this.scene.render()
   }
 

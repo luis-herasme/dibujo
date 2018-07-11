@@ -1,5 +1,5 @@
 import Graphic from '../graphics/Graphic'
-import Vector from '../Vector'
+import { Vector2D } from 'vector_class'
 
 // Imaginary canvas
 const canvas = document.createElement('canvas')
@@ -78,7 +78,7 @@ class Picture extends Graphic {
 
   }
   realPosition() {
-    return new Vector(this.position.x - (this.anchor.x * this.width), this.position.y - (this.anchor.y * this.height))
+    return new Vector2D(this.position.x - (this.anchor.x * this.width), this.position.y - (this.anchor.y * this.height))
   }
 
   renderData(): void {

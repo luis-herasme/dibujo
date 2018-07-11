@@ -1,8 +1,8 @@
 import Graphic from './Graphic'
-import Vector from '../Vector'
+import { Vector2D } from 'vector_class'
 
 class Poligon extends Graphic {
-  public cords: Array<Vector>
+  public cords: Array<Vector2D>
 
   constructor(configuration: any) {
     super(configuration)
@@ -12,7 +12,7 @@ class Poligon extends Graphic {
     if (configuration.fill) this.fill = configuration.fill
     this.position = configuration.cords.slice[0]
     this.cords.filter((pnt) => {
-      return new Vector(pnt.x - this.position.x, pnt.y - this.position.y)
+      return new Vector2D(pnt.x - this.position.x, pnt.y - this.position.y)
     })
   }
 

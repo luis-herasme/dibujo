@@ -1,4 +1,4 @@
-import Vector from '../Vector'
+
 import CircleEvents from '../Events/CircleEvents'
 
 class Circle extends CircleEvents {
@@ -10,6 +10,7 @@ class Circle extends CircleEvents {
       this.radius = config.radius ? config.radius : 5
     }
   }
+
   selfRender(): void {
     this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
 
@@ -20,7 +21,7 @@ class Circle extends CircleEvents {
     if (this.stroke) {
       this.context.stroke()
     }
-  }
+  } 
 }
 
 export default Circle

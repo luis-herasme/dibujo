@@ -43,12 +43,10 @@ document.head.appendChild(defaultCss)
 import Scene from './Scene'
 import Render from './Render'
 import LinearGradient from './LinearGradient'
-import Group from './Group'
 import { Vector2D } from 'vector_class'
 import Color from './Color'
 
 import Wind from './GUI/Window'
-
 
 // Graphics
 import Animation from './Media/Animation'
@@ -64,7 +62,6 @@ import Text from './graphics/Text'
 import Arc from './graphics/Arc'
 import BezierCurve from './graphics/BezierCurve'
 import QuadraticCurve from './graphics/QuadraticCurve'
-
 
 // Events
 import Mouse from './Events/Mouse'
@@ -82,7 +79,6 @@ export {
   Ellipse,
   mouse,
   keyboard,
-  Group,
   Color,
   Animation,
   Rect,

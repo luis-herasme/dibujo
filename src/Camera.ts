@@ -1,4 +1,4 @@
-import Vector from './Vector'
+import { Vector2D } from 'vector_class'
 import Graphic from './graphics/Graphic'
 import Scene from './Scene'
 import {mouse} from './index'
@@ -6,21 +6,21 @@ import {mouse} from './index'
 class Camera {
   public context: CanvasRenderingContext2D
   public keyMap = { up: 'w', down: 's', left: 'a', right: 'd' }
-  public position: Vector = new Vector(0, 0)
-  private followedPosition: Vector
-  private fLastPosition: Vector = new Vector(0, 0)
+  public position: Vector2D = new Vector2D(0, 0)
+  private followedPosition: Vector2D
+  private fLastPosition: Vector2D = new Vector2D(0, 0)
   private followingX: boolean = false
   private followingY: boolean = false
   private keyTranslateEnabled: boolean = false
-  private velocity: Vector = new Vector(0, 0)
-  private acceleration: Vector = new Vector(0, 0)
+  private velocity: Vector2D = new Vector2D(0, 0)
+  private acceleration: Vector2D = new Vector2D(0, 0)
   private friction: number = 0.9
 
   constructor (context: CanvasRenderingContext2D) {
     this.context = context
   }
 
-  addForce(force: Vector) {
+  addForce(force: Vector2D): void {
     this.acceleration.add(force)
   }
 /*
@@ -32,7 +32,7 @@ class Camera {
   }
 */
   getMouse () {
-    return Vector.add(mouse.position, this.position)
+    return Vector2D.add(mouse.position, this.position)
   }
 
   disableKeyTranslate() {
@@ -43,16 +43,16 @@ class Camera {
     this.keyTranslateEnabled = true
     document.addEventListener('keypress', (e) => {
       if (e.key.toLowerCase() === this.keyMap.up) {
-        this.addForce(new Vector(0, 10))
+        this.addForce(new Vector2D(0, 10))
       }
       if (e.key.toLowerCase() === this.keyMap.down) {
-        this.addForce(new Vector(0, -10))
+        this.addForce(new Vector2D(0, -10))
       }
       if (e.key.toLowerCase() === this.keyMap.left) {
-        this.addForce(new Vector(10, 0))
+        this.addForce(new Vector2D(10, 0))
       }
       if (e.key.toLowerCase() === this.keyMap.right) {
-        this.addForce(new Vector(-10, 0))
+        this.addForce(new Vector2D(-10, 0))
       }
     })
   }
@@ -87,7 +87,7 @@ class Camera {
     this.followingY = false
   }
 
-  zoom(where: Vector, howMuch: Vector): void {
+  zoom(where: Vector2D, howMuch: Vector2D): void {
     this.context.translate(where.x, where.y)
     this.context.scale(howMuch.x, howMuch.y)
     this.context.translate(-where.x, -where.y)
@@ -108,7 +108,7 @@ class Camera {
       this.acceleration.zero()
     }
     if (this.followingX || this.followingY) {
-      const change = Vector.sub(this.fLastPosition, this.followedPosition)
+      const change = Vector2D.sub(this.fLastPosition, this.followedPosition)
       this.fLastPosition = this.followedPosition.copy()
       this.translate(change.x, change.y)
     }

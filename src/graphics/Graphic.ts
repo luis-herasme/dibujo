@@ -1,4 +1,4 @@
-import {Vector2D} from 'vector_class'
+import { Vector2D } from 'vector_class'
 import { weights, LineCap, LineJoin } from '../Properties'
 
 class Graphic {
@@ -98,22 +98,22 @@ class Graphic {
     this.context.shadowOffsetY = this.shadowOffsetY
   }
 
-/*
-    Most be somewhere here
-
-    this.childs.forEach(c => c.context = this.context)
-    this.childs.forEach(c => c.render())
-
-
-*/
+  /*
+      Most be somewhere here
+  
+      this.childs.forEach(c => c.context = this.context)
+      this.childs.forEach(c => c.render())
+  
+  
+  */
 
   render(): void {
     // this.context.save()
-   this.context.beginPath()
-   // if (this.context.fill || this.context.stroke) {
-      this.setStyle()
-      this.selfRender()
-   // }
+    this.context.beginPath()
+    // if (this.context.fill || this.context.stroke) {
+    this.setStyle()
+    this.selfRender()
+    // }
     // this.context.restore()
   }
 

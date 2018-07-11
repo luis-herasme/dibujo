@@ -10,7 +10,7 @@ class Animation extends Graphic {
   public y: number
   public image: HTMLImageElement
   public interval: any
-  public frame= new Vector(0, 0)
+  public frame:Vector = new Vector(0, 0)
   public animations: any
   public animationPlaying: boolean = false
 
