@@ -103,18 +103,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({14:[function(require,module,exports) {
+})({84:[function(require,module,exports) {
 "use strict";
-
 exports.__esModule = true;
-var Vector = /** @class */function () {
+var Vector = /** @class */ (function () {
     function Vector(x, y) {
-        if (x === void 0) {
-            x = 0;
-        }
-        if (y === void 0) {
-            y = 0;
-        }
+        if (x === void 0) { x = 0; }
+        if (y === void 0) { y = 0; }
         this.x = x;
         this.y = y;
     }
@@ -174,12 +169,8 @@ var Vector = /** @class */function () {
         }
     };
     Vector.prototype.moveTowards = function (vector, speed, stop) {
-        if (speed === void 0) {
-            speed = 1;
-        }
-        if (stop === void 0) {
-            stop = 1;
-        }
+        if (speed === void 0) { speed = 1; }
+        if (stop === void 0) { stop = 1; }
         if (this.distance(vector) > stop) {
             var unit = Vector.normalize(Vector.sub(vector, this));
             unit.mult(speed);
@@ -218,40 +209,256 @@ var Vector = /** @class */function () {
         return new Vector(x * Math.random(), y * Math.random());
     };
     Vector.random = function (x, y) {
-        if (x === void 0) {
-            x = 1;
-        }
-        if (y === void 0) {
-            y = 1;
-        }
+        if (x === void 0) { x = 1; }
+        if (y === void 0) { y = 1; }
         var s1 = 1;
         var s2 = 1;
-        if (Math.random() > 0.5) s1 = -1;
-        if (Math.random() > 0.5) s2 = -1;
+        if (Math.random() > 0.5)
+            s1 = -1;
+        if (Math.random() > 0.5)
+            s2 = -1;
         return new Vector(x * Math.random() * s1, y * Math.random() * s2);
     };
     return Vector;
-}();
+}());
 exports["default"] = Vector;
-},{}],73:[function(require,module,exports) {
-"use strict";
 
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
+},{}],85:[function(require,module,exports) {
+"use strict";
+exports.__esModule = true;
+var Vector3D = /** @class */ (function () {
+    function Vector3D(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    Vector3D.prototype.add = function (vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        this.z += vector.z;
+    };
+    Vector3D.prototype.sub = function (vector) {
+        this.x -= vector.x;
+        this.y -= vector.y;
+        this.z -= vector.z;
+    };
+    Vector3D.prototype.mult = function (scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
+        this.z *= scalar;
+    };
+    Vector3D.prototype.div = function (scalar) {
+        this.x /= scalar;
+        this.y /= scalar;
+        this.z /= scalar;
+    };
+    Vector3D.prototype.inverse = function () {
+        this.x *= -1;
+        this.y *= -1;
+        this.z *= -1;
+    };
+    Vector3D.prototype.mag = function () {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    };
+    Vector3D.prototype.dot = function (vector) {
+        return this.x * vector.x + this.y * vector.y + this.z * vector.z;
+    };
+    Vector3D.prototype.distance = function (vector) {
+        return Vector3D.sub(this, vector).mag();
+    };
+    Vector3D.prototype.angle = function () {
+        return Math.atan2(this.y, this.x);
+    };
+    Vector3D.prototype.copy = function () {
+        return new Vector3D(this.x, this.y, this.z);
+    };
+    Vector3D.prototype.normalize = function () {
+        this.div(this.mag());
+    };
+    Vector3D.prototype.setMag = function (mag) {
+        this.normalize();
+        this.mult(mag);
+    };
+    Vector3D.prototype.setAngle = function (angle) {
+        var magnitude = this.mag();
+        this.x = magnitude * Math.cos(angle);
+        this.y = magnitude * Math.sin(angle);
+    };
+    Vector3D.prototype.addAngle = function (angle) {
+        this.setAngle(this.angle() + angle);
+    };
+    Vector3D.prototype.limit = function (scalar) {
+        if (this.mag() > scalar) {
+            this.setMag(scalar);
+        }
+    };
+    Vector3D.prototype.moveTowards = function (vector, speed, stop) {
+        if (this.distance(vector) > stop) {
+            var unit = Vector3D.normalize(vector);
+            unit.mult(speed);
+            this.add(unit);
+        }
+    };
+    Vector3D.prototype.zero = function () {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    };
+    Vector3D.add = function (vector1, vector2) {
+        return new Vector3D(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z);
+    };
+    Vector3D.sub = function (vector1, vector2) {
+        return new Vector3D(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z);
+    };
+    Vector3D.mult = function (vector, scalar) {
+        return new Vector3D(vector.x * scalar, vector.y * scalar, vector.z * scalar);
+    };
+    Vector3D.div = function (vector, scalar) {
+        return new Vector3D(vector.x / scalar, vector.y / scalar, vector.z / scalar);
+    };
+    Vector3D.inverse = function (vector) {
+        return new Vector3D(vector.x * -1, vector.y * -1, vector.z * -1);
+    };
+    Vector3D.distance = function (vector1, vector2) {
+        return this.sub(vector1, vector2).mag();
+    };
+    Vector3D.normalize = function (vector) {
+        return this.div(vector, vector.mag());
+    };
+    Vector3D.cross = function (vector1, vector2) {
+        return vector1.x * vector2.y - vector2.x * vector1.y;
+    };
+    Vector3D.random = function (x, y, z) {
+        if (Math.random() > 0.5) {
+            return new Vector3D(x * Math.random(), y * Math.random(), z * Math.random());
+        }
+        else {
+            return new Vector3D(-x * Math.random(), -y * Math.random(), -z * Math.random());
+        }
+    };
+    return Vector3D;
+}());
+exports["default"] = Vector3D;
+/*
+
+TO ADD
+
+import vector from '../vector'
+
+function rotate (x, y, z, center, vec) {
+  let vecR
+  vecR = vector.sub(vec, center)
+  vecR = rotateX(vecR, x)
+  vecR = rotateY(vecR, y)
+  vecR = rotateZ(vecR, z)
+  vecR = vector.add(vecR, center)
+  return vecR
+}
+
+function rotateX (vec, t) {
+  let vecR = vec
+  let newy = vec[1] * Math.cos(t) - vec[2] * Math.sin(t)
+  let newz = vec[1] * Math.sin(t) + vec[2] * Math.cos(t)
+  vecR[1] = newy
+  vecR[2] = newz
+  return vecR
+}
+
+function rotateY (vec, t) {
+  let vecR = vec
+  let newz = vec[2] * Math.cos(t) - vec[0] * Math.sin(t)
+  let newx = vec[2] * Math.sin(t) + vec[0] * Math.cos(t)
+  vecR[2] = newz
+  vecR[0] = newx
+  return vecR
+}
+
+function rotateZ (vec, t) {
+  let vecR = vec
+  let newx = vec[0] * Math.cos(t) - vec[1] * Math.sin(t)
+  let newy = vec[0] * Math.sin(t) + vec[1] * Math.cos(t)
+  vecR[0] = newx
+  vecR[1] = newy
+  return vecR
+}
+
+const memlength = (vec) => Math.pow(Math.pow(vec[0], 2) + Math.pow(vec[1], 2) + Math.pow(vec[2], 2), 0.5)
+
+const normal = (v1, v2, v3) => vector.cross(vector.sub(v2, v1), vector.sub(v3, v1))
+
+function isInTriangle (vec, triangle) {
+  let u = vector.sub(triangle.v2, triangle.v1)
+  let v = vector.sub(triangle.v3, triangle.v1)
+  let w = vector.sub(vec, triangle.v1)
+
+  let vCrossW = vector.cross(v, w)
+  let vCrossU = vector.cross(v, u)
+
+  if (vector3.dot(vCrossW, vCrossU) < 0) return false
+
+  let uCrossW = vector.cross(u, w)
+  let uCrossV = vector.cross(u, v)
+
+  if (vector3.dot(uCrossW, uCrossV) < 0) return false
+
+  let denom = memlength(uCrossV)
+  let r = memlength(vCrossW) / denom
+  let t = memlength(uCrossW) / denom
+
+  return (r + t <= 1)
+}
+
+function getTriangleArea (triangle) {
+  let temp = vector.cross(vector.sub(triangle.v3, triangle.v1), vector.sub(triangle.v3, triangle.v2))
+  let x = Math.pow(temp[0], 2)
+  let y = Math.pow(temp[1], 2)
+  let z = Math.pow(temp[2], 2)
+  return Math.pow(x + y + z, 0.5) / 2
+}
+
+function dot (vec1, vec2) {
+  return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2]
+}
+
+function getPlaneIntersect (line1, line2, triangle) {
+  let normal = triangle.normal
+  let u = vector3.dot(normal, vector.sub(triangle.v1, line1)) / vector3.dot(normal, vector.sub(line2, line1))
+  return vector.add(line1, vector.mult(vector.sub(line2, line1), u))
+}
+
+const vector3 = { dot, rotate, normal, isInTriangle, getTriangleArea, getPlaneIntersect, memlength }
+
+export default vector3
+
+*/ 
+
+},{}],49:[function(require,module,exports) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var Vector_1 = __importDefault(require("./Vector"));
+var Vector2D_1 = __importDefault(require("./Vector2D"));
+exports.Vector2D = Vector2D_1["default"];
+var Vector3D_1 = __importDefault(require("./Vector3D"));
+exports.Vector3D = Vector3D_1["default"];
+
+},{"./Vector2D":84,"./Vector3D":85}],73:[function(require,module,exports) {
+"use strict";
+
+exports.__esModule = true;
+var vector_class_1 = require("vector_class");
 var index_1 = require("./index");
 var Camera = /** @class */function () {
     function Camera(context) {
         this.keyMap = { up: 'w', down: 's', left: 'a', right: 'd' };
-        this.position = new Vector_1["default"](0, 0);
-        this.fLastPosition = new Vector_1["default"](0, 0);
+        this.position = new vector_class_1.Vector2D(0, 0);
+        this.fLastPosition = new vector_class_1.Vector2D(0, 0);
         this.followingX = false;
         this.followingY = false;
         this.keyTranslateEnabled = false;
-        this.velocity = new Vector_1["default"](0, 0);
-        this.acceleration = new Vector_1["default"](0, 0);
+        this.velocity = new vector_class_1.Vector2D(0, 0);
+        this.acceleration = new vector_class_1.Vector2D(0, 0);
         this.friction = 0.9;
         this.context = context;
     }
@@ -267,7 +474,7 @@ var Camera = /** @class */function () {
       }
     */
     Camera.prototype.getMouse = function () {
-        return Vector_1["default"].add(index_1.mouse.position, this.position);
+        return vector_class_1.Vector2D.add(index_1.mouse.position, this.position);
     };
     Camera.prototype.disableKeyTranslate = function () {};
     Camera.prototype.enableKeyTranslate = function () {
@@ -275,16 +482,16 @@ var Camera = /** @class */function () {
         this.keyTranslateEnabled = true;
         document.addEventListener('keypress', function (e) {
             if (e.key.toLowerCase() === _this.keyMap.up) {
-                _this.addForce(new Vector_1["default"](0, 10));
+                _this.addForce(new vector_class_1.Vector2D(0, 10));
             }
             if (e.key.toLowerCase() === _this.keyMap.down) {
-                _this.addForce(new Vector_1["default"](0, -10));
+                _this.addForce(new vector_class_1.Vector2D(0, -10));
             }
             if (e.key.toLowerCase() === _this.keyMap.left) {
-                _this.addForce(new Vector_1["default"](10, 0));
+                _this.addForce(new vector_class_1.Vector2D(10, 0));
             }
             if (e.key.toLowerCase() === _this.keyMap.right) {
-                _this.addForce(new Vector_1["default"](-10, 0));
+                _this.addForce(new vector_class_1.Vector2D(-10, 0));
             }
         });
     };
@@ -331,7 +538,7 @@ var Camera = /** @class */function () {
             this.acceleration.zero();
         }
         if (this.followingX || this.followingY) {
-            var change = Vector_1["default"].sub(this.fLastPosition, this.followedPosition);
+            var change = vector_class_1.Vector2D.sub(this.fLastPosition, this.followedPosition);
             this.fLastPosition = this.followedPosition.copy();
             this.translate(change.x, change.y);
         }
@@ -339,7 +546,7 @@ var Camera = /** @class */function () {
     return Camera;
 }();
 exports["default"] = Camera;
-},{"./Vector":14,"./index":7}],76:[function(require,module,exports) {
+},{"vector_class":49,"./index":7}],76:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -369,22 +576,19 @@ var weights;
     weights["bolder"] = "bolder";
     weights["bold"] = "bold";
 })(weights = exports.weights || (exports.weights = {}));
-},{}],17:[function(require,module,exports) {
+},{}],19:[function(require,module,exports) {
 "use strict";
 
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var Properties_1 = require("../Properties");
 var Graphic = /** @class */function () {
     function Graphic(data) {
         this.weight = Properties_1.weights.normal;
         this.fill = true;
         this.stroke = false;
-        this.anchor = new Vector_1["default"](0.5, 0.5);
-        this.position = new Vector_1["default"](0, 0);
+        this.anchor = new vector_class_1.Vector2D(0.5, 0.5);
+        this.position = new vector_class_1.Vector2D(0, 0);
         this.color = 'grey';
         this.family = 'Arial';
         this.lineCap = Properties_1.LineCap.round;
@@ -422,8 +626,8 @@ var Graphic = /** @class */function () {
                 this.fill = true;
             }
             this.weight = data.weights ? data.weights : Properties_1.weights.normal;
-            this.anchor = data.anchor ? data.anchor : new Vector_1["default"](0.5, 0.5);
-            this.position = data.position ? data.position : new Vector_1["default"](0, 0);
+            this.anchor = data.anchor ? data.anchor : new vector_class_1.Vector2D(0.5, 0.5);
+            this.position = data.position ? data.position : new vector_class_1.Vector2D(0, 0);
             this.z_index = data.z_index ? data.z_index : 1;
             this.shadowBlur = data.shadowBlur ? data.shadowBlur : 0;
             this.shadowOffsetX = data.shadowOffsetX ? data.shadowOffsetX : 0;
@@ -488,7 +692,79 @@ var Graphic = /** @class */function () {
     return Graphic;
 }();
 exports["default"] = Graphic;
-},{"../Vector":14,"../Properties":76}],19:[function(require,module,exports) {
+/*
+
+
+
+
+-------------------------------- GRUPO --------------------------------
+
+
+
+
+
+
+import Graphic from './graphics/Graphic'
+import {Vector2D} from 'vector_class'
+
+export default class Group {
+  private childs: Array<Graphic> = []
+  private context: CanvasRenderingContext2D
+  public position: Vector2D = new Vector2D(0, 0) // la posicion tu la tenias publica, asi que no tiene sentido ese metodo de translate que querias hacer
+  public scale: Vector2D = new Vector2D(1, 1)
+  public rotation: number
+
+  add(child: Graphic): void {
+    this.childs.push(child)
+  }
+
+  scaleObject(child: any) {
+    if (child.type == "arc") {
+      child.radius *= this.scale.x
+      child.render()
+      child.radius /= this.scale.x
+    } else if (child.type == "line") {
+      child.end = new Vector(child.end.x * this.scale.x, child.end.y * this.scale.y)
+      child.render()
+      child.end = new Vector(child.end.x / this.scale.x, child.end.y / this.scale.y)
+    } else if (child.type == "img" || child.type == "rect") {
+      child.width *= this.scale.x
+      child.height *= this.scale.y
+      child.render()
+      child.width /= this.scale.x
+      child.height /= this.scale.y
+    } else if (child.type == "poligon") {
+      child.cords.filter((pnt: any) => {
+        return new Vector(pnt.x * this.scale.x, pnt.y * this.scale.y)
+      })
+      child.render()
+      child.cords.filter((pnt: any) => {
+        return new Vector(pnt.x / this.scale.x, pnt.y / this.scale.y)
+      })
+    } else if (child.type == "circle") {
+      child.radius *= this.scale.x
+      child.render()
+      child.radius /= this.scale.x
+    } else {
+      throw "error, no se puede escalar dicho objeto"
+    }
+    return child
+  }
+
+  render(): void {
+    // this.context.save()
+    this.childs.forEach((child) => {
+      child.position.add(this.position)
+      child.context = this.context
+      child.render()
+      child.position.sub(this.position)
+    })
+    // this.context.restore()
+  }
+}
+
+*/
+},{"vector_class":49,"../Properties":76}],17:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -512,7 +788,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("../graphics/Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 // Imaginary canvas
 var canvas = document.createElement('canvas');
 var context = canvas.getContext('2d');
@@ -526,13 +802,15 @@ var Picture = /** @class */function (_super) {
         _this.params = [];
         _this.image = new Image();
         _this.image.src = data.src;
+        console.log(_this.image);
         _this.image.addEventListener('load', function () {
             _this.ready = true;
             _this.todo.forEach(function (met, i) {
                 met.apply(void 0, _this.params[i]);
             });
         });
-        _this.image.addEventListener('error', function () {
+        _this.image.addEventListener('error', function (err) {
+            console.log(err);
             console.error('Error loading the image...');
         });
         _this.angle = data.angle ? data.angle : 0;
@@ -571,7 +849,7 @@ var Picture = /** @class */function (_super) {
     };
     Picture.prototype.onClick = function (func) {};
     Picture.prototype.realPosition = function () {
-        return new Vector_1["default"](this.position.x - this.anchor.x * this.width, this.position.y - this.anchor.y * this.height);
+        return new vector_class_1.Vector2D(this.position.x - this.anchor.x * this.width, this.position.y - this.anchor.y * this.height);
     };
     Picture.prototype.renderData = function () {
         //  console.log('here')
@@ -599,7 +877,7 @@ var Picture = /** @class */function (_super) {
     return Picture;
 }(Graphic_1["default"]);
 exports["default"] = Picture;
-},{"../graphics/Graphic":17,"../Vector":14}],21:[function(require,module,exports) {
+},{"../graphics/Graphic":19,"vector_class":49}],21:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -623,7 +901,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("../graphics/Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var Video = /** @class */function (_super) {
     __extends(Video, _super);
     function Video(data) {
@@ -697,7 +975,7 @@ var Video = /** @class */function (_super) {
     */
     Video.prototype.onClick = function (func) {};
     Video.prototype.realPosition = function () {
-        return new Vector_1["default"](this.position.x - this.anchor.x * this.width, this.position.y - this.anchor.y * this.height);
+        return new vector_class_1.Vector2D(this.position.x - this.anchor.x * this.width, this.position.y - this.anchor.y * this.height);
     };
     Video.prototype.renderData = function () {
         if (this.filterEnable) {
@@ -746,7 +1024,7 @@ var Video = /** @class */function (_super) {
     return Video;
 }(Graphic_1["default"]);
 exports["default"] = Video;
-},{"../graphics/Graphic":17,"../Vector":14}],10:[function(require,module,exports) {
+},{"../graphics/Graphic":19,"vector_class":49}],10:[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -870,15 +1148,15 @@ var Scene = /** @class */function () {
     return Scene;
 }();
 exports["default"] = Scene;
-},{"./Camera":73,"./Media/Picture":19,"./Media/Video":21}],11:[function(require,module,exports) {
+},{"./Camera":73,"./Media/Picture":17,"./Media/Video":21}],11:[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var Vector_1 = __importDefault(require("./Vector"));
 var Scene_1 = __importDefault(require("./Scene"));
+var vector_class_1 = require("vector_class");
 var Render = /** @class */function () {
     function Render(canvas, width, height) {
         var _this = this;
@@ -937,10 +1215,10 @@ var Render = /** @class */function () {
         return this.canvas.height;
     };
     Render.prototype.getSize = function () {
-        return new Vector_1["default"](this.canvas.width, this.canvas.height);
+        return new vector_class_1.Vector2D(this.canvas.width, this.canvas.height);
     };
     Render.prototype.getCenter = function () {
-        return new Vector_1["default"](this.canvas.width / 2, this.canvas.height / 2);
+        return new vector_class_1.Vector2D(this.canvas.width / 2, this.canvas.height / 2);
     };
     Render.prototype.getCanvasImage = function () {
         return this.canvas.toDataURL();
@@ -983,115 +1261,28 @@ var Render = /** @class */function () {
     return Render;
 }();
 exports["default"] = Render;
-},{"./Vector":14,"./Scene":10}],12:[function(require,module,exports) {
+},{"./Scene":10,"vector_class":49}],12:[function(require,module,exports) {
 "use strict";
 
-var __extends = this && this.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var Graphic_1 = __importDefault(require("./graphics/Graphic"));
-var Vector_1 = __importDefault(require("./Vector"));
-var LinearGradient = /** @class */function (_super) {
-    __extends(LinearGradient, _super);
+var vector_class_1 = require("vector_class");
+var LinearGradient = /** @class */function () {
     function LinearGradient(config) {
-        var _this = _super.call(this, config) || this;
-        _this.context = config.context;
-        _this.size = config.size ? config.size : new Vector_1["default"](100, 100);
-        _this.gradient = _this.context.createLinearGradient(_this.position.x, _this.position.y, _this.size.x, _this.size.y);
+        this.context = config.context;
+        this.size = config.size ? config.size : new vector_class_1.Vector2D(100, 100);
+        this.gradient = this.context.createLinearGradient(this.position.x, this.position.y, this.size.x, this.size.y);
         var counter = 0;
         for (var _i = 0, _a = config.colors; _i < _a.length; _i++) {
             var color = _a[_i];
-            _this.gradient.addColorStop(counter, color);
+            this.gradient.addColorStop(counter, color);
             // console.log(1 / config.colors.length)
             counter += 1 / config.colors.length;
         }
-        return _this;
     }
     return LinearGradient;
-}(Graphic_1["default"]);
-exports["default"] = LinearGradient;
-},{"./graphics/Graphic":17,"./Vector":14}],13:[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var Vector_1 = __importDefault(require("./Vector"));
-var Group = /** @class */function () {
-    function Group() {
-        this.childs = [];
-        this.position = new Vector_1["default"](0, 0); // la posicion tu la tenias publica, asi que no tiene sentido ese metodo de translate que querias hacer
-        this.scale = new Vector_1["default"](1, 1);
-    }
-    Group.prototype.add = function (child) {
-        this.childs.push(child);
-    };
-    Group.prototype.scaleObject = function (child) {
-        var _this = this;
-        if (child.type == "arc") {
-            child.radius *= this.scale.x;
-            child.render();
-            child.radius /= this.scale.x;
-        } else if (child.type == "line") {
-            child.end = new Vector_1["default"](child.end.x * this.scale.x, child.end.y * this.scale.y);
-            child.render();
-            child.end = new Vector_1["default"](child.end.x / this.scale.x, child.end.y / this.scale.y);
-        } else if (child.type == "img" || child.type == "rect") {
-            child.width *= this.scale.x;
-            child.height *= this.scale.y;
-            child.render();
-            child.width /= this.scale.x;
-            child.height /= this.scale.y;
-        } else if (child.type == "poligon") {
-            child.cords.filter(function (pnt) {
-                return new Vector_1["default"](pnt.x * _this.scale.x, pnt.y * _this.scale.y);
-            });
-            child.render();
-            child.cords.filter(function (pnt) {
-                return new Vector_1["default"](pnt.x / _this.scale.x, pnt.y / _this.scale.y);
-            });
-        } else if (child.type == "circle") {
-            child.radius *= this.scale.x;
-            child.render();
-            child.radius /= this.scale.x;
-        } else {
-            throw "error, no se puede escalar dicho objeto";
-        }
-        return child;
-    };
-    Group.prototype.render = function () {
-        var _this = this;
-        // this.context.save()
-        this.childs.forEach(function (child) {
-            child.position.add(_this.position);
-            child.context = _this.context;
-            child.render();
-            child.position.sub(_this.position);
-        });
-        // this.context.restore()
-    };
-    return Group;
 }();
-exports["default"] = Group;
-},{"./Vector":14}],15:[function(require,module,exports) {
+exports["default"] = LinearGradient;
+},{"vector_class":49}],13:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1157,7 +1348,7 @@ var Color = /** @class */function () {
     return Color;
 }();
 exports["default"] = Color;
-},{}],114:[function(require,module,exports) {
+},{}],14:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1232,48 +1423,25 @@ function dragElement(elmnt) {
     }
 }
 exports["default"] = Wind;
-},{}],16:[function(require,module,exports) {
+},{}],15:[function(require,module,exports) {
 "use strict";
 
-var __extends = this && this.__extends || function () {
-    var extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-        d.__proto__ = b;
-    } || function (d, b) {
-        for (var p in b) {
-            if (b.hasOwnProperty(p)) d[p] = b[p];
-        }
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var Vector_1 = __importDefault(require("../Vector"));
-var Graphic_1 = __importDefault(require("../graphics/Graphic"));
-var Animation = /** @class */function (_super) {
-    __extends(Animation, _super);
+var vector_class_1 = require("vector_class");
+var Animation = /** @class */function () {
     function Animation(configuration) {
-        var _this = _super.call(this, configuration) || this;
-        _this.loop = true;
-        _this.size = new Vector_1["default"](32, 32);
-        _this.frame = new Vector_1["default"](0, 0);
-        _this.animationPlaying = false;
-        _this.load(configuration.src);
-        _this.loop = configuration.loop ? configuration.loop : true;
-        _this.size = configuration.size ? configuration.size : new Vector_1["default"](32, 32);
-        _this.scale = configuration.scale ? configuration.scale : new Vector_1["default"](1, 1);
-        _this.frameRate = configuration.frameRate ? configuration.frameRate : 24;
-        _this.animations = configuration.animations;
-        _this.x = 0;
-        _this.y = 0;
-        return _this;
+        this.loop = true;
+        this.size = new vector_class_1.Vector2D(32, 32);
+        this.frame = new vector_class_1.Vector2D(0, 0);
+        this.animationPlaying = false;
+        this.load(configuration.src);
+        this.loop = configuration.loop ? configuration.loop : true;
+        this.size = configuration.size ? configuration.size : new vector_class_1.Vector2D(32, 32);
+        this.scale = configuration.scale ? configuration.scale : new vector_class_1.Vector2D(1, 1);
+        this.frameRate = configuration.frameRate ? configuration.frameRate : 24;
+        this.animations = configuration.animations;
+        this.x = 0;
+        this.y = 0;
     }
     Animation.prototype.playAnimation = function (name) {
         if (!this.animationPlaying) {
@@ -1303,7 +1471,7 @@ var Animation = /** @class */function (_super) {
         this.image.src = src;
     };
     Animation.prototype.getSize = function () {
-        return new Vector_1["default"](this.size.x * this.scale.x, this.size.y * this.scale.y);
+        return new vector_class_1.Vector2D(this.size.x * this.scale.x, this.size.y * this.scale.y);
     };
     Animation.prototype.render = function () {
         this.context.drawImage(this.image, this.x, this.y, this.size.x, this.size.y, this.position.x, this.position.y, this.size.x * this.scale.x, this.size.y * this.scale.y);
@@ -1312,9 +1480,9 @@ var Animation = /** @class */function (_super) {
         clearInterval(this.interval);
     };
     return Animation;
-}(Graphic_1["default"]);
+}();
 exports["default"] = Animation;
-},{"../Vector":14,"../graphics/Graphic":17}],18:[function(require,module,exports) {
+},{"vector_class":49}],16:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1338,7 +1506,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("./Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var LinearGradient_1 = __importDefault(require("../LinearGradient"));
 var Ellipse = /** @class */function (_super) {
     __extends(Ellipse, _super);
@@ -1365,8 +1533,8 @@ var Ellipse = /** @class */function (_super) {
         this.color = new LinearGradient_1["default"]({
             context: this.context,
             colors: this.linearGradient,
-            size: new Vector_1["default"](this.position.x, this.position.y + this.radiusY),
-            position: new Vector_1["default"](this.position.x, this.position.y - this.radiusY / 2)
+            size: new vector_class_1.Vector2D(this.position.x, this.position.y + this.radiusY),
+            position: new vector_class_1.Vector2D(this.position.x, this.position.y - this.radiusY / 2)
         }).gradient;
         if (this.fill) {
             this.context.beginPath();
@@ -1399,7 +1567,7 @@ var Ellipse = /** @class */function (_super) {
     return Ellipse;
 }(Graphic_1["default"]);
 exports["default"] = Ellipse;
-},{"./Graphic":17,"../Vector":14,"../LinearGradient":12}],20:[function(require,module,exports) {
+},{"./Graphic":19,"vector_class":49,"../LinearGradient":12}],18:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1423,7 +1591,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("./Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var Poligon = /** @class */function (_super) {
     __extends(Poligon, _super);
     function Poligon(configuration) {
@@ -1434,7 +1602,7 @@ var Poligon = /** @class */function (_super) {
         if (configuration.fill) _this.fill = configuration.fill;
         _this.position = configuration.cords.slice[0];
         _this.cords.filter(function (pnt) {
-            return new Vector_1["default"](pnt.x - _this.position.x, pnt.y - _this.position.y);
+            return new vector_class_1.Vector2D(pnt.x - _this.position.x, pnt.y - _this.position.y);
         });
         return _this;
     }
@@ -1455,7 +1623,7 @@ var Poligon = /** @class */function (_super) {
     return Poligon;
 }(Graphic_1["default"]);
 exports["default"] = Poligon;
-},{"./Graphic":17,"../Vector":14}],77:[function(require,module,exports) {
+},{"./Graphic":19,"vector_class":49}],77:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1479,7 +1647,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("../graphics/Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var CircleEvents = /** @class */function (_super) {
     __extends(CircleEvents, _super);
     function CircleEvents(configuration) {
@@ -1511,7 +1679,7 @@ var CircleEvents = /** @class */function (_super) {
         var _this = this;
         var mouse;
         document.addEventListener(eventName, function (event) {
-            mouse = new Vector_1["default"](event.clientX, event.clientY);
+            mouse = new vector_class_1.Vector2D(event.clientX, event.clientY);
             if (_this.checkIfInside(mouse)) {
                 methods.forEach(function (method) {
                     return method(mouse);
@@ -1546,7 +1714,7 @@ var CircleEvents = /** @class */function (_super) {
             this.moveEnabled = !this.moveEnabled;
             var mouse_1;
             document.addEventListener('mousemove', function (event) {
-                mouse_1 = new Vector_1["default"](event.clientX, event.clientY);
+                mouse_1 = new vector_class_1.Vector2D(event.clientX, event.clientY);
                 _this.moveMethods.forEach(function (method) {
                     return method(mouse_1);
                 });
@@ -1567,10 +1735,10 @@ var CircleEvents = /** @class */function (_super) {
     CircleEvents.prototype.enableMouseDrag = function () {
         var _this = this;
         var isDraging = false;
-        var distance = new Vector_1["default"]();
+        var distance = new vector_class_1.Vector2D();
         document.addEventListener('mousemove', function (event) {
             if (isDraging) {
-                _this.position = Vector_1["default"].add(distance, new Vector_1["default"](event.clientX, event.clientY));
+                _this.position = vector_class_1.Vector2D.add(distance, new vector_class_1.Vector2D(event.clientX, event.clientY));
                 _this.dragingMethods.forEach(function (meth) {
                     return meth();
                 });
@@ -1580,8 +1748,8 @@ var CircleEvents = /** @class */function (_super) {
             if (!isDraging) {
                 document.body.style.cursor = 'pointer';
                 isDraging = true;
-                distance = Vector_1["default"].sub(_this.position, mouse);
-                _this.position = Vector_1["default"].add(distance, mouse);
+                distance = vector_class_1.Vector2D.sub(_this.position, mouse);
+                _this.position = vector_class_1.Vector2D.add(distance, mouse);
                 _this.dragStartMethods.forEach(function (meth) {
                     return meth();
                 });
@@ -1600,7 +1768,7 @@ var CircleEvents = /** @class */function (_super) {
     return CircleEvents;
 }(Graphic_1["default"]);
 exports["default"] = CircleEvents;
-},{"../graphics/Graphic":17,"../Vector":14}],24:[function(require,module,exports) {
+},{"../graphics/Graphic":19,"vector_class":49}],20:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1691,7 +1859,7 @@ var Rect = /** @class */function (_super) {
     return Rect;
 }(Graphic_1["default"]);
 exports["default"] = Rect;
-},{"./Graphic":17}],23:[function(require,module,exports) {
+},{"./Graphic":19}],23:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1715,19 +1883,19 @@ var __importDefault = this && this.__importDefault || function (mod) {
 };
 exports.__esModule = true;
 var Graphic_1 = __importDefault(require("./Graphic"));
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var Line = /** @class */function (_super) {
     __extends(Line, _super);
     function Line(data) {
         var _this = _super.call(this, data) || this;
-        _this.start = new Vector_1["default"](0, 0);
-        _this.end = new Vector_1["default"](1, 1);
+        _this.start = new vector_class_1.Vector2D(0, 0);
+        _this.end = new vector_class_1.Vector2D(1, 1);
         if (data) {
             if (data.start) _this.start = data.start;
             if (data.end) _this.end = data.end;
             if (data.color) _this.color = data.color;
             if (data.start) _this.position = data.start;
-            _this.end = new Vector_1["default"](_this.end.x - _this.start.x, _this.end.y - _this.start.y);
+            _this.end = new vector_class_1.Vector2D(_this.end.x - _this.start.x, _this.end.y - _this.start.y);
         }
         return _this;
     }
@@ -1746,7 +1914,7 @@ var Line = /** @class */function (_super) {
     return Line;
 }(Graphic_1["default"]);
 exports["default"] = Line;
-},{"./Graphic":17,"../Vector":14}],25:[function(require,module,exports) {
+},{"./Graphic":19,"vector_class":49}],24:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1814,7 +1982,7 @@ var Text = /** @class */function (_super) {
     return Text;
 }(Graphic_1["default"]);
 exports["default"] = Text;
-},{"./Graphic":17}],26:[function(require,module,exports) {
+},{"./Graphic":19}],25:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1862,7 +2030,7 @@ var Arc = /** @class */function (_super) {
     return Arc;
 }(CircleEvents_1["default"]);
 exports["default"] = Arc;
-},{"../Events/CircleEvents":77}],27:[function(require,module,exports) {
+},{"../Events/CircleEvents":77}],26:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1908,7 +2076,7 @@ var BezierCurve = /** @class */function (_super) {
     return BezierCurve;
 }(Graphic_1["default"]);
 exports["default"] = BezierCurve;
-},{"./Graphic":17}],28:[function(require,module,exports) {
+},{"./Graphic":19}],27:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -1956,7 +2124,7 @@ var QuadraticCurve = /** @class */function (_super) {
     return QuadraticCurve;
 }(Graphic_1["default"]);
 exports["default"] = QuadraticCurve;
-},{"./Graphic":17}],79:[function(require,module,exports) {
+},{"./Graphic":19}],78:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -1990,7 +2158,7 @@ var Event = /** @class */function () {
     return Event;
 }();
 exports["default"] = Event;
-},{}],29:[function(require,module,exports) {
+},{}],28:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2013,13 +2181,13 @@ var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var Vector_1 = __importDefault(require("../Vector"));
+var vector_class_1 = require("vector_class");
 var Event_1 = __importDefault(require("./Event"));
 var Mouse = /** @class */function (_super) {
     __extends(Mouse, _super);
     function Mouse() {
         var _this = _super.call(this) || this;
-        _this.position = new Vector_1["default"](0, 0);
+        _this.position = new vector_class_1.Vector2D(0, 0);
         _this.clicked = false;
         _this.move(function (self, event) {
             _this.position.x = event.clientX;
@@ -2049,7 +2217,7 @@ var Mouse = /** @class */function (_super) {
     return Mouse;
 }(Event_1["default"]);
 exports["default"] = Mouse;
-},{"../Vector":14,"./Event":79}],31:[function(require,module,exports) {
+},{"vector_class":49,"./Event":78}],29:[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2121,7 +2289,7 @@ var KeyBoard = /** @class */function (_super) {
     return KeyBoard;
 }(Event_1["default"]);
 exports["default"] = KeyBoard;
-},{"./Event":79}],7:[function(require,module,exports) {
+},{"./Event":78}],7:[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2130,7 +2298,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 exports.__esModule = true;
 var defaultCss = document.createElement('style');
 defaultCss.type = 'text/css';
-defaultCss.innerHTML = "\n* {\n  margin:0%;\n  padding: 0%;\n}\ncanvas {\n  display: block;\n}\n\n\n\n\n\n\n/* \n            GUI\n*/\n\n.wind {\n  position: fixed;\n  background: #333;\n  color: white;\n  font-family: arial;\n  border-radius: 5px;\n  text-align: center;\n  border: 1px solid #111;\n  cursor: pointer;\n}\n\nbutton {\n  cursor: pointer;\n  padding: 5px;\n  border: 1px solid #333;\n  color:black;\n  border-radius: 5px;\n}\n\n/* \n            END GUI\n*/\n\n\n\n\n\n\n\n\n\n\n";
+defaultCss.innerHTML = "\n\n* {\n  margin:0%;\n  padding: 0%;\n}\n\ncanvas {\n  display: block;\n}\n\n/* \n            GUI\n*/\n\n.wind {\n  position: fixed;\n  background: #333;\n  color: white;\n  font-family: arial;\n  border-radius: 5px;\n  text-align: center;\n  border: 1px solid #111;\n  cursor: pointer;\n}\n\nbutton {\n  cursor: pointer;\n  padding: 5px;\n  border: 1px solid #333;\n  color:black;\n  border-radius: 5px;\n}\n\n/* \n            END GUI\n*/\n";
 document.head.appendChild(defaultCss);
 var Scene_1 = __importDefault(require("./Scene"));
 exports.Scene = Scene_1["default"];
@@ -2138,10 +2306,8 @@ var Render_1 = __importDefault(require("./Render"));
 exports.Render = Render_1["default"];
 var LinearGradient_1 = __importDefault(require("./LinearGradient"));
 exports.LinearGradient = LinearGradient_1["default"];
-var Group_1 = __importDefault(require("./Group"));
-exports.Group = Group_1["default"];
-var Vector_1 = __importDefault(require("./Vector"));
-exports.Vector = Vector_1["default"];
+var vector_class_1 = require("vector_class");
+exports.Vector2D = vector_class_1.Vector2D;
 var Color_1 = __importDefault(require("./Color"));
 exports.Color = Color_1["default"];
 var Window_1 = __importDefault(require("./GUI/Window"));
@@ -2180,16 +2346,22 @@ var mouse = new Mouse_1["default"]();
 exports.mouse = mouse;
 var keyboard = new KeyBoard_1["default"]();
 exports.keyboard = keyboard;
-},{"./Scene":10,"./Render":11,"./LinearGradient":12,"./Group":13,"./Vector":14,"./Color":15,"./GUI/Window":114,"./Media/Animation":16,"./graphics/Graphic":17,"./graphics/Ellipse":18,"./graphics/Poligon":20,"./Media/Picture":19,"./graphics/Circle":24,"./Media/Video":21,"./graphics/Rect":22,"./graphics/Line":23,"./graphics/Text":25,"./graphics/Arc":26,"./graphics/BezierCurve":27,"./graphics/QuadraticCurve":28,"./Events/Mouse":29,"./Events/KeyBoard":31}],4:[function(require,module,exports) {
+},{"./Scene":10,"./Render":11,"./LinearGradient":12,"vector_class":49,"./Color":13,"./GUI/Window":14,"./Media/Animation":15,"./graphics/Graphic":19,"./graphics/Ellipse":16,"./graphics/Poligon":18,"./Media/Picture":17,"./graphics/Circle":20,"./Media/Video":21,"./graphics/Rect":22,"./graphics/Line":23,"./graphics/Text":24,"./graphics/Arc":25,"./graphics/BezierCurve":26,"./graphics/QuadraticCurve":27,"./Events/Mouse":28,"./Events/KeyBoard":29}],4:[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
 var index_1 = require("./src/index");
 //const render = new Render('lienzo')
-setInterval(function () {
-  var w = new index_1.Wind('asd');
-  w.setMsg('You have won gold');
-}, 10000);
+/*
+setInterval(() => {
+  const w = new Wind('asd')
+  w.setMsg('You have won gold')
+}, 10000)
+*/
+var render = new index_1.Render('lienzo');
+render.add(new index_1.Picture({
+  src: './apple.png'
+}));
 /*
 import { Render, Line, Circle, Color, Vector, Rect, Text } from './src/index'
 const render = new Render('lienzo')
@@ -2363,7 +2535,7 @@ render.add(new Text({
 }))
 */
 // render.autoRender()
-},{"./src/index":7}],85:[function(require,module,exports) {
+},{"./src/index":7}],91:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -2392,7 +2564,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51933' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '53436' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -2533,5 +2705,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[85,4], null)
+},{}]},{},[91,4], null)
 //# sourceMappingURL=/JavaSctipGL.d3e76e17.map

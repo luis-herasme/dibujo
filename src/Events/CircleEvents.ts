@@ -2,27 +2,41 @@ import Graphic from '../graphics/Graphic'
 import Events from '../Events'
 import { Vector2D } from 'vector_class'
 
+enum EventNames {
+  mousemove = 'mousemove',
+  mousedown = 'mousedown',
+  mouseup = 'mouseup',
+}
+
 class CircleEvents extends Graphic implements Events {
   public radius: number
   // Private
-  private mouseDownEnabled: boolean = false
-  private dragStartEnabled: boolean = false
+  private moveEnabled: boolean = false
+  private hoverEnabled: boolean = false
   private dragEndEnabled: boolean = false
   private dragingEnabled: boolean = false
   private mouseUpEnabled: boolean = false
-  private hoverEnabled: boolean = false
-  private moveEnabled: boolean = false
+  private dragStartEnabled: boolean = false
+  private mouseDownEnabled: boolean = false
 
-  private moveMethods: Array<Function> = []
-  private mouseDownMethods: Array<Function> = []
-  private mouseUpMethods: Array<Function> = []
-  private hoverMethods: Array<Function> = []
-  private dragStartMethods: Array<Function> = []
-  private dragEndMethods: Array<Function> = []
-  private dragingMethods: Array<Function> = []
+  private moveMethods: Array<Function>
+  private hoverMethods: Array<Function>
+  private mouseUpMethods: Array<Function>
+  private dragingMethods: Array<Function>
+  private dragEndMethods: Array<Function>
+  private mouseDownMethods: Array<Function>
+  private dragStartMethods: Array<Function>
 
   constructor(configuration: any) {
     super(configuration)
+    this.moveMethods = []
+    this.hoverMethods = []
+    this.mouseUpMethods = []
+    this.dragingMethods = []
+    this.dragEndMethods = []
+    this.dragStartMethods =[]
+    this.mouseDownMethods = []
+
     if (configuration) {
       if (configuration.radius) this.radius = configuration.radius
     }
@@ -32,8 +46,9 @@ class CircleEvents extends Graphic implements Events {
     return this.position.distance(point) < this.radius
   }
 
-  private enableEvent (eventName: string, methods: Array<Function>): void {
+  private enableEvent (eventName: EventNames, methods: Array<Function>): void {
     let mouse: Vector2D
+
     document.addEventListener(eventName, (event) => {
       mouse = new Vector2D(event.clientX, event.clientY)
       if (this.checkIfInside(mouse)) {
@@ -45,7 +60,7 @@ class CircleEvents extends Graphic implements Events {
   mouseDown(func: Function): void {
     if (!this.mouseDownEnabled) {
       this.mouseDownEnabled = !this.mouseDownEnabled
-      this.enableEvent('mousedown', this.mouseDownMethods)
+      this.enableEvent(EventNames.mousedown, this.mouseDownMethods)
     }
     this.mouseDownMethods.push(func.bind(this))
   }
@@ -53,7 +68,7 @@ class CircleEvents extends Graphic implements Events {
   mouseUp(func: Function): void {
     if (!this.mouseUpEnabled) {
       this.mouseUpEnabled = !this.mouseUpEnabled
-      this.enableEvent('mouseup', this.mouseUpMethods)
+      this.enableEvent(EventNames.mouseup, this.mouseUpMethods)
     }
     this.mouseUpMethods.push(func.bind(this))
   }
@@ -61,7 +76,7 @@ class CircleEvents extends Graphic implements Events {
   hover(func: Function): void {
     if (!this.hoverEnabled) {
       this.hoverEnabled = !this.hoverEnabled
-      this.enableEvent('mousemove', this.hoverMethods)
+      this.enableEvent(EventNames.mousemove, this.hoverMethods)
     }
     this.hoverMethods.push(func.bind(this))
   }

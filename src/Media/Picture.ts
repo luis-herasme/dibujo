@@ -1,27 +1,27 @@
-import Graphic from '../graphics/Graphic'
 import { Vector2D } from 'vector_class'
 
 // Imaginary canvas
 const canvas = document.createElement('canvas')
 const context = canvas.getContext('2d')    
 
-class Picture extends Graphic {
+class Picture {
   public width: number
   public height: number
   public opacity: number
+  public context: CanvasRenderingContext2D
   public image: HTMLImageElement
   public angle: number
-  public type: string = "img"
   public data: any
   public ready: boolean = false
   public todo: Array<Function> = []
   public params: Array<any> = []
+  public position: Vector2D
+  public anchor: Vector2D
 
   constructor(data: any) {
-    super(data)
     this.image = new Image()
     this.image.src = data.src
-
+    console.log(this.image)
     this.image.addEventListener('load', () => {
       this.ready = true
       this.todo.forEach((met, i) => {
@@ -29,7 +29,8 @@ class Picture extends Graphic {
       })
     })
 
-    this.image.addEventListener('error', () => {
+    this.image.addEventListener('error', (err) => {
+      console.log(err)
       console.error('Error loading the image...')
     })
 
@@ -37,10 +38,6 @@ class Picture extends Graphic {
     this.opacity = data.opacity ? data.opacity : 1
     this.width = data.width ? data.width : this.image.width
     this.height = data.height ? data.height : this.image.height
-  }
-
-  filter() {
-
   }
 
   getImageData() {
@@ -51,7 +48,7 @@ class Picture extends Graphic {
     return context.getImageData(0, 0, this.width, this.height)
   }
 
-  removeColor(color: Array<number>) {
+  removeColor(color: Array<number>): void {
     if (this.ready) {
       let image
       if (!this.data) {
@@ -77,7 +74,7 @@ class Picture extends Graphic {
   onClick(func: Function): void {
 
   }
-  realPosition() {
+  realPosition(): Vector2D {
     return new Vector2D(this.position.x - (this.anchor.x * this.width), this.position.y - (this.anchor.y * this.height))
   }
 

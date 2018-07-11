@@ -1,8 +1,8 @@
 import Render from './Render'
-import Graphic from './graphics/Graphic'
 import Camera from './Camera'
-import Picture from './Media/Picture'
 import Video from './Media/Video'
+import Picture from './Media/Picture'
+import Graphic from './graphics/Graphic'
 
 /**
  * This is the detail about the constructor
@@ -11,7 +11,6 @@ import Video from './Media/Video'
  * @param {Render} renderer The first argument
  */
 class Scene {
-
   public context: CanvasRenderingContext2D
   public backgroundColor: string = 'black'
   public camera: Camera
