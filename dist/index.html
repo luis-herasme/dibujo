@@ -7,7 +7,20 @@
   <title>GL</title>
 </head>
 <body>
-<canvas id="lienzo"></canvas>
-  <script src="/JavaSctipGL.d3e76e17.js"></script>
+
+  <script src="/src.be64ce74.js"></script>
+  <script>
+    var render = new dibujo.Render()
+    var scene = new dibujo.Scene(render)
+    var pic = new dibujo.Picture({
+      src:'./apple.png'
+    })
+    render.setScene(scene)
+    scene.add(pic)
+    console.log(pic)
+    render.autoRender()
+  //  render.render()
+  console.log(dibujo)
+  </script>
 </body>
 </html>

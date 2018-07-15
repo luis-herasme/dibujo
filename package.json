@@ -1,6 +1,6 @@
 {
   "name": "dibujo",
-  "version": "5.0.22",
+  "version": "5.0.21",
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "docz": "^0.2.11",
-    "parcel": "^1.9.5",
+    "parcel": "^1.9.6",
     "ts-loader": "4.3.1",
     "typedoc": "^0.11.1",
     "typescript": "^2.9.2",
@@ -21,6 +21,6 @@
     "yargs": "^9.0.1"
   },
   "dependencies": {
-    "vector_class": "^3.0.4"
+    "vector_class": "^3.0.3"
   }
 }

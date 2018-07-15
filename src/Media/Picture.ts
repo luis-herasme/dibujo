@@ -1,29 +1,39 @@
 import { Vector2D } from 'vector_class'
+import CircleEvents from '../Events/CircleEvents'
 
 // Imaginary canvas
 const canvas = document.createElement('canvas')
-const context = canvas.getContext('2d')    
+const context = canvas.getContext('2d')
 
-class Picture {
+class Picture extends CircleEvents {
+  public data: any
+  public angle: number
   public width: number
   public height: number
+  public ready: boolean
   public opacity: number
-  public context: CanvasRenderingContext2D
-  public image: HTMLImageElement
-  public angle: number
-  public data: any
-  public ready: boolean = false
-  public todo: Array<Function> = []
-  public params: Array<any> = []
-  public position: Vector2D
   public anchor: Vector2D
+  public params: Array<any>
+  public position: Vector2D
+  public todo: Array<Function>
+  public image: HTMLImageElement
+  public context: CanvasRenderingContext2D
 
   constructor(data: any) {
+    super(data)
+    this.position = new Vector2D(0, 0)
+    this.anchor = new Vector2D(0, 0)
+    this.ready = false
+    this.params = []
+    this.todo = []
+
     this.image = new Image()
     this.image.src = data.src
     console.log(this.image)
     this.image.addEventListener('load', () => {
       this.ready = true
+      this.width = data.width ? data.width : this.image.width
+      this.height = data.height ? data.height : this.image.height
       this.todo.forEach((met, i) => {
         met(...this.params[i])
       })
@@ -47,7 +57,7 @@ class Picture {
     context.drawImage(this.image, 0, 0, this.width, this.height)
     return context.getImageData(0, 0, this.width, this.height)
   }
-
+/*
   removeColor(color: Array<number>): void {
     if (this.ready) {
       let image
@@ -70,16 +80,13 @@ class Picture {
       this.params.push([color])
     }
   }
-
-  onClick(func: Function): void {
-
-  }
+*/
   realPosition(): Vector2D {
     return new Vector2D(this.position.x - (this.anchor.x * this.width), this.position.y - (this.anchor.y * this.height))
   }
-
+/*
   renderData(): void {
-  //  console.log('here')
+    //  console.log('here')
     //console.log(this.data)
     this.context.beginPath()
     this.context.save()
@@ -87,11 +94,11 @@ class Picture {
     //this.context.rotate(this.angle)
     // this.context.globalAlpha = this.opacity
     // console.log(this.data)
-    this.context.putImageData(this.data, this.position.x -(this.anchor.x *  this.width), this.position.y -(this.anchor.y *  this.height))// -(this.anchor.x *  this.width), -(this.anchor.y *  this.height), this.position.x, this.position.y, this.width, this.height)
+    this.context.putImageData(this.data, this.position.x - (this.anchor.x * this.width), this.position.y - (this.anchor.y * this.height))// -(this.anchor.x *  this.width), -(this.anchor.y *  this.height), this.position.x, this.position.y, this.width, this.height)
     // this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     this.context.restore()
   }
-
+*/
   render(): void {
     this.context.beginPath()
     this.context.save()

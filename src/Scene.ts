@@ -4,24 +4,20 @@ import Video from './Media/Video'
 import Picture from './Media/Picture'
 import Graphic from './graphics/Graphic'
 
-/**
- * This is the detail about the constructor
- * @class This is the detail about the class
- * @memberOf namespace
- * @param {Render} renderer The first argument
- */
 class Scene {
-  public context: CanvasRenderingContext2D
-  public backgroundColor: string = 'black'
+  public backgroundColor: string
   public camera: Camera
   public renderer: Render
-  public childs: Array<any> = []
-  public frameRate: number = 0
-  public ready: boolean = false
+  public childs: Array<any>
+  public frameRate: number
   public interval: any
+  public context: CanvasRenderingContext2D
 
   constructor(renderer: Render) {
+    this.childs = []
+    this.frameRate = 0
     this.renderer = renderer
+    this.backgroundColor = 'black'
     this.context = this.renderer.context
     this.camera = new Camera(this.context)
   }
@@ -38,22 +34,12 @@ class Scene {
     return !elements.some((element) => !element.ready)
   }
 
-  /**
-   * This method adds one element to the scene
-   * @param {Graphic} element any graphic object
-   * @returns {void}
-   */
   add(element: any): void {
     element.context = this.context
     this.childs.push(element)
     this.organizeByZindex()
   }
 
-  /**
-   * Removes an element from the scene
-   * @param {Graphic} element any graphic object
-   * @returns {void}
-   */
   remove(element: Graphic): void {
     let index = this.childs.indexOf(element)
     if (index >= 0) {
@@ -61,9 +47,6 @@ class Scene {
     }
   }
 
-  /**
-   * This method clears the screen
-   */
   clearScreen(): void {
     this.context.save()
     this.context.setTransform(1, 0, 0, 1, 0, 0)
@@ -72,10 +55,6 @@ class Scene {
     this.context.restore()
   }
 
-  /**
-   * This method enables or disables the image smoothing
-   * @param {boolean} state enable or disable
-   */
   smoth(state: boolean): void {
     if (this.context.imageSmoothingEnabled) {
       this.context.imageSmoothingEnabled = state
@@ -86,16 +65,10 @@ class Scene {
     }
   }
 
-  /**
-   * This method organizes the childs of the scene by their property z_indez
-   */
   organizeByZindex(): void {
     this.childs.sort((a, b) => a.z_index - b.z_index)
   }
 
-  /**
-   * This method renders the screne ultil you call stopAutoRender
-   */
   autoRender(func?: Function): void {
     this.interval = setInterval(() => {
       if (func) func()
@@ -103,16 +76,10 @@ class Scene {
     }, this.frameRate)
   }
 
-  /**
-   * This method stops autoRender
-   */
   stopAutoRender(): void {
     clearInterval(this.interval)
   }
 
-  /**
-   * This method renders the screne
-   */
   render(): void {
     if (!this.dataLoaded()) {
       console.info('Waiting for images to load...')
