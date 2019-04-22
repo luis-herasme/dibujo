@@ -1,7 +1,6 @@
 const defaultCss = document.createElement('style')
 defaultCss.type = 'text/css'
 defaultCss.innerHTML = `
-
 * {
   margin:0%;
   padding: 0%;
@@ -11,6 +10,7 @@ canvas {
   display: block;
 }
 `
+
 document.head.appendChild(defaultCss)
 
 import Scene from './Scene'
